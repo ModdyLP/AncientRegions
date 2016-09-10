@@ -1,0 +1,120 @@
+###Config File from AncientFlags
+
+##This Plugin using metcris###
+metrics: true
+##Currency of your Economy System ##Worlds Comma Seperated
+currency: EURO
+limit: 4
+worlds: world
+##Settings for Particles 1 = 1 Second // player;all
+showtimeofparticle: 20 
+showfor: player
+
+##Region Manager the smaller uneven cordinate 
+##will be picked. That means if you type 10x10
+##the region will be 9x9 becouse of worldguards
+##blocksizes.
+region1name: Small
+region1size: 9
+region1price: 2500
+region2name: Medium
+region2size: 21
+region2price: 5000
+region3name: Big
+region3size: 60
+region3price: 7500
+region4name: Extrem
+region4size: 99
+region4price: 10000
+
+##If you type max the maximum height of the 
+##world and maximum depth will be used, the height and depth are cordinates like 64 is the floor.
+regionheight: 125
+regiondepth: 54
+##PayBack is an percent number that sellers get back
+payback: 10
+
+##Priority of the new region
+regionpriority: 10
+
+#Only StateFlags comma seperated without edges 
+standartdenyflags: []
+
+##Price of your Flags
+#Here you can define for each flag a price.
+#If you use 0 the flag is free.
+build: 100
+greeting: 100
+farewell: 100
+pvp: 100
+mobdamage: 100
+entry: 100
+exit: 100
+enderpearl: 100
+teleportlocation: 100
+itempickup: 100
+itemdrop: 100
+expdrop: 100
+mobspawn: 100
+creeperexplosion: 100
+tntexplosion: 100
+invisible: 100
+enderdragondamage: 100
+denyspawn: 100
+snowfall: 100
+snowmelt: 100
+iceform: 100
+icemelt: 100
+grassgrowth: 100
+healdelay: 100
+healamount: 100
+healminhealth: 100
+healmaxhealth: 100
+blockedcmds: 100
+allowedcmds: 100
+timelock: 100
+weatherlock: 100
+spawnlocation: 100
+feeddelay: 100
+feedamount: 100
+feedminhunger: 100
+feedmaxhunger: 100
+lavaflow: 100
+waterflow: 100
+lightning: 100
+lavafire: 100
+mushroomgrowth: 100
+pistons: 100
+sendchat: 100
+recievechat: 100
+potionsplash: 100
+leafdecay: 100
+
+##Page 2
+passthrough: 100
+interact: 100
+blockbreak: 100 
+blockplace: 100 
+use: 100
+damageanimals: 100
+chestaccess: 100
+ride: 100
+sleep: 100 
+vehicleplace: 100
+vehicledestroy: 100 
+lighter: 100 
+ghastfireball: 100 
+otherexplosion: 100 
+firespread: 100 
+endermangrief: 100 
+entitypaintingdestroy: 100 
+entityitemframedestroy: 100
+myceliumspread: 100
+vinegrowth: 100
+soildry: 100
+gamemode: 100
+notifyenter: 100
+notifyleave: 100
+allowshop: 100
+buyable: 100
+price: 100
