@@ -1,0 +1,308 @@
+name: AncientRegions
+version: 1.0
+author: ModdyLP
+description: To edit Worldguard Regions
+website: https://moddylp.de
+main: de.moddylp.AncientRegions.Main
+prefix: AncientRegions
+database: false
+depend: [WorldGuard, WorldEdit, Vault]
+commands:
+  ancientregions:
+    description: Edit all Worldguard attributs
+    usage: Type <command> gui to open the GUI.
+    aliases: [ancr, aregions]
+permissions:
+  ancient.regions.user.*:
+     description: Defines user permissions.
+     children:
+       ancient.regions.flag.greeting: true
+       ancient.regions.flag.farewell: true
+       ancient.regions.flag.pvp: true
+       ancient.regions.flag.togglemobspawn: true
+       ancient.regions.flag.togglecreeperexplosion: true
+       ancient.regions.flag.toggletntexplosion: true
+       ancient.regions.flag.denyspawn: true
+       ancient.regions.flag.toggleotherexplosion: true
+       ancient.regions.flag.command: true
+       ancient.regions.region.*: true
+  ancient.regions.mod.*:
+     description: Defines moderator permissions.
+     children:
+       ancient.regions.region.*: true
+       ancient.regions.flags.*: true
+  ancient.regions.flags.*:
+     description: Defines flag permissions.
+     children:
+       ancient.regions.flag.command: true
+       ancient.regions.flag.togglepvp: true
+       ancient.regions.flag.togglebuild: true
+       ancient.regions.flag.greeting: true
+       ancient.regions.flag.farewell: true
+       ancient.regions.flag.toggleentry: true
+       ancient.regions.flag.toggleexit: true
+       ancient.regions.flag.togglemobdamage: true
+       ancient.regions.flag.toggleenderpearl: true
+       ancient.regions.flag.teleportlocation: true
+       ancient.regions.flag.toggleitempickup: true
+       ancient.regions.flag.toggleitemdrop: true
+       ancient.regions.flag.toggleexpdrop: true
+       ancient.regions.flag.togglemobspawn: true
+       ancient.regions.flag.togglecreeperexplosion: true
+       ancient.regions.flag.toggletntexplosion: true
+       ancient.regions.flag.toggleinvisible: true
+       ancient.regions.flag.toggleenderdragondamage: true
+       ancient.regions.flag.denyspawn: true
+       ancient.regions.flag.togglesnowfall: true
+       ancient.regions.flag.togglesnowmelt: true
+       ancient.regions.flag.toggleicefall: true
+       ancient.regions.flag.toggleicemelt: true
+       ancient.regions.flag.toggleiceform: true
+       ancient.regions.flag.togglegrassgrowth: true
+       ancient.regions.flag.healdelay: true
+       ancient.regions.flag.healamount: true
+       ancient.regions.flag.healminhealth: true
+       ancient.regions.flag.healmaxhealth: true
+       ancient.regions.flag.feeddelay: true
+       ancient.regions.flag.feedamount: true
+       ancient.regions.flag.feedminhunger: true
+       ancient.regions.flag.feedmaxhunger: true
+       ancient.regions.flag.blockedcmds: true
+       ancient.regions.flag.allowedcmds: true
+       ancient.regions.flag.timelock: true
+       ancient.regions.flag.weatherlock: true
+       ancient.regions.flag.spawnlocation: true
+       ancient.regions.flag.togglelavaflow: true
+       ancient.regions.flag.togglewaterflow: true
+       ancient.regions.flag.togglelightning: true
+       ancient.regions.flag.togglelavafire: true
+       ancient.regions.flag.togglemushroomgrowth: true
+       ancient.regions.flag.togglepistons: true
+       ancient.regions.flag.togglesendchat: true
+       ancient.regions.flag.togglerecievechat: true
+       ancient.regions.flag.togglepotionsplash: true
+       ancient.regions.flag.toggleleafdecay: true
+       ancient.regions.flag.togglepassthrough: true
+       ancient.regions.flag.toggleinteract: true
+       ancient.regions.flag.toggleblockbreak: true
+       ancient.regions.flag.toggleblockplace: true
+       ancient.regions.flag.toggleuse: true
+       ancient.regions.flag.toggledamageanimals: true
+       ancient.regions.flag.togglechestaccess: true
+       ancient.regions.flag.toggleride: true
+       ancient.regions.flag.togglesleep: true
+       ancient.regions.flag.togglevehicleplace: true
+       ancient.regions.flag.togglevehicledestroy: true
+       ancient.regions.flag.togglelighter: true
+       ancient.regions.flag.toggleghastfireball: true
+       ancient.regions.flag.toggleotherexplosion: true
+       ancient.regions.flag.togglefirespread: true
+       ancient.regions.flag.toggleendermangrief: true
+       ancient.regions.flag.toggleentitypaintingdestroy: true
+       ancient.regions.flag.toggleentityitemframedestroy: true
+       ancient.regions.flag.togglemyceliumspread: true
+       ancient.regions.flag.togglevinegrowth: true
+       ancient.regions.flag.togglesoildry: true
+       ancient.regions.flag.gamemode: true
+       ancient.regions.flag.togglenotifyenter: true
+       ancient.regions.flag.togglenotifyleave: true
+       ancient.regions.flag.toggleallowshop: true
+       ancient.regions.flag.togglebuyable: true
+       ancient.regions.flag.price: true
+  ancient.regions.region.*:
+     description: Access to all Regions
+     children:
+       ancient.regions.region.buyregion1: true
+       ancient.regions.region.buyregion2: true
+       ancient.regions.region.buyregion3: true
+       ancient.regions.region.buyregion4: true
+       ancient.regions.region.addmember: true
+       ancient.regions.region.removemember: true
+       ancient.regions.region.changeowner: true
+       ancient.regions.region.particle: true
+  ancient.regions.admin.*:
+     description: Defines admin permissions
+     children:
+       ancient.regions.admin.reload: true
+       ancient.regions.admin.bypass: true
+       ancient.regions.admin.cancelall: true
+       ancient.regions.admin.bypassregion: true
+       ancient.regions.flag.*: true
+       ancient.regions.region.*: true
+  ancient.regions.flag.command:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglepvp:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglebuild:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglemobdamage:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.greeting:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.farewell:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleentry:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleexit:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleenderpearl:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.teleportlocation:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleitempickup:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleitemdrop:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleexpdrop:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglemobspawn:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglecreeperexplosion:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggletntexplosion:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleinvisible:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleenderdragondamage:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.denyspawn:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglesnowfall:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglesnowmelt:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleicefall:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleiceform:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleicemelt:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglegrassgrowth:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.healdelay:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.healamount:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.healminhealth:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.healmaxhealth:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.blockedcmds:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.allowedcmds:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.timelock:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.weatherlock:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.spawnlocation:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.feeddelay:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.feedamount:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.feedminhunger:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.feedmaxhunger:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglelavaflow:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglewaterflow:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglelightning:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglelavafire:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglemushroomgrowth:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglepistons:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglesendchat:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglerecievechat:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglepotionsplash:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleleafdecay:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglepassthrough:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleinteract:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleblockbreak:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleblockplace:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleuse:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggledamageanimals:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglechestaccess:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleride:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglesleep:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglevehicleplace:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglevehicledestroy:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglelighter:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleghastfireball:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleotherexplosion:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglefirespread:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleendermangrief:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleentitypaintingdestroy:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleentityitemframedestroy:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglemyceliumspread:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglevinegrowth:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglesoildry:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.gamemode:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglenotifyenter:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglenotifyleave:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleallowshop:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglebuyable:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.price:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.admin.particle:
+     description: Show ParticleBorder
+  ancient.regions.admin.cancelall:
+     description: Show ParticleBorder
+  ancient.regions.region.buyregion1:
+     description: Small Region
+  ancient.regions.region.buyregion2:
+     description: Medium Region
+  ancient.regions.region.buyregion3:
+     description: Big Region
+  ancient.regions.region.buyregion4:
+     description: Extrem Region
+  ancient.regions.admin.bypassregion:
+     description: Bypass Region Exist Check
+     default: op
+  ancient.regions.region.addmember:
+     description: Add Member
+  ancient.regions.region.removemember:
+     description: Add Member
+  ancient.regions.region.changeowner:
+     description: Change Member
+  ancient.regions.admin.reload:
+    description: Reload Config.
+    default: op
+  ancient.regions.admin.bypass:
+    description: Admin dont need to pay for the Flag Changes.
+    default: op
