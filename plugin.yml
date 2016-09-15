@@ -109,6 +109,7 @@ permissions:
        ancient.regions.flag.toggleallowshop: true
        ancient.regions.flag.togglebuyable: true
        ancient.regions.flag.price: true
+       ancient.regions.flag.togglechorusfruitteleport: true
   ancient.regions.region.*:
      description: Access to all Regions
      children:
@@ -276,6 +277,8 @@ permissions:
   ancient.regions.flag.toggleallowshop:
      description: Allow to edit Worldguard Attributs
   ancient.regions.flag.togglebuyable:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglechorusfruitteleport:
      description: Allow to edit Worldguard Attributs
   ancient.regions.flag.price:
      description: Allow to edit Worldguard Attributs

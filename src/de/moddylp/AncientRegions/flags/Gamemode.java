@@ -142,7 +142,7 @@ public class Gamemode {
 	            List<String> lore = new ArrayList<String>();
 	            lore.add(ChatColor.RED+plugin.lang.getText("Permission"));
 	            ItemMeta imeta = ITEM.getItemMeta();
-	            imeta.setDisplayName("§4[OFF] "+plugin.lang.getText("s")+flagname);
+	            imeta.setDisplayName(ChatColor.RED+"[OFF] "+plugin.lang.getText("s")+flagname);
 	            imeta.setLore(lore);
 	            imeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 	            ITEM.setItemMeta(imeta);

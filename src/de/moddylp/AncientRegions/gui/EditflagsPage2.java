@@ -1,5 +1,6 @@
 package de.moddylp.AncientRegions.gui;
 
+import de.moddylp.AncientRegions.flags.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -8,34 +9,6 @@ import org.bukkit.inventory.Inventory;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.AncientRegions.flags.AllowShop;
-import de.moddylp.AncientRegions.flags.BlockBreak;
-import de.moddylp.AncientRegions.flags.BlockPlace;
-import de.moddylp.AncientRegions.flags.Buyable;
-import de.moddylp.AncientRegions.flags.ChestAccess;
-import de.moddylp.AncientRegions.flags.DamageAnimals;
-import de.moddylp.AncientRegions.flags.EditFlagsNavigation2;
-import de.moddylp.AncientRegions.flags.EndermanGrief;
-import de.moddylp.AncientRegions.flags.EntityItemframeDestroy;
-import de.moddylp.AncientRegions.flags.EntityPaintingDestroy;
-import de.moddylp.AncientRegions.flags.FireSpread;
-import de.moddylp.AncientRegions.flags.Gamemode;
-import de.moddylp.AncientRegions.flags.GhastFireball;
-import de.moddylp.AncientRegions.flags.Interact;
-import de.moddylp.AncientRegions.flags.Lighter;
-import de.moddylp.AncientRegions.flags.MyceliumSpread;
-import de.moddylp.AncientRegions.flags.NotifyEnter;
-import de.moddylp.AncientRegions.flags.NotifyLeave;
-import de.moddylp.AncientRegions.flags.OtherExplosion;
-import de.moddylp.AncientRegions.flags.Pathtrought;
-import de.moddylp.AncientRegions.flags.Price;
-import de.moddylp.AncientRegions.flags.Ride;
-import de.moddylp.AncientRegions.flags.Sleep;
-import de.moddylp.AncientRegions.flags.SoilDry;
-import de.moddylp.AncientRegions.flags.Use;
-import de.moddylp.AncientRegions.flags.VehicleDestroy;
-import de.moddylp.AncientRegions.flags.VehiclePlace;
-import de.moddylp.AncientRegions.flags.VineGrowth;
 
 public class EditflagsPage2 {
 	private Inventory menu;
@@ -109,7 +82,9 @@ public class EditflagsPage2 {
 		Buyable buyable = new Buyable(plugin);
 		buyable.loadgui(menu, p, worldguard);
 		Price price = new Price(plugin, worldguard, p);
-		price.loadgui(menu, p, worldguard);
+		price.loadgui(menu, p, worldguard); // 26
+		ChorusFruitTeleport chorus = new ChorusFruitTeleport(plugin);
+		chorus.loadgui(menu,p,worldguard); // 27
     }
     
     //Open the inventory inGame

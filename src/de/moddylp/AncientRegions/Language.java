@@ -65,11 +65,11 @@ public class Language {
         if (lang.getString(path) != null)
         {
             
-            return lang.getString(path).replaceAll("&" , "ง");
+            return lang.getString(path).replaceAll("&" , "ยง");
             
         } else {
             
-            return "&cThis sentence does not exist. Please check lang-file message ".replaceAll( "&" , "ง" ) + path ;
+            return "&cThis sentence does not exist. Please check lang-file message ".replaceAll( "&" , "ยง" ) + path ;
             
         }
     }

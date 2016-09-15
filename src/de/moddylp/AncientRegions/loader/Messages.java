@@ -66,7 +66,7 @@ public class Messages {
 		lang.setTextOnce("RemoveMember", "Remove Member");
 		lang.setTextOnce("PlayerAdded", "Player [PH] added to region.");
 		lang.setTextOnce("PlayerRemoved", "Player [PH] removed from region.");
-		lang.setTextOnce("SetOwner", "Change Owne");
+		lang.setTextOnce("SetOwner", "Change Owner");
 		lang.setTextOnce("ChangeOwner", "Changed Owner to [PH]!");
 		lang.setTextOnce("RemoveRegion", "Sell Region");
 		lang.setTextOnce("RemoveRegionLore1", "Sell your Region to the Server.");

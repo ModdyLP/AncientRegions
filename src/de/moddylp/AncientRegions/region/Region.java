@@ -398,9 +398,8 @@ public class Region {
 
 	@SuppressWarnings("deprecation")
 	public boolean payment(Player p, InventoryClickEvent e) {
-		RegisteredServiceProvider<Economy> service = Bukkit.getServicesManager()
-				.getRegistration(net.milkbowl.vault.economy.Economy.class);
-		Economy vaultEcon = service.getProvider();
+		RegisteredServiceProvider<Economy> economyProvider = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+		Economy vaultEcon = economyProvider.getProvider();
 		if (p.hasPermission("ancient.regions.admin.bypass")) {
 			e.setCancelled(true);
 			return true;
@@ -426,9 +425,8 @@ public class Region {
 	}
 	@SuppressWarnings("deprecation")
 	public boolean give(Player p, InventoryClickEvent e) {
-		RegisteredServiceProvider<Economy> service = Bukkit.getServicesManager()
-				.getRegistration(net.milkbowl.vault.economy.Economy.class);
-		Economy vaultEcon = service.getProvider();
+		RegisteredServiceProvider<Economy> economyProvider = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+		Economy vaultEcon = economyProvider.getProvider();
 		if (p.hasPermission("ancient.regions.admin.bypass")) {
 			e.setCancelled(true);
 			return true;
@@ -486,7 +484,7 @@ public class Region {
 				List<String> lore = new ArrayList<String>();
 				lore.add(ChatColor.RED + plugin.lang.getText("Permission"));
 				ItemMeta imeta = ITEM.getItemMeta();
-				imeta.setDisplayName("�4[OFF] " + plugin.lang.getText("Toggle") + regionname);
+				imeta.setDisplayName(ChatColor.RED+"[OFF] " + plugin.lang.getText("Toggle") + regionname);
 				imeta.setLore(lore);
 				imeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 				ITEM.setItemMeta(imeta);

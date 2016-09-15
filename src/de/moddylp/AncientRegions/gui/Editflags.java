@@ -15,7 +15,7 @@ import de.moddylp.AncientRegions.flags.CreeperExplosion;
 import de.moddylp.AncientRegions.flags.DenySpawn;
 import de.moddylp.AncientRegions.flags.EditFlagsNavigation;
 import de.moddylp.AncientRegions.flags.EnderDragonDamage;
-import de.moddylp.AncientRegions.flags.Enderpearl;
+import de.moddylp.AncientRegions.flags.EnderPearlTeleport;
 import de.moddylp.AncientRegions.flags.Entry;
 import de.moddylp.AncientRegions.flags.Exit;
 import de.moddylp.AncientRegions.flags.ExpDrop;
@@ -88,7 +88,7 @@ public class Editflags {
 		entry.loadgui(menu, p, worldguard);
 		Exit exit = new Exit(plugin);
 		exit.loadgui(menu, p, worldguard);
-		Enderpearl enderpearl = new Enderpearl(plugin);
+		EnderPearlTeleport enderpearl = new EnderPearlTeleport(plugin);
 		enderpearl.loadgui(menu, p, worldguard);
 		Teleportlocation teleloc = new Teleportlocation(plugin);
 		teleloc.loadgui(menu, p, worldguard);
@@ -165,7 +165,7 @@ public class Editflags {
 		PotionSplash potion = new PotionSplash(plugin);
 		potion.loadgui(menu, p, worldguard);
 		LeafDecay leafdecay = new LeafDecay(plugin);
-		leafdecay.loadgui(menu, p, worldguard);
+		leafdecay.loadgui(menu, p, worldguard); // 51
 	}
 
 	// Open the inventory inGame
