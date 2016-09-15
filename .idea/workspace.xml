@@ -2,105 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8b4d0158-36b9-4929-b039-b7342c0e1ffc" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_findbugs_jsr305_1_3_9.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sk89q_dummypermscompat_1_8.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sk89q_jchronic_0_2_4a.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sk89q_lib_jlibnoise_1_0_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sk89q_worldedit_worldedit_bukkit_6_1_3_SNAPSHOT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sk89q_worldedit_worldedit_core_6_1_3_SNAPSHOT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sk89q_worldguard_worldguard_legacy_6_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_thoughtworks_paranamer_paranamer_2_6.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__de_schlichtherle_truezip_6_8_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_milkbowl_vault_Vault_1_5_6.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_bukkit_bukkit_1_9_4_R0_1_SNAPSHOT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_spigotmc_spigot_api_1_9_4_R0_1_SNAPSHOT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__rhino_js_1_7R2.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config.yml" afterPath="$PROJECT_DIR$/config.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dependency-reduced-pom.xml" afterPath="$PROJECT_DIR$/dependency-reduced-pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plugin.yml" afterPath="$PROJECT_DIR$/plugin.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/Language.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/Language.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/Main.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/AllowShop.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/AllowShop.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/AllowedCmds.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/AllowedCmds.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/BlockBreak.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/BlockBreak.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/BlockPlace.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/BlockPlace.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/BlockedCmds.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/BlockedCmds.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/BuildFlag.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/BuildFlag.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Buyable.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Buyable.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/ChestAccess.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/ChestAccess.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/CreeperExplosion.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/CreeperExplosion.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/DamageAnimals.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/DamageAnimals.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/DenySpawn.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/DenySpawn.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/EnderDragonDamage.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/EnderDragonDamage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/EndermanGrief.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/EndermanGrief.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/EntityItemframeDestroy.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/EntityItemframeDestroy.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/EntityPaintingDestroy.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/EntityPaintingDestroy.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Entry.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Entry.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Exit.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Exit.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/ExpDrop.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/ExpDrop.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Farewell.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Farewell.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/FeedAmount.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/FeedAmount.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/FeedDelay.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/FeedDelay.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/FeedMaxHunger.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/FeedMaxHunger.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/FeedMinHunger.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/FeedMinHunger.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/FireSpread.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/FireSpread.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Gamemode.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Gamemode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/GhastFireball.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/GhastFireball.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/GrassGrowth.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/GrassGrowth.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Greeting.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Greeting.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/HealAmount.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/HealAmount.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/HealDelay.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/HealDelay.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/HealMaxHealth.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/HealMaxHealth.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/HealMinHealth.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/HealMinHealth.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/IceForm.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/IceForm.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/IceMelt.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/IceMelt.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Interact.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Interact.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Invisible.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Invisible.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/ItemDrop.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/ItemDrop.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/ItemPickup.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/ItemPickup.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/LavaFire.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/LavaFire.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/LavaFlow.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/LavaFlow.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/LeafDecay.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/LeafDecay.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Lighter.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Lighter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Lightning.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Lightning.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/MobDamage.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/MobDamage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/MobSpawn.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/MobSpawn.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/MushroomGrowth.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/MushroomGrowth.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/MyceliumSpread.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/MyceliumSpread.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/NotifyEnter.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/NotifyEnter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/NotifyLeave.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/NotifyLeave.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/OtherExplosion.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/OtherExplosion.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Pathtrought.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Pathtrought.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Piston.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Piston.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/PotionSplash.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/PotionSplash.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Price.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Price.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/PvP.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/PvP.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/RecieveChat.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/RecieveChat.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Ride.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Ride.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/SendChat.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/SendChat.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Sleep.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Sleep.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Snowfall.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Snowfall.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Snowmelt.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Snowmelt.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/SoilDry.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/SoilDry.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/SpawnLocation.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/SpawnLocation.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/TNTExplosion.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/TNTExplosion.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Teleportlocation.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Teleportlocation.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/TimeLock.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/TimeLock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Use.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Use.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/VehicleDestroy.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/VehicleDestroy.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/VehiclePlace.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/VehiclePlace.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/VineGrowth.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/VineGrowth.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/WaterFlow.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/WaterFlow.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/WeatherLock.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/WeatherLock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/gui/Editflags.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/gui/Editflags.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/gui/EditflagsPage2.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/gui/EditflagsPage2.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/gui/Events/Menu_Click.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/gui/Events/Menu_Click.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/loader/Messages.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/loader/Messages.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/loader/VaultLoader.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/loader/VaultLoader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/particle/ParticleShower.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/particle/ParticleShower.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/region/Region.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/region/Region.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/Enderpearl.java" afterPath="$PROJECT_DIR$/src/de/moddylp/AncientRegions/flags/ChorusFruitTeleport.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/AncientRegions-1.0.jar" afterPath="" />
     </list>
     <ignored path="AncientRegions.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -704,8 +606,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -719,7 +621,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18020834" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18020834" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
