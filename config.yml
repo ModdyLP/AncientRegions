@@ -27,6 +27,10 @@ region4name: Extrem
 region4size: 99
 region4price: 10000
 
+addmember: 500
+changeowner: 1200
+removemember: 100
+
 ##If you type max the maximum height of the 
 ##world and maximum depth will be used, the height and depth are cordinates like 64 is the floor.
 regionheight: 125

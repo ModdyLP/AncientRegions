@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import de.moddylp.AncientRegions.loader.LoadConfig;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -26,6 +28,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 import de.moddylp.AncientRegions.Main;
+import org.bukkit.plugin.RegisteredServiceProvider;
 
 public class MembersGUI {
 	private Main plugin;
@@ -104,15 +107,20 @@ public class MembersGUI {
 			} else {
 				ProtectedRegion rg = regions.getRegion(region.get(0));
 				if (rg.isOwner(ply) || p.hasPermission("ancient.regions.region.bypass")) {
-					DefaultDomain member = new DefaultDomain();
-					member = rg.getMembers();
-					member.removePlayer(uuid);
-					rg.setMembers(member);
-					p.sendMessage(ChatColor.GREEN + "[AR][INFO] "+ plugin.lang.getText("PlayerRemoved").replace("[PH]", name));
-					container.reload();
-					p.closeInventory();
-					RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
-					gui.open();
+					if (p.hasPermission("ancient.regions.admin.bypass") || payment(p,e)) {
+						DefaultDomain member = new DefaultDomain();
+						member = rg.getMembers();
+						member.removePlayer(uuid);
+						rg.setMembers(member);
+						p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("PlayerRemoved").replace("[PH]", name));
+						container.reload();
+						p.closeInventory();
+						RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
+						gui.open();
+					} else {
+						p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("NoMoney"));
+						e.setCancelled(true);
+					}
 				} else {
 					p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("Owner"));
 					e.setCancelled(true);
@@ -172,6 +180,56 @@ public class MembersGUI {
 	// Return this
 	public Inventory getMenu() {
 		return menu;
+	}
+	public String loadPricefromConfig() {
+		try {
+			LoadConfig config = new LoadConfig(plugin);
+			String price = config.getOption("removemember");
+			return price;
+		} catch (Exception ex) {
+			plugin.getLogger().info(ex.toString());
+		}
+		return null;
+	}
+
+	public String loadCurrencyfromConfig() {
+		try {
+			LoadConfig config = new LoadConfig(plugin);
+			String currency = config.getOption("currency");
+			return currency;
+		} catch (Exception ex) {
+			plugin.getLogger().info(ex.toString());
+		}
+		return null;
+	}
+
+	@SuppressWarnings("deprecation")
+	public boolean payment(Player p, InventoryClickEvent e) {
+		RegisteredServiceProvider<Economy> service = Bukkit.getServicesManager()
+				.getRegistration(net.milkbowl.vault.economy.Economy.class);
+		Economy vaultEcon = service.getProvider();
+		if (p.hasPermission("ancient.regions.admin.bypass")) {
+			e.setCancelled(true);
+			return true;
+		}
+		if (vaultEcon != null) {
+			String price = loadPricefromConfig();
+			if (vaultEcon.getBalance(p.getName()) != 0 && vaultEcon.getBalance(p.getName()) >= Double.valueOf(price)) {
+				vaultEcon.withdrawPlayer(p.getName(), Double.valueOf(price));
+				p.sendMessage(ChatColor.BLUE + "[AR][INFO]" + plugin.lang.getText("PayNote").replace("[PH]",
+						loadPricefromConfig() + " " + loadCurrencyfromConfig()));
+				e.setCancelled(true);
+				return true;
+			} else {
+				p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("NoMoney"));
+				e.setCancelled(true);
+				return false;
+			}
+		} else {
+			p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("VaultError"));
+			e.setCancelled(true);
+		}
+		return false;
 	}
 
 }
