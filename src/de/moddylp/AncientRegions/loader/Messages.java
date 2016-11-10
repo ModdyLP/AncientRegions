@@ -29,6 +29,7 @@ public class Messages {
 		lang.setTextOnce("ValueChat", " Value for Flag([PH]) was set!");
 		lang.setTextOnce("PayNote", "You have payed [PH] for changing this flag!");
 		lang.setTextOnce("PayNote2", "You have payed [PH] for this region!");
+		lang.setTextOnce("PayNote3", "You have payed [PH] for this region change!");
 		lang.setTextOnce("FlagRemoved", "Flag removed!");
 		lang.setTextOnce("Message", "Please type in the Chat your [PH] Message!");
 		lang.setTextOnce("Message2",
@@ -87,6 +88,8 @@ public class Messages {
 		lang.setTextOnce("Current", "Current Value");
 
 		// Errors
+		lang.setTextOnce("ErrorPasting", "There was an error. The Plugin can't rollback the Region. Please contact the Adminstrator.");
+		lang.setTextOnce("ErrorSaving", "There was an error. The Plugin can't save the Region into file. Please contact the Adminstrator.");
 		lang.setTextOnce("Worldguard", "Worldguard isn't installed!");
 		lang.setTextOnce("NoMoney", "You dont have enought money!");
 		lang.setTextOnce("VaultError", "There was an Error with Vault!");
@@ -106,6 +109,8 @@ public class Messages {
 				"There is an error in the Config. Please contact your Adminstrator. Error by: [PH]");
 		lang.setTextOnce("World", "In this world is AncientRegions disabled.");
 		lang.setTextOnce("ToMany", "You have reached the limit of regions!");
+		lang.setTextOnce("ErrorDelete", "Failed to delete Region");
+		lang.setTextOnce("ErrorCreate", "Failed to create Region");
 
 		// Flags -- TEST
 		lang.setTextOnce("build", "Build");

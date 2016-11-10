@@ -48,17 +48,26 @@ public class RegionManageGUI {
 		ItemStack addmember = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
 		ItemMeta meta2 = addmember.getItemMeta();
 		meta2.setDisplayName(ChatColor.GREEN+plugin.lang.getText("AddMember"));
+		List<String> values = new ArrayList<>();
+		values.add(ChatColor.YELLOW + config.getOption("addmember") + " " + config.getOption("currency"));
+		meta2.setLore(values);
 		addmember.setItemMeta(meta2);
 		menu.setItem(3, addmember);
 		ItemStack removemember = new ItemStack(Material.SKULL_ITEM, 1, (byte) 0);
 		ItemMeta meta3 = removemember.getItemMeta();
 		meta3.setDisplayName(ChatColor.RED+plugin.lang.getText("RemoveMember"));
+		List<String> values2 = new ArrayList<>();
+		values2.add(ChatColor.YELLOW + config.getOption("removemember") + " " + config.getOption("currency"));
+		meta3.setLore(values2);
 		removemember.setItemMeta(meta3);
 		menu.setItem(5, removemember);
 		
 		ItemStack setowner = new ItemStack(Material.MAP);
 		ItemMeta meta4 = setowner.getItemMeta();
 		meta4.setDisplayName(ChatColor.GOLD+plugin.lang.getText("SetOwner"));
+		List<String> values3 = new ArrayList<>();
+		values3.add(ChatColor.YELLOW + config.getOption("changeowner") + " " + config.getOption("currency"));
+		meta4.setLore(values3);
 		setowner.setItemMeta(meta4);
 		menu.setItem(4, setowner);
 		

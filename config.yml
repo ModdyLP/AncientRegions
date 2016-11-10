@@ -6,6 +6,8 @@ metrics: true
 currency: EURO
 limit: 4
 worlds: world
+##Region Backup for later Rollback: !! NOT WORKING AT THE MOMENT !!
+backuprg: false
 ##Settings for Particles 1 = 1 Second // player;all
 showtimeofparticle: 20 
 showfor: player

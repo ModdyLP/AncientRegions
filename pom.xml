@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.moddylp</groupId>
   <artifactId>AncientRegions</artifactId>
-  <version>1.0</version>
+  <version>1.1</version>
   <name>AncientRegions</name>
   <description>Plugin for Minecraft Spigot to control Worldguard</description>
   <build>
@@ -61,6 +61,7 @@
   	<WorldguardVersion>6.1.2</WorldguardVersion>
   	<WorldeditVersion>6.1.3-SNAPSHOT</WorldeditVersion>
   	<VaultVersion>1.5.6</VaultVersion>
+    <FAWEVersion>16.11.01-efc0de2-366-9.10.0</FAWEVersion>
   </properties>
   <repositories>
   	<repository>
@@ -118,11 +119,6 @@
         <version>R7</version>
         <scope>compile</scope>
      </dependency>
-    <dependency>
-        <groupId>de.moddylp</groupId>
-        <artifactId>AncientRegions</artifactId>
-        <version>1.0</version>
-    </dependency>
 </dependencies>
 
 </project>

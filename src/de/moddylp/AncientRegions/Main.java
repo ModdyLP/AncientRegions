@@ -167,7 +167,7 @@ public class Main extends JavaPlugin {
 		return false;
 	}
 
-	private WorldGuardPlugin getWorldGuard() {
+	public WorldGuardPlugin getWorldGuard() {
 		Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
 
 		// WorldGuard may not be loaded*
@@ -177,7 +177,7 @@ public class Main extends JavaPlugin {
 
 		return (WorldGuardPlugin) plugin;
 	}
-	private WorldEditPlugin setupWorldEdit() {
+	public WorldEditPlugin setupWorldEdit() {
         Plugin plugin = getServer().getPluginManager().getPlugin("WorldEdit");
         if (plugin == null || !(plugin instanceof WorldEditPlugin))
             return null;

@@ -52,7 +52,7 @@ public class MembersGUI {
 			p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("GobalError"));
 		} else {
 			ProtectedRegion rg = regions.getRegion(region.get(0));
-			if (rg.isOwner(ply) || p.hasPermission("ancient.regions.region.bypass")) {
+			if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
 				Set<UUID> players = rg.getMembers().getUniqueIds();
 				for (UUID p : players) {
 					ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
@@ -106,9 +106,9 @@ public class MembersGUI {
 				p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("GobalError"));
 			} else {
 				ProtectedRegion rg = regions.getRegion(region.get(0));
-				if (rg.isOwner(ply) || p.hasPermission("ancient.regions.region.bypass")) {
-					if (p.hasPermission("ancient.regions.admin.bypass") || payment(p,e)) {
-						DefaultDomain member = new DefaultDomain();
+				if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
+					if (payment(p,e) || p.hasPermission("ancient.regions.admin.bypass")) {
+						DefaultDomain member;
 						member = rg.getMembers();
 						member.removePlayer(uuid);
 						rg.setMembers(member);
@@ -216,7 +216,7 @@ public class MembersGUI {
 			String price = loadPricefromConfig();
 			if (vaultEcon.getBalance(p.getName()) != 0 && vaultEcon.getBalance(p.getName()) >= Double.valueOf(price)) {
 				vaultEcon.withdrawPlayer(p.getName(), Double.valueOf(price));
-				p.sendMessage(ChatColor.BLUE + "[AR][INFO]" + plugin.lang.getText("PayNote").replace("[PH]",
+				p.sendMessage(ChatColor.BLUE + "[AR][INFO]" + plugin.lang.getText("PayNote3").replace("[PH]",
 						loadPricefromConfig() + " " + loadCurrencyfromConfig()));
 				e.setCancelled(true);
 				return true;

@@ -57,8 +57,8 @@ public class SetValueFromChatEvent implements Listener {
 	    					p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("GobalError"));
 	    				} else {
 	    					ProtectedRegion rg = regions.getRegion(region.get(0));
-	    					if (rg.isOwner(ply) || p.hasPermission("ancient.regions.region.bypass")) {
-								if (p.hasPermission("ancient.regions.admin.bypass") || payment(p, e, "addmember")) {
+	    					if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
+								if (payment(p, e, "addmember") || p.hasPermission("ancient.regions.admin.bypass")) {
 									DefaultDomain member = new DefaultDomain();
 									member.addPlayer(uuid);
 									rg.setMembers(member);
@@ -90,9 +90,9 @@ public class SetValueFromChatEvent implements Listener {
 	    					p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("GobalError"));
 	    				} else {
 	    					ProtectedRegion rg = regions.getRegion(region.get(0));
-	    					if (rg.isOwner(ply) || p.hasPermission("ancient.regions.region.bypass")) {
-								if (p.hasPermission("ancient.regions.admin.bypass") || payment(p, e, "changeowner")) {
-									DefaultDomain owner = new DefaultDomain();
+	    					if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
+								if (payment(p, e, "changeowner") || p.hasPermission("ancient.regions.admin.bypass")) {
+									DefaultDomain owner;
 									owner = rg.getOwners();
 									owner.removePlayer(p.getUniqueId());
 									owner.addPlayer(uuid);
@@ -122,6 +122,9 @@ public class SetValueFromChatEvent implements Listener {
 		} else {
 			e.setCancelled(true);
 			p.sendMessage(ChatColor.RED+"[AR][ERROR] "+plugin.lang.getText("Player").replace("[PH]", msg));
+			RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
+			gui.open();
+			HandlerList.unregisterAll(this);
 		}
 		}
 		return mode;
@@ -175,7 +178,7 @@ public class SetValueFromChatEvent implements Listener {
 			String price = loadPricefromConfig(configname);
 			if (vaultEcon.getBalance(p.getName()) != 0 && vaultEcon.getBalance(p.getName()) >= Double.valueOf(price)) {
 				vaultEcon.withdrawPlayer(p.getName(), Double.valueOf(price));
-				p.sendMessage(ChatColor.BLUE + "[AR][INFO]" + plugin.lang.getText("PayNote").replace("[PH]",
+				p.sendMessage(ChatColor.BLUE + "[AR][INFO]" + plugin.lang.getText("PayNote3").replace("[PH]",
 						loadPricefromConfig(configname) + " " + loadCurrencyfromConfig()));
 				e.setCancelled(true);
 				return true;
