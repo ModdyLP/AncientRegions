@@ -38,12 +38,6 @@
                             <include>com.darkblade12:*</include>
                         </includes>
                     </artifactSet>
-                    <relocations>
-                        <relocation>
-                            <pattern>org.mcstats</pattern>
-                            <shadedPattern>de.moddylp.AncientRegions</shadedPattern>
-                        </relocation>
-                    </relocations>
                 </configuration>
                 <executions>
                     <execution>
@@ -76,10 +70,6 @@
         <id>vault-repo</id>
         <url>http://nexus.hc.to/content/repositories/pub_releases</url>
     </repository>
-    <repository>
-            <id>Plugin Metrics</id>
-            <url>http://repo.mcstats.org/content/repositories/public</url>
-        </repository>
 </repositories>
 
 <dependencies>
@@ -112,12 +102,6 @@
         <artifactId>Vault</artifactId>
         <version>${VaultVersion}</version>
         <scope>provided</scope>
-     </dependency>
-     <dependency>
-        <groupId>org.mcstats.bukkit</groupId>
-        <artifactId>metrics</artifactId>
-        <version>R7</version>
-        <scope>compile</scope>
      </dependency>
 </dependencies>
 

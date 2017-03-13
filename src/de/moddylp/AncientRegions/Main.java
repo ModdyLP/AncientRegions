@@ -47,16 +47,6 @@ public class Main extends JavaPlugin {
             LogFile file = new LogFile(this);
             file.setup();
             loader = new GUIEvents(this, worldguard, worldedit);
-            if (config.getOption("metrics").contains("true")) {
-                try {
-                    Metrics metrcis = new Metrics(this);
-                    metrcis.start();
-                    this.getLogger().info("Metrics enabled");
-                } catch (IOException e) {
-                }
-            } else {
-                this.getLogger().info("Metrics NOT enabled, because it is disabled!");
-            }
         }
 
 		
