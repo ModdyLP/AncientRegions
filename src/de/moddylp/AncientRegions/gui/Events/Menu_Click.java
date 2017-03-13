@@ -490,9 +490,9 @@ public class Menu_Click implements Listener {
 					e.setCancelled(true);
 				} else if (e.getCurrentItem().getItemMeta().getDisplayName()
 						.contains(plugin.lang.getText("RemoveRegion"))) {
+					e.setCancelled(true);
 					Region region = new Region(plugin, 1);
 					region.removeRegion(worldguard, p, e, menu);;
-					e.setCancelled(true);
 				} else {
 					e.setCancelled(true);
 				}

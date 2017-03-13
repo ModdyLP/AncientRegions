@@ -13,6 +13,7 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardWriter;
 import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.internal.LocalWorldAdapter;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.util.io.Closer;
@@ -26,6 +27,7 @@ import java.io.*;
 
 public class WorldEditHandler6 {
     private final Main plugin;
+    private World world;
 
     public WorldEditHandler6(Main plugin) {
         this.plugin = plugin;
@@ -34,7 +36,7 @@ public class WorldEditHandler6 {
     public boolean restoreRegionBlocks(File file, String regionname, Player p, ProtectedRegion region, Vector dimension) {
         this.plugin.getLogger().info("Restore in progress...");
         try {
-            BukkitWorld world = new BukkitWorld(p.getWorld());
+            world = LocalWorldAdapter.adapt(new BukkitWorld(p.getWorld()));
             EditSession editSession = plugin.setupWorldEdit().getWorldEdit().getEditSessionFactory().getEditSession(world, 999999999);
             Vector origin = new Vector(region.getMinimumPoint().getBlockX(), region.getMinimumPoint().getBlockY(), region.getMinimumPoint().getBlockZ());
             Closer closer = Closer.create();
@@ -67,7 +69,7 @@ public class WorldEditHandler6 {
     public boolean saveRegionBlocks(File file, String regionname, Player p, ProtectedRegion region) {
         World world = null;
         if (p.getWorld() != null) {
-            world = new BukkitWorld(p.getWorld());
+            world = LocalWorldAdapter.adapt(new BukkitWorld(p.getWorld()));
         }
         if (world == null) {
             this.plugin.getLogger().warning("Did not save region " + regionname + ", world not found: " + p.getWorld().getName());

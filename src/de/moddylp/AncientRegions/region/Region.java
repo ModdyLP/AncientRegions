@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.sk89q.worldedit.*;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.IntegerFlag;
 import de.moddylp.AncientRegions.loader.WorldEditHandler6;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -47,8 +48,10 @@ public class Region {
 	private String regionprice;
 	private String regionsize;
 	private int number;
+	private int halfregionsize;
+    private int realregionsize;
 
-	public Region(Main plugin, int number) {
+    public Region(Main plugin, int number) {
 		this.plugin = plugin;
         String region = "region" + number;
 		this.number = number;
@@ -61,7 +64,7 @@ public class Region {
 	}
 
 	public boolean buy(WorldGuardPlugin worldguard, Player p, InventoryClickEvent e, Inventory menu, WorldEditPlugin worldedit) {
-
+        e.setCancelled(true);
 		if (p.hasPermission("ancient.regions.region." + permission)) {
 				RegionContainer container = worldguard.getRegionContainer();
 				RegionManager regions = container.get(p.getWorld());
@@ -149,6 +152,7 @@ public class Region {
 	}
 	public void removeRegion(WorldGuardPlugin worldguard, Player p, InventoryClickEvent e, Inventory menu) {
 		if (p.hasPermission("ancient.regions.region.removeregion")) {
+            e.setCancelled(true);
 			RegionContainer container = worldguard.getRegionContainer();
 			RegionManager regions = container.get(p.getWorld());
 			Vector pt = new Vector(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ());
@@ -225,8 +229,12 @@ public class Region {
 	}
 
 	private List<BlockVector> edges(Player p) {
-		List<BlockVector> edges = new ArrayList<BlockVector>();
-		Double halfregionsize = (Double.valueOf(regionsize)) / 2;
+		List<BlockVector> edges = new ArrayList<>();
+		if (Integer.parseInt(regionsize) % 2 == 1) {
+			halfregionsize = (Integer.parseInt(regionsize)+1) / 2;
+		} else {
+			halfregionsize = (Integer.parseInt(regionsize)) / 2;
+		}
 		if (config.getOption("regionheight").equals("max")) {
 			edges.add(new BlockVector(p.getLocation().getBlockX() - halfregionsize, p.getWorld().getMaxHeight(),
 					p.getLocation().getBlockZ() - halfregionsize));
@@ -264,7 +272,7 @@ public class Region {
             Vector GKG = edges.get(2);
             Vector GKK = edges.get(3);
             Vector KKK = new Vector(KGK.getX(), GKK.getY(), KGK.getZ());
-            Vector GGG = new Vector(GGK.getX(), GGK.getY(), GKG.getZ());
+            Vector GGG = new Vector(GGK.getX()+1, GGK.getY(), GKG.getZ()+1);
             plugin.getLogger().info(GGG+" "+KKK);
             RegionContainer container = worldGuard.getRegionContainer();
             RegionManager regions = container.get(p.getWorld());
@@ -362,10 +370,15 @@ public class Region {
 			} else if (number == 4) {
 				ITEM = new ItemStack(Material.EMERALD_BLOCK);
 			}
+            if (Integer.parseInt(regionsize) % 2 == 1) {
+                realregionsize = (Integer.parseInt(regionsize)+2);
+            } else {
+                realregionsize = (Integer.parseInt(regionsize)+1);
+            }
 			List<String> lore = new ArrayList<String>();
 			lore.add(ChatColor.GOLD + plugin.lang.getText("RegionName") + ": " + ChatColor.YELLOW + regionname);
-			lore.add(ChatColor.GOLD + plugin.lang.getText("RegionSize") + ": " + ChatColor.YELLOW + regionsize + " x "
-					+ regionsize + " x " + config.getOption("regionheight") + " x " + config.getOption("regiondepth"));
+			lore.add(ChatColor.GOLD + plugin.lang.getText("RegionSize") + ": " + ChatColor.YELLOW + realregionsize + " x "
+					+ realregionsize + " x H:" + config.getOption("regionheight") + " x D:" + config.getOption("regiondepth"));
 			lore.add(ChatColor.GOLD + plugin.lang.getText("RegionPrice") + ": " + ChatColor.YELLOW
 					+ loadPricefromConfig() + " " + loadCurrencyfromConfig());
 			ItemMeta imeta = ITEM.getItemMeta();
