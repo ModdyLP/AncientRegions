@@ -1,8 +1,12 @@
 package de.moddylp.AncientRegions.particle;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.sk89q.worldedit.Vector;
+import com.sk89q.worldguard.bukkit.RegionContainer;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.loader.LoadConfig;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,16 +18,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.inventivetalent.particle.ParticleEffect;
 
-import com.darkblade12.particleeffect.ParticleEffect;
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-
-import de.moddylp.AncientRegions.Main;
-import de.moddylp.AncientRegions.loader.LoadConfig;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ParticleShower {
 	private Main plugin;
@@ -184,10 +182,12 @@ public class ParticleShower {
                     for (Vector vector : pt(rg, p)) {
                         Location loc = new Location(world, vector.getBlockX(), vector.getBlockY(), vector.getBlockZ());
                         if (config.getOption("showfor").equals("player")) {
-                            ParticleEffect.FIREWORKS_SPARK.display(0, 0, 0, 0, 1, loc, p);
+                            List<Player> player = new ArrayList<>();
+                            player.add(p);
+                            ParticleEffect.FIREWORKS_SPARK.send(player,loc,0, 0, 0, 0, 1 );
                         } else if (config.getOption("showfor").equals("all")) {
                             if (players.size() > 0) {
-                                ParticleEffect.FIREWORKS_SPARK.display(0, 0, 0, 0, 1, loc, players);
+                                ParticleEffect.FIREWORKS_SPARK.send(players,loc,0, 0, 0, 0, 1 );
                             }
                         } else {
                             p.sendMessage(ChatColor.RED + "[AR][ERROR] " + "" + ChatColor.BOLD

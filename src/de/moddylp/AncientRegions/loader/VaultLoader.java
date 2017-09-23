@@ -9,27 +9,26 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 public class VaultLoader {
 	private final Main plugin;
-	private Economy econ;
-	private Permission perms;
-    private Plugin vault;
 
     public VaultLoader(Main plugin) {
-		this.plugin = plugin;
-	}
-	public boolean load() {
-            Plugin vault = plugin.getServer().getPluginManager().getPlugin("Vault"); // speichert das Objekt des Plugins Vault in vault
+        this.plugin = plugin;
+    }
+    public boolean load() {
+        Plugin vault = plugin.getServer().getPluginManager().getPlugin("Vault"); // speichert das Objekt des Plugins Vault in vault
 
-            if (vault != null && vault instanceof Vault && setupEconomy()) { // wenn vault erfolgreich geladen wurde, d.h. auf dem Server vorhanden ist und aktiv ist und wirklich eine Instanz vom Vault plugin ist EDIT wenn dies nicht der Fall ist das plugin unloaden ??? warum war hier ein & geht nicht auch &&
-                plugin.getLogger().info(String.format("Enabled Version %s", vault.getDescription().getVersion())); // Informiere, dass Plugin aktiviert wurde MOVE zum ende von enable
-            } else {
-                plugin.getLogger().warning(String.format("[%s] Vault was not found or some Economy Plugin is missing! Disabling plugin.", plugin.getDescription().getName())); // warnen, dass Vault nicht gefunden wurde.
-                plugin.getPluginLoader().disablePlugin(plugin); // plugin deaktivieren
-                return false;
-            }
-
-            setupPermissions();
-            return true;
-	}
+        if (vault != null && vault instanceof Vault && setupEconomy()) { // wenn vault erfolgreich geladen wurde, d.h. auf dem Server vorhanden ist und aktiv ist und wirklich eine Instanz vom Vault plugin ist EDIT wenn dies nicht der Fall ist das plugin unloaden ??? warum war hier ein & geht nicht auch &&
+            plugin.getLogger().info(String.format("Enabled Version %s", vault.getDescription().getVersion())); // Informiere, dass Plugin aktiviert wurde MOVE zum ende von enable
+        } else {
+            plugin.getLogger().warning("Vault was not found or some Economy Plugin is missing! Disabling plugin."); // warnen, dass Vault nicht gefunden wurde.
+            plugin.getLogger().warning("!!!!!!!!!!!!!!!!!!!! MAKE SURE YOU HAVE INSTALLED A ECONOMY PLUGIN AND VAULT !!!!!!!!!!!!!!!!!!!!!!!!");
+            return false;
+        }
+        if (!setupPermissions()) {
+            this.plugin.getLogger().warning("Vault permission not loaded");
+            return false;
+        }
+        return true;
+    }
     private Boolean setupEconomy() {
         RegisteredServiceProvider<Economy> economyProvider = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class); // eine liste aller mit vault verbundenen Economy systeme erstellen
         Economy economy = null;
