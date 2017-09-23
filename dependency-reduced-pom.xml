@@ -4,7 +4,7 @@
   <groupId>de.moddylp</groupId>
   <artifactId>AncientRegions</artifactId>
   <name>AncientRegions</name>
-  <version>1.1</version>
+  <version>20170923</version>
   <description>Plugin for Minecraft Spigot to control Worldguard</description>
   <build>
     <sourceDirectory>src</sourceDirectory>
