@@ -1,5 +1,6 @@
 package de.moddylp.AncientRegions.gui.Events;
 
+import com.sk89q.worldguard.session.handler.GameModeFlag;
 import de.moddylp.AncientRegions.loader.LoadConfig;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -42,56 +43,33 @@ public class GamemodeFormat implements Listener {
 		if (e.getPlayer().equals(p)) {
 			String msg = e.getMessage().toString();
 			if (msg.contains("creative") || msg.contains("c") || msg.contains("1")) {
-				try {
-					rg.setFlag(flag, flag.parseInput(worldguard, p, "creative"));
-					p.sendMessage(ChatColor.GREEN+"[AR][INFO]"+plugin.lang.getText("ValueChat").replace("[PH]", flagname));
-					EditflagsPage2 gui = new EditflagsPage2(p, plugin, worldguard);
-					gui.open();
-					e.setCancelled(true);
-					HandlerList.unregisterAll(this);
-				} catch (InvalidFlagFormat e1) {
-					p.sendMessage(ChatColor.RED+"[AR][ERROR] "+plugin.lang.getText("InvalidGamemode"));
-					e.setCancelled(true);
-				}
+				rg.setFlag(flag, GameMode.valueOf("creative"));
+				p.sendMessage(ChatColor.GREEN+"[AR][INFO]"+plugin.lang.getText("ValueChat").replace("[PH]", flagname));
+				EditflagsPage2 gui = new EditflagsPage2(p, plugin, worldguard);
+				gui.open();
+				e.setCancelled(true);
+				HandlerList.unregisterAll(this);
 			} else if(msg.contains("survival") || msg.contains("sv") || msg.contains("0")) {
-				try {
-					rg.setFlag(flag, flag.parseInput(worldguard, p, "survival"));
-					p.sendMessage(ChatColor.GREEN+"[AR][INFO]"+plugin.lang.getText("ValueChat").replace("[PH]", flagname));
-					EditflagsPage2 gui = new EditflagsPage2(p, plugin, worldguard);
-					gui.open();
-					e.setCancelled(true);
-					HandlerList.unregisterAll(this);
-				} catch (InvalidFlagFormat e1) {
-					p.sendMessage(ChatColor.RED+"[AR][ERROR] "+plugin.lang.getText("InvalidGamemode"));
-					e.setCancelled(true);
-				}
+				rg.setFlag(flag, GameMode.valueOf("survival"));
+				p.sendMessage(ChatColor.GREEN+"[AR][INFO]"+plugin.lang.getText("ValueChat").replace("[PH]", flagname));
+				EditflagsPage2 gui = new EditflagsPage2(p, plugin, worldguard);
+				gui.open();
+				e.setCancelled(true);
+				HandlerList.unregisterAll(this);
 			} else if(msg.contains("spectator") || msg.contains("sp") || msg.contains("3")) {
-				try {
-					rg.setFlag(flag, flag.parseInput(worldguard, p, "spectator"));
-					p.sendMessage(ChatColor.GREEN+"[AR][INFO]"+plugin.lang.getText("ValueChat").replace("[PH]", flagname));
-					EditflagsPage2 gui = new EditflagsPage2(p, plugin, worldguard);
-					gui.open();
-					e.setCancelled(true);
-					HandlerList.unregisterAll(this);
-				} catch (InvalidFlagFormat e1) {
-					p.sendMessage(ChatColor.RED+"[AR][ERROR] "+plugin.lang.getText("InvalidGamemode"));
-					e.setCancelled(true);
-				}
+				rg.setFlag(flag, GameMode.valueOf("spectator"));
+				p.sendMessage(ChatColor.GREEN+"[AR][INFO]"+plugin.lang.getText("ValueChat").replace("[PH]", flagname));
+				EditflagsPage2 gui = new EditflagsPage2(p, plugin, worldguard);
+				gui.open();
+				e.setCancelled(true);
+				HandlerList.unregisterAll(this);
 			} else if(msg.contains("adventure") || msg.contains("a") || msg.contains("2")) {
-				try {
-					rg.setFlag(flag, flag.parseInput(worldguard, p, "adventure"));
-					p.sendMessage(ChatColor.GREEN+"[AR][INFO]"+plugin.lang.getText("ValueChat").replace("[PH]", flagname));
-					EditflagsPage2 gui = new EditflagsPage2(p, plugin, worldguard);
-					gui.open();
-					e.setCancelled(true);
-					HandlerList.unregisterAll(this);
-				} catch (InvalidFlagFormat e1) {
-					p.sendMessage(ChatColor.RED+"[AR][ERROR] "+plugin.lang.getText("InvalidGamemode"));
-					e.setCancelled(true);
-					EditflagsPage2 gui = new EditflagsPage2(p, plugin, worldguard);
-					gui.open();
-					HandlerList.unregisterAll(this);
-				}
+				rg.setFlag(flag, GameMode.valueOf("adventure"));
+				p.sendMessage(ChatColor.GREEN+"[AR][INFO]"+plugin.lang.getText("ValueChat").replace("[PH]", flagname));
+				EditflagsPage2 gui = new EditflagsPage2(p, plugin, worldguard);
+				gui.open();
+				e.setCancelled(true);
+				HandlerList.unregisterAll(this);
 			} else {
 				p.sendMessage(ChatColor.RED+"[AR][ERROR] "+plugin.lang.getText("InvalidGamemode"));
 				e.setCancelled(true);

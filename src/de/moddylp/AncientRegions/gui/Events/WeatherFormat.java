@@ -3,6 +3,7 @@ package de.moddylp.AncientRegions.gui.Events;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.RegionContainer;
+import com.sk89q.worldguard.protection.flags.FlagContext;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import de.moddylp.AncientRegions.loader.LoadConfig;
 import de.moddylp.AncientRegions.region.RegionManageGUI;
@@ -59,33 +60,24 @@ public class WeatherFormat implements Listener {
 				ProtectedRegion rg = regions.getRegion(region.get(0));
 				if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
 					if (msg.contains("sun") || msg.contains("clear")) {
-						try {
-                            if (payment(p, e)) {
-                                rg.setFlag(flag, flag.parseInput(worldguard, p, "clear"));
-                                p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + plugin.lang.getText("ValueChat").replace("[PH]", flagname));
-                                Editflags gui = new Editflags(p, plugin, worldguard);
-                                gui.open();
-                                e.setCancelled(true);
-                                HandlerList.unregisterAll(this);
-                            }
-						} catch (InvalidFlagFormat e1) {
-							p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("InvalidWeather"));
-							e.setCancelled(true);
-						}
+						if (payment(p, e)) {
+
+                            rg.setFlag(flag, WeatherType.valueOf("clear"));
+                            p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + plugin.lang.getText("ValueChat").replace("[PH]", flagname));
+                            Editflags gui = new Editflags(p, plugin, worldguard);
+                            gui.open();
+                            e.setCancelled(true);
+                            HandlerList.unregisterAll(this);
+                        }
 					} else if (msg.contains("storm") || msg.contains("thunder") || msg.contains("rain") || msg.contains("downfall")) {
-						try {
-                            if (payment(p, e)) {
-                                rg.setFlag(flag, flag.parseInput(worldguard, p, "downfall"));
-                                p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + plugin.lang.getText("ValueChat").replace("[PH]", flagname));
-                                Editflags gui = new Editflags(p, plugin, worldguard);
-                                gui.open();
-                                e.setCancelled(true);
-                                HandlerList.unregisterAll(this);
-                            }
-						} catch (InvalidFlagFormat e1) {
-							p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("InvalidWeather"));
-							e.setCancelled(true);
-						}
+						if (payment(p, e)) {
+                            rg.setFlag(flag, WeatherType.valueOf("downfall"));
+                            p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + plugin.lang.getText("ValueChat").replace("[PH]", flagname));
+                            Editflags gui = new Editflags(p, plugin, worldguard);
+                            gui.open();
+                            e.setCancelled(true);
+                            HandlerList.unregisterAll(this);
+                        }
 
 					} else {
 						p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("InvalidWeather"));

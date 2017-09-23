@@ -3,9 +3,11 @@ package de.moddylp.AncientRegions.flags;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sk89q.worldguard.protection.flags.FlagContext;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -57,7 +59,9 @@ public class Teleportlocation {
     					p.sendMessage(ChatColor.GREEN+"[AR][INFO]"+ChatColor.GOLD+" "+flagname+plugin.lang.getText("FlagRemoved"));
     				} else {
     					if (payment(p, e)) {
-    						rg.setFlag(flag, flag.parseInput(worldguard, p, "here"));
+							FlagContext.FlagContextBuilder context = FlagContext.create();
+							context.setInput("here");
+							rg.setFlag(flag, flag.parseInput(context.build()));
         					p.sendMessage(ChatColor.GREEN+"[AR][INFO] "+flagname+plugin.lang.getText("fEnabled"));
     					}
     				}

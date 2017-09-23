@@ -51,11 +51,11 @@
     </plugins>
   </build>
   <properties>
-  	<MinecraftVersion>1.9.4</MinecraftVersion>
-  	<WorldguardVersion>6.1.2</WorldguardVersion>
-  	<WorldeditVersion>6.1.3-SNAPSHOT</WorldeditVersion>
+  	<MinecraftVersion>1.12.1</MinecraftVersion>
+  	<WorldguardVersion>6.2.1</WorldguardVersion>
+  	<WorldeditVersion>6.1.7.3</WorldeditVersion>
   	<VaultVersion>1.5.6</VaultVersion>
-    <FAWEVersion>16.11.01-efc0de2-366-9.10.0</FAWEVersion>
+    <FAWEVersion>17.09.22-b8aaeb0-907-16.6.4</FAWEVersion>
   </properties>
   <repositories>
   	<repository>
@@ -91,11 +91,15 @@
         <groupId>com.sk89q.worldguard</groupId>
         <artifactId>worldguard-legacy</artifactId>
         <version>${WorldguardVersion}</version>
+        <scope>system</scope>
+        <systemPath>${project.basedir}/lib/worldguard-6.2.1.jar</systemPath>
     </dependency>
     <dependency>
         <groupId>com.sk89q.worldedit</groupId>
         <artifactId>worldedit-bukkit</artifactId>
         <version>${WorldeditVersion}</version>
+        <scope>system</scope>
+        <systemPath>${project.basedir}/lib/worldedit-bukkit-6.1.7.3.jar</systemPath>
     </dependency>
     <dependency>
         <groupId>net.milkbowl.vault</groupId>

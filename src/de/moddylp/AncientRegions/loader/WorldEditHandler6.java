@@ -27,7 +27,6 @@ import java.io.*;
 
 public class WorldEditHandler6 {
     private final Main plugin;
-    private World world;
 
     public WorldEditHandler6(Main plugin) {
         this.plugin = plugin;
@@ -36,7 +35,7 @@ public class WorldEditHandler6 {
     public boolean restoreRegionBlocks(File file, String regionname, Player p, ProtectedRegion region, Vector dimension) {
         this.plugin.getLogger().info("Restore in progress...");
         try {
-            world = LocalWorldAdapter.adapt(new BukkitWorld(p.getWorld()));
+            World world = LocalWorldAdapter.adapt(new BukkitWorld(p.getWorld()));
             EditSession editSession = plugin.setupWorldEdit().getWorldEdit().getEditSessionFactory().getEditSession(world, 999999999);
             Vector origin = new Vector(region.getMinimumPoint().getBlockX(), region.getMinimumPoint().getBlockY(), region.getMinimumPoint().getBlockZ());
             Closer closer = Closer.create();

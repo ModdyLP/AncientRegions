@@ -157,7 +157,7 @@ public class Main extends JavaPlugin {
 		return false;
 	}
 
-	public WorldGuardPlugin getWorldGuard() {
+	private WorldGuardPlugin getWorldGuard() {
 		Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
 
 		// WorldGuard may not be loaded*
@@ -171,15 +171,11 @@ public class Main extends JavaPlugin {
         Plugin plugin = getServer().getPluginManager().getPlugin("WorldEdit");
         if (plugin == null || !(plugin instanceof WorldEditPlugin))
             return null;
-        WorldEditPlugin worldEdit = (WorldEditPlugin) plugin;
-        return worldEdit;
+        return (WorldEditPlugin) plugin;
     }
 
 	// Setup messages
 	private void loadMessages() {
-
 		Messages messages = new Messages(this);
-		messages.toString();
-
 	}
 }
