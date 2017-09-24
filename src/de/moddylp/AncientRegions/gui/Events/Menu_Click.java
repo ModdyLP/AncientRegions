@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import de.moddylp.AncientRegions.flags.*;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -44,7 +46,7 @@ public class Menu_Click implements Listener {
 		this.loader = loaderClass;
 		this.plugin = plugin;
 		this.worldedit = worldedit;
-		plugin.getLogger().info("Events registered");
+		Main.getInstance().getLogger().info("Events registered");
 	}
 
 	@EventHandler
@@ -226,12 +228,14 @@ public class Menu_Click implements Listener {
 					healMaxhealth.toggle(e, menu);
 					e.setCancelled(true);
 				} else if (e.getCurrentItem().getItemMeta().getDisplayName().contains("BlockedCmds")) {
-					BlockedCmds blockcmd = new BlockedCmds(plugin, worldguard, p);
-					blockcmd.toggle(e, menu);
+                    FlagOBJ blockedcmdsflag = new FlagOBJ("BlockedCmds", "", DefaultFlag.BLOCKED_CMDS, Material.COMMAND_REPEATING, 28);
+                    StringFlag blockedcmds = new StringFlag(blockedcmdsflag, p);
+                    blockedcmds.toggle(e,menu);
 					e.setCancelled(true);
 				} else if (e.getCurrentItem().getItemMeta().getDisplayName().contains("AllowedCmds")) {
-					AllowedCmds allowcmd = new AllowedCmds(plugin, worldguard, p);
-					allowcmd.toggle(e, menu);
+					FlagOBJ flag = new FlagOBJ("AllowedCmds", "", DefaultFlag.ALLOWED_CMDS, Material.COMMAND_CHAIN, 27);
+					StringFlag alloedcmds = new StringFlag(flag, p);
+					alloedcmds.toggle(e, menu);
 					e.setCancelled(true);
 				} else if (e.getCurrentItem().getItemMeta().getDisplayName().contains("TimeLock")) {
 					TimeLock timelock = new TimeLock(plugin);

@@ -29,7 +29,7 @@ import de.moddylp.AncientRegions.loader.LoadConfig;
 import net.milkbowl.vault.economy.Economy;
 
 public class Price {
-	//Flag Description
+	//FlagOBJ Description
 	DoubleFlag flag = DefaultFlag.PRICE;
 	String flagname = "Price";
 	String permission = flagname.toLowerCase();
@@ -83,7 +83,7 @@ public class Price {
 			String price = config.getOption(flagname.toLowerCase());
 			return price;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}
@@ -93,7 +93,7 @@ public class Price {
 			String currency = config.getOption("currency");
 			return currency;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}

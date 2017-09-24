@@ -30,7 +30,7 @@ import de.moddylp.AncientRegions.loader.LoadConfig;
 import net.milkbowl.vault.economy.Economy;
 
 public class DenySpawn {
-	//Flag Description
+	//FlagOBJ Description
 	SetFlag<EntityType> flag = DefaultFlag.DENY_SPAWN;
 	String flagname = "DenySpawn";
 	String permission = flagname.toLowerCase();
@@ -84,7 +84,7 @@ public class DenySpawn {
 			String price = config.getOption(flagname.toLowerCase());
 			return price;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}
@@ -94,7 +94,7 @@ public class DenySpawn {
 			String currency = config.getOption("currency");
 			return currency;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}

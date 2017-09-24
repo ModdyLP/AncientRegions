@@ -29,7 +29,7 @@ import de.moddylp.AncientRegions.loader.LoadConfig;
 import net.milkbowl.vault.economy.Economy;
 
 public class Greeting {
-	//Flag Description
+	//FlagOBJ Description
 	StringFlag flag = DefaultFlag.GREET_MESSAGE;
 	String flagname = "Greeting";
 	String permission = "greeting";
@@ -78,7 +78,7 @@ public class Greeting {
 			String price = config.getOption(flagname.toLowerCase());
 			return price;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}
@@ -88,7 +88,7 @@ public class Greeting {
 			String currency = config.getOption("currency");
 			return currency;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}

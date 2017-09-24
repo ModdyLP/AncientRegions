@@ -27,13 +27,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
     protected GUIEvents loader;
-    private WorldGuardPlugin worldguard;
+    public static WorldGuardPlugin worldguard;
     public Language lang;
     private LoadConfig config;
-    private WorldEditPlugin worldedit;
+    public static WorldEditPlugin worldedit;
+    private static Main instance;
+
+    public static Main getInstance() {
+        return instance;
+    }
 
     @Override
     public void onEnable() {
+        instance = this;
         worldguard = getWorldGuard();
         worldedit = setupWorldEdit();
         this.getLogger().info("Worldguard hooked");

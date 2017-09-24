@@ -307,5 +307,5 @@ permissions:
     description: Reload Config.
     default: op
   ancient.regions.admin.bypass:
-    description: Admin dont need to pay for the Flag Changes.
+    description: Admin dont need to pay for the FlagOBJ Changes.
     default: op

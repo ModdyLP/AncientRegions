@@ -26,11 +26,11 @@ public class Messages {
 		lang.setTextOnce("Cancel", "Canceled all Particle Activities!");
 
 		// User Information
-		lang.setTextOnce("ValueChat", " Value for Flag([PH]) was set!");
+		lang.setTextOnce("ValueChat", " Value for FlagOBJ([PH]) was set!");
 		lang.setTextOnce("PayNote", "You have payed [PH] for changing this flag!");
 		lang.setTextOnce("PayNote2", "You have payed [PH] for this region!");
 		lang.setTextOnce("PayNote3", "You have payed [PH] for this region change!");
-		lang.setTextOnce("FlagRemoved", "Flag removed!");
+		lang.setTextOnce("FlagRemoved", "FlagOBJ removed!");
 		lang.setTextOnce("Message", "Please type in the Chat your [PH] Message!");
 		lang.setTextOnce("Message2",
 				"Please type in the Chat your EntityTypes. Seperate it with a comma! e.g. Creeper, Zombie");

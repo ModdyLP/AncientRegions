@@ -40,7 +40,7 @@ import de.moddylp.AncientRegions.loader.LoadConfig;
 import net.milkbowl.vault.economy.Economy;
 
 public class Region {
-	// Flag Description
+	// FlagOBJ Description
 	private Main plugin;
     private String permission;
 	private LoadConfig config;
@@ -112,7 +112,7 @@ public class Region {
                                                             dir.mkdirs();
                                                         WorldEditHandler6 handler = new WorldEditHandler6(plugin);
                                                         if (handler.saveRegionBlocks(schematic, p.getName() + seperator + regionname + seperator + id, p , region)) {
-                                                            plugin.getLogger().info("BACKUP SUCCESS");
+                                                            Main.getInstance().getLogger().info("BACKUP SUCCESS");
                                                             regions.addRegion(region);
                                                             p.sendMessage(ChatColor.GREEN + "[AR][INFO] "+ plugin.lang.getText("Created") + "[ " + edges.get(0)
                                                                     + " | " + edges.get(2) + " ]");
@@ -120,7 +120,7 @@ public class Region {
                                                             RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
                                                             gui.open();
                                                         } else {
-                                                            plugin.getLogger().info("BACKUP ERROR");
+                                                            Main.getInstance().getLogger().info("BACKUP ERROR");
                                                             p.sendMessage(ChatColor.RED + "[AR][ERROR] "+ plugin.lang.getText("ErrorCreate"));
                                                         }
                                                 } else {
@@ -175,7 +175,7 @@ public class Region {
                                     Vector dimension = new Vector(max.getBlockX()-min.getBlockX()+1, max.getBlockY()-min.getBlockY()+1, max.getBlockZ()-min.getBlockZ()+1);
                                     WorldEditHandler6 handler = new WorldEditHandler6(plugin);
                                     if (handler.restoreRegionBlocks(file, rg.getId(), p , rg, dimension)) {
-                                        plugin.getLogger().info("RESTORE SUCCESS");
+                                        Main.getInstance().getLogger().info("RESTORE SUCCESS");
                                         String regionname = rg.getId();
                                         regions.removeRegion(regionname);
                                         p.sendMessage(ChatColor.GREEN+"[AR][INFO] "+plugin.lang.getText("Removed").replace("[PH]", rg.getId()));
@@ -184,7 +184,7 @@ public class Region {
                                         RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
                                         gui.open();
                                     } else {
-                                        plugin.getLogger().info("RESTORE ERROR");
+                                        Main.getInstance().getLogger().info("RESTORE ERROR");
                                         p.sendMessage(ChatColor.RED + "[AR][ERROR] "+ plugin.lang.getText("ErrorDelete"));
                                     }
                                 } else {
@@ -213,7 +213,7 @@ public class Region {
 		try {
             return regionprice;
 		} catch (Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}
@@ -223,7 +223,7 @@ public class Region {
 
             return config.getOption("currency");
 		} catch (Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}
@@ -260,11 +260,11 @@ public class Region {
 			edges.add(new BlockVector(p.getLocation().getBlockX() + halfregionsize,
 					regiondepth, p.getLocation().getBlockZ() - halfregionsize));
 		}
-		plugin.getLogger().info("Edges Initiated");
+		Main.getInstance().getLogger().info("Edges Initiated");
 		return edges;
 	}
 	private boolean checkRegionsExists(List<BlockVector> edges, WorldGuardPlugin worldGuard, Player p) {
-        plugin.getLogger().info("checking region");
+        Main.getInstance().getLogger().info("checking region");
 		boolean collision = false;
         try {
             Vector KGK = edges.get(0);
@@ -273,23 +273,23 @@ public class Region {
             Vector GKK = edges.get(3);
             Vector KKK = new Vector(KGK.getX(), GKK.getY(), KGK.getZ());
             Vector GGG = new Vector(GGK.getX()+1, GGK.getY(), GKG.getZ()+1);
-            plugin.getLogger().info(GGG+" "+KKK);
+            Main.getInstance().getLogger().info(GGG+" "+KKK);
             RegionContainer container = worldGuard.getRegionContainer();
             RegionManager regions = container.get(p.getWorld());
             List<String> region;
-            plugin.getLogger().info("parameter set");
+            Main.getInstance().getLogger().info("parameter set");
             while(KKK.getY() < GGG.getY()) {
                 while(KKK.getX() < GGG.getX()) {
                     region = regions.getApplicableRegionsIDs(KKK);
                     if (!region.isEmpty()) {
-                        plugin.getLogger().info("!!! Check complete collision by"+ KKK);
+                        Main.getInstance().getLogger().info("!!! Check complete collision by"+ KKK);
 						collision = true;
                         return false;
                     }
                     while(KKK.getZ() < GGG.getZ()) {
                         region = regions.getApplicableRegionsIDs(KKK);
                         if (!region.isEmpty()) {
-                            plugin.getLogger().info("!!! Check complete collision by"+ KKK);
+                            Main.getInstance().getLogger().info("!!! Check complete collision by"+ KKK);
 							collision = true;
                             return false;
                         }
@@ -306,7 +306,7 @@ public class Region {
         if (collision) {
 			return false;
 		} else {
-			plugin.getLogger().info("Check complete no collision");
+			Main.getInstance().getLogger().info("Check complete no collision");
 			return true;
 		}
     }

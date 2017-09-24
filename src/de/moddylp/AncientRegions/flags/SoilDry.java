@@ -28,7 +28,7 @@ import de.moddylp.AncientRegions.loader.LoadConfig;
 import net.milkbowl.vault.economy.Economy;
 
 public class SoilDry {
-	//Flag Description
+	//FlagOBJ Description
 	private Main plugin;
 	StateFlag flag = DefaultFlag.SOIL_DRY;
 	String flagname = "SoilDry";
@@ -89,7 +89,7 @@ public class SoilDry {
 			String price = config.getOption(flagname.toLowerCase());
 			return price;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}
@@ -99,7 +99,7 @@ public class SoilDry {
 			String currency = config.getOption("currency");
 			return currency;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}

@@ -80,7 +80,7 @@ public class SpezialFormatDouble2 implements Listener {
 			String price = config.getOption(flagname.toLowerCase());
 			return price;
 		} catch (Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}
@@ -91,7 +91,7 @@ public class SpezialFormatDouble2 implements Listener {
 			String currency = config.getOption("currency");
 			return currency;
 		} catch (Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}

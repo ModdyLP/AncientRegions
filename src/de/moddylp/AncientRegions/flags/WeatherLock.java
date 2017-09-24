@@ -30,7 +30,7 @@ import de.moddylp.AncientRegions.loader.LoadConfig;
 import net.milkbowl.vault.economy.Economy;
 
 public class WeatherLock {
-	//Flag Description
+	//FlagOBJ Description
 	EnumFlag<WeatherType> flag = DefaultFlag.WEATHER_LOCK;
 	String flagname = "WeatherLock";
 	String permission = flagname.toLowerCase();
@@ -77,7 +77,7 @@ public class WeatherLock {
 			String price = config.getOption(flagname.toLowerCase());
 			return price;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}
@@ -87,7 +87,7 @@ public class WeatherLock {
 			String currency = config.getOption("currency");
 			return currency;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}

@@ -25,7 +25,7 @@ public class LogFile {
     public void setup(){
     	try {
 	    	if (!f.exists()) {
-	    		plugin.getLogger().info("Creating data file");
+	    		Main.getInstance().getLogger().info("Creating data file");
 	    		f.createNewFile();
 	    		Data = getfile();
 	    		Data.createSection("regions");

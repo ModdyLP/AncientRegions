@@ -34,7 +34,7 @@ import de.moddylp.AncientRegions.loader.LoadConfig;
 import net.milkbowl.vault.economy.Economy;
 
 public class SpawnLocation {
-	//Flag Description
+	//FlagOBJ Description
 	LocationFlag flag = DefaultFlag.SPAWN_LOC;
 	String flagname = "SpawnLocation";
 	String permission = flagname.toLowerCase();
@@ -87,7 +87,7 @@ public class SpawnLocation {
 			String price = config.getOption(flagname.toLowerCase());
 			return price;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}
@@ -97,7 +97,7 @@ public class SpawnLocation {
 			String currency = config.getOption("currency");
 			return currency;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}

@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChorusFruitTeleport {
-	//Flag Description
+	//FlagOBJ Description
 	StateFlag flag = DefaultFlag.CHORUS_TELEPORT;
 	String flagname = "ChorusFruitTeleport";
 	String permission = "toggle"+flagname.toLowerCase();
@@ -86,7 +86,7 @@ public class ChorusFruitTeleport {
 			String price = config.getOption(flagname.toLowerCase());
 			return price;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}
@@ -96,7 +96,7 @@ public class ChorusFruitTeleport {
 			String currency = config.getOption("currency");
 			return currency;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}

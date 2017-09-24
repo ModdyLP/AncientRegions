@@ -28,7 +28,7 @@ import de.moddylp.AncientRegions.loader.LoadConfig;
 import net.milkbowl.vault.economy.Economy;
 
 public class Use {
-	//Flag Description
+	//FlagOBJ Description
 	private Main plugin;
 	StateFlag flag = DefaultFlag.USE;
 	String flagname = "Use";
@@ -89,7 +89,7 @@ public class Use {
 			String price = config.getOption(flagname.toLowerCase());
 			return price;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}
@@ -99,7 +99,7 @@ public class Use {
 			String currency = config.getOption("currency");
 			return currency;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}

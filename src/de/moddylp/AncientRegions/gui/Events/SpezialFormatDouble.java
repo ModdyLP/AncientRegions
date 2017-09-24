@@ -79,7 +79,7 @@ public class SpezialFormatDouble implements Listener {
 			LoadConfig config = new LoadConfig(plugin);
 			return config.getOption(flagname.toLowerCase());
 		} catch (Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}
@@ -89,7 +89,7 @@ public class SpezialFormatDouble implements Listener {
 			LoadConfig config = new LoadConfig(plugin);
 			return config.getOption("currency");
 		} catch (Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}

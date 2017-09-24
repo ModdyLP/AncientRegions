@@ -19,10 +19,10 @@ public class LoadConfig {
 	        }
 	        File file = new File(plugin.getDataFolder(), "config.yml");
 	        if (!file.exists()) {
-	            plugin.getLogger().info("Config.yml not found, creating!");
+	            Main.getInstance().getLogger().info("Config.yml not found, creating!");
 	            plugin.saveDefaultConfig();
 	        } else {
-	            plugin.getLogger().info("Config.yml found, loading!");
+	            Main.getInstance().getLogger().info("Config.yml found, loading!");
 	            plugin.getConfig();
 	        }
 	    } catch (Exception e) {

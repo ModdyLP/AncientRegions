@@ -187,7 +187,7 @@ public class MembersGUI {
 			String price = config.getOption("removemember");
 			return price;
 		} catch (Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}
@@ -198,7 +198,7 @@ public class MembersGUI {
 			String currency = config.getOption("currency");
 			return currency;
 		} catch (Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}

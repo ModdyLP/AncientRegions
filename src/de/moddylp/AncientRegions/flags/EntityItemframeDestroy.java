@@ -28,7 +28,7 @@ import de.moddylp.AncientRegions.loader.LoadConfig;
 import net.milkbowl.vault.economy.Economy;
 
 public class EntityItemframeDestroy {
-	//Flag Description
+	//FlagOBJ Description
 	private Main plugin;
 	StateFlag flag = DefaultFlag.ENTITY_ITEM_FRAME_DESTROY;
 	String flagname = "EntityItemframeDestroy";
@@ -89,7 +89,7 @@ public class EntityItemframeDestroy {
 			String price = config.getOption(flagname.toLowerCase());
 			return price;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}
@@ -99,7 +99,7 @@ public class EntityItemframeDestroy {
 			String currency = config.getOption("currency");
 			return currency;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}

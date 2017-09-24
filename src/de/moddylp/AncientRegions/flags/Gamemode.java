@@ -30,7 +30,7 @@ import de.moddylp.AncientRegions.loader.LoadConfig;
 import net.milkbowl.vault.economy.Economy;
 
 public class Gamemode {
-	//Flag Description
+	//FlagOBJ Description
 	EnumFlag<GameMode> flag = DefaultFlag.GAME_MODE;
 	String flagname = "Gamemode";
 	String permission = flagname.toLowerCase();
@@ -77,7 +77,7 @@ public class Gamemode {
 			String price = config.getOption(flagname.toLowerCase());
 			return price;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}
@@ -87,7 +87,7 @@ public class Gamemode {
 			String currency = config.getOption("currency");
 			return currency;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}

@@ -90,7 +90,7 @@ public class ParticleShower {
                 }
                 if (p == null || !p.isOnline()) {
                     data.setString(rg.getId(), null);
-                    plugin.getLogger().info("Partciles cancled by Console");
+                    Main.getInstance().getLogger().info("Partciles cancled by Console");
                     particles.cancel();
                     timertask.cancel();
                 }

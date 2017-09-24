@@ -29,7 +29,7 @@ import de.moddylp.AncientRegions.loader.LoadConfig;
 import net.milkbowl.vault.economy.Economy;
 
 public class HealMaxHealth {
-	//Flag Description
+	//FlagOBJ Description
 	DoubleFlag flag = DefaultFlag.MAX_HEAL;
 	String flagname = "HealMaxHealth";
 	String permission = flagname.toLowerCase();
@@ -83,7 +83,7 @@ public class HealMaxHealth {
 			String price = config.getOption(flagname.toLowerCase());
 			return price;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}
@@ -93,7 +93,7 @@ public class HealMaxHealth {
 			String currency = config.getOption("currency");
 			return currency;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}

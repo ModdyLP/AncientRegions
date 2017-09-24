@@ -28,7 +28,7 @@ import de.moddylp.AncientRegions.loader.LoadConfig;
 import net.milkbowl.vault.economy.Economy;
 
 public class Lightning {
-	// Flag Description
+	// FlagOBJ Description
 	StateFlag flag = DefaultFlag.LIGHTNING;
 	String flagname = "Lightning";
 	String permission = "toggle" + flagname.toLowerCase();
@@ -92,7 +92,7 @@ public class Lightning {
 			String price = config.getOption(flagname.toLowerCase());
 			return price;
 		} catch (Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}
@@ -103,7 +103,7 @@ public class Lightning {
 			String currency = config.getOption("currency");
 			return currency;
 		} catch (Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}

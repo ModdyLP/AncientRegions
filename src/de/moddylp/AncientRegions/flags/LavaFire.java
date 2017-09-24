@@ -28,7 +28,7 @@ import de.moddylp.AncientRegions.loader.LoadConfig;
 import net.milkbowl.vault.economy.Economy;
 
 public class LavaFire {
-	//Flag Description
+	//FlagOBJ Description
 	StateFlag flag = DefaultFlag.LAVA_FIRE;
 	String flagname = "LavaFire";
 	String permission = "toggle"+flagname.toLowerCase();
@@ -88,7 +88,7 @@ public class LavaFire {
 			String price = config.getOption(flagname.toLowerCase());
 			return price;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}
@@ -98,7 +98,7 @@ public class LavaFire {
 			String currency = config.getOption("currency");
 			return currency;
 		} catch( Exception ex) {
-			plugin.getLogger().info(ex.toString());
+			Main.getInstance().getLogger().info(ex.toString());
 		}
 		return null;
 	}
