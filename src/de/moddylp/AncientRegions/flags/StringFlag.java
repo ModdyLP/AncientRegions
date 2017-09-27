@@ -4,6 +4,7 @@ import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.flags.SetFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
@@ -51,11 +52,13 @@ public class StringFlag {
                                     + Main.getInstance().lang.getText("FlagRemoved"));
                         } else {
                             if (payment(p, e, flagOBJ.getName())) {
-                                p.closeInventory();
-                                p.sendMessage(ChatColor.GREEN + "[AR][INFO] "
-                                        + Main.getInstance().lang.getText("Message4").replace("[PH]", flagOBJ.getName()));
-                                Main.getInstance().getServer().getPluginManager().registerEvents(
-                                        new SpezialFormatString(p, flagOBJ.getFlag(), flagOBJ.getName(), Main.getInstance(), Main.worldguard), Main.getInstance());
+                                if (flagOBJ.getFlag() instanceof SetFlag) {
+                                    p.closeInventory();
+                                    p.sendMessage(ChatColor.GREEN + "[AR][INFO] "
+                                            + Main.getInstance().lang.getText("Message4").replace("[PH]", flagOBJ.getName()));
+                                    Main.getInstance().getServer().getPluginManager().registerEvents(
+                                            new SpezialFormatString(p, flagOBJ), Main.getInstance());
+                                }
                             }
                         }
                     } else {

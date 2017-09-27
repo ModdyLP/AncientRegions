@@ -6,6 +6,7 @@ import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import de.moddylp.AncientRegions.flags.FlagOBJ;
 import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.flags.StringFlag;
 import de.moddylp.AncientRegions.gui.EditflagsPage2;
@@ -35,48 +36,42 @@ import java.util.Set;
 
 public class SpezialFormatString implements Listener {
 	private Player p;
-	private Main plugin;
-	private Flag flag;
-	private String flagname;
-	private WorldGuardPlugin worldguard;
+	private FlagOBJ flag;
 
-	public SpezialFormatString(Player p, Flag flag, String Flagname, Main plugin, WorldGuardPlugin worldguard) {
+	public SpezialFormatString(Player p, FlagOBJ flag) {
 		this.p = p;
 		this.flag = flag;
-		this.plugin = plugin;
-		this.flagname = Flagname;
-		this.worldguard = worldguard;
 	}
 	@EventHandler
 	public String getChat(AsyncPlayerChatEvent e) {
 		if (e.getPlayer().equals(p)) {
 			String msg = e.getMessage();
-			RegionContainer container = worldguard.getRegionContainer();
+			RegionContainer container = Main.worldguard.getRegionContainer();
 			RegionManager regions = container.get(p.getWorld());
 			Vector pt = new Vector(p.getLocation().getX(), p.getLocation().getY(),p.getLocation().getZ());
-			LocalPlayer ply = worldguard.wrapPlayer(p);
-			List<String> region = null;
+			LocalPlayer ply = Main.worldguard.wrapPlayer(p);
+			List<String> region;
 			if (regions != null) {
 				region = regions.getApplicableRegionsIDs(pt);
 
 				if (region.isEmpty()) {
-					p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("GobalError"));
+					p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("GobalError"));
 				} else {
 					ProtectedRegion rg = regions.getRegion(region.get(0));
 					if ((rg != null && rg.isOwner(ply)) || (rg != null && p.hasPermission("ancient.regions.admin.bypass"))) {
-						if (FlagUtil.payment(p, e, flagname)) {
+						if (FlagUtil.payment(p, e, flag.getName())) {
 							Set<String> set = new HashSet<>();
 							set.add(msg);
-							rg.setFlag((SetFlag<String>)flag, set);
+							rg.setFlag((SetFlag<String>)flag.getFlag(), set);
 
-							p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + plugin.lang.getText("ValueChat").replace("[PH]", flagname));
-							Editflags gui = new Editflags(p, plugin, worldguard);
+							p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", flag.getName()));
+							Editflags gui = new Editflags(p, Main.getInstance(), Main.worldguard);
 							gui.open();
 							HandlerList.unregisterAll(this);
 							e.setCancelled(true);
 						}
 					} else {
-						p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("Owner"));
+						p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("Owner"));
 						e.setCancelled(true);
 					}
 					e.setCancelled(true);

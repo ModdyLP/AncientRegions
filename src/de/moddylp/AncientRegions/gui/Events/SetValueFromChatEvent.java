@@ -44,32 +44,36 @@ public class SetValueFromChatEvent implements Listener {
 	@EventHandler
 	public String getChat(AsyncPlayerChatEvent e) {
 		if (e.getPlayer().equals(p)) {
-			String msg = e.getMessage().toString();
-            RegionContainer container = worldguard.getRegionContainer();
-            RegionManager regions = container.get(p.getWorld());
-            Vector pt = new Vector(p.getLocation().getX(), p.getLocation().getY(),p.getLocation().getZ());
-            LocalPlayer ply = worldguard.wrapPlayer(p);
-            List<String> region = regions.getApplicableRegionsIDs(pt);
-            if (region.isEmpty()) {
-                p.sendMessage(ChatColor.RED+"[AR][ERROR] "+plugin.lang.getText("GobalError"));
-            } else {
-                ProtectedRegion rg = regions.getRegion(region.get(0));
-                if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
-                    if (payment(p, e)) {
-                        rg.setFlag(flag, msg);
-                        p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + plugin.lang.getText("ValueChat").replace("[PH]", flagname));
-                        Editflags gui = new Editflags(p, plugin, worldguard);
-                        gui.open();
-                        HandlerList.unregisterAll(this);
-                        e.setCancelled(true);
-                    }
-                } else {
-                    p.sendMessage(ChatColor.RED+"[AR][ERROR] "+plugin.lang.getText("Owner"));
-                    e.setCancelled(true);
-                }
-                e.setCancelled(true);
-            }
-    		}
+			String msg = e.getMessage();
+			RegionContainer container = worldguard.getRegionContainer();
+			RegionManager regions = container.get(p.getWorld());
+			Vector pt = new Vector(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ());
+			LocalPlayer ply = worldguard.wrapPlayer(p);
+			List<String> region;
+			if (regions != null) {
+				region = regions.getApplicableRegionsIDs(pt);
+
+				if (region.isEmpty()) {
+					p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("GobalError"));
+				} else {
+					ProtectedRegion rg = regions.getRegion(region.get(0));
+					if (rg != null && rg.isOwner(ply) || rg != null && p.hasPermission("ancient.regions.admin.bypass")) {
+						if (payment(p, e)) {
+							rg.setFlag(flag, msg);
+							p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + plugin.lang.getText("ValueChat").replace("[PH]", flagname));
+							Editflags gui = new Editflags(p, plugin, worldguard);
+							gui.open();
+							HandlerList.unregisterAll(this);
+							e.setCancelled(true);
+						}
+					} else {
+						p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("Owner"));
+						e.setCancelled(true);
+					}
+					e.setCancelled(true);
+				}
+			}
+		}
 		return null;
 		}
 	public String loadPricefromConfig() {
