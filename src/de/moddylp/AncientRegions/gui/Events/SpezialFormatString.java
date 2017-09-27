@@ -67,7 +67,8 @@ public class SpezialFormatString implements Listener {
 						if (FlagUtil.payment(p, e, flagname)) {
 							Set<String> set = new HashSet<>();
 							set.add(msg);
-							rg.setFlag(flag, set);
+							rg.setFlag((SetFlag<String>)flag, set);
+
 							p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + plugin.lang.getText("ValueChat").replace("[PH]", flagname));
 							Editflags gui = new Editflags(p, plugin, worldguard);
 							gui.open();

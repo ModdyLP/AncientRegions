@@ -120,8 +120,9 @@ public class Menu_Click implements Listener {
 			}
 			try {
 				if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Build")) {
-					BuildFlag buildflag = new BuildFlag(plugin);
-					buildflag.toggle(worldguard, p, e, menu);
+					FlagOBJ buildflag = new FlagOBJ("Build", "", DefaultFlag.BUILD, Material.STONE, 0);
+					BooleanFlag buildbolflag = new BooleanFlag(buildflag, p);
+					buildbolflag.toggle(e, menu);
 					e.setCancelled(true);
 				} else if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Greeting")) {
 					Greeting greeting = new Greeting(plugin);

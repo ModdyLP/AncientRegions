@@ -1,6 +1,6 @@
 package de.moddylp.AncientRegions.flags;
 
-import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.flags.*;
 import org.bukkit.Material;
 
 public class FlagOBJ {
@@ -19,7 +19,11 @@ public class FlagOBJ {
         this.description = description;
         this.flag = flag;
         this.configname = name.toLowerCase();
-        this.permission = "ancient.regions.flag." + configname;
+        if (flag instanceof com.sk89q.worldguard.protection.flags.BooleanFlag) {
+            this.permission = "ancient.regions.flag.toggle" + configname;
+        } else {
+            this.permission = "ancient.regions.flag." + configname;
+        }
         this.item = item;
         this.menuposition = menuposition;
     }

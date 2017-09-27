@@ -3,11 +3,10 @@ package de.moddylp.AncientRegions.flags;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.AncientRegions.gui.Events.SpezialFormatString;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,19 +18,25 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static de.moddylp.AncientRegions.flags.FlagUtil.*;
-import static de.moddylp.AncientRegions.flags.FlagUtil.isSet;
 
-public class StringFlag {
+/**
+ * Created by N.Hartmann on 27.09.2017.
+ * Copyright 2017
+ */
+public class BooleanFlag {
     private final FlagOBJ flagOBJ;
     private final Player p;
 
-    public StringFlag(FlagOBJ flagOBJ, Player p) {
+    public BooleanFlag(FlagOBJ flagOBJ, Player p) {
         this.flagOBJ = flagOBJ;
         this.p = p;
     }
+
     public boolean toggle(InventoryClickEvent e, Inventory menu) {
+
         if (p.hasPermission(flagOBJ.getPermission())) {
             RegionContainer container = Main.worldguard.getRegionContainer();
             RegionManager regions = container.get(p.getWorld());
@@ -40,22 +45,28 @@ public class StringFlag {
             List<String> region;
             if (regions != null) {
                 region = regions.getApplicableRegionsIDs(pt);
+
                 if (region.isEmpty()) {
                     p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("GobalError"));
                 } else {
                     ProtectedRegion rg = regions.getRegion(region.get(0));
                     if (rg != null && rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
                         if (rg != null && rg.getFlag(flagOBJ.getFlag()) != null) {
-                            rg.setFlag(flagOBJ.getFlag(), null);
-                            p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + flagOBJ.getName()
-                                    + Main.getInstance().lang.getText("FlagRemoved"));
+                            if (Objects.equals(rg.getFlag(flagOBJ.getFlag()), StateFlag.State.DENY)) {
+                                rg.setFlag(flagOBJ.getFlag(), null);
+                                p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + flagOBJ.getName() + Main.getInstance().lang.getText("FlagRemoved"));
+                            } else if (Objects.equals(rg.getFlag(flagOBJ.getFlag()), StateFlag.State.ALLOW)) {
+                                if (FlagUtil.payment(p, e, flagOBJ.getName())) {
+                                    rg.setFlag((StateFlag) flagOBJ.getFlag(), StateFlag.State.DENY);
+                                    p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.RED + " " + flagOBJ.getName() + Main.getInstance().lang.getText("fDisabled"));
+                                }
+                            } else {
+                                p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("ToggleError").replace("[PH]", flagOBJ.getName()));
+                            }
                         } else {
-                            if (payment(p, e, flagOBJ.getName())) {
-                                p.closeInventory();
-                                p.sendMessage(ChatColor.GREEN + "[AR][INFO] "
-                                        + Main.getInstance().lang.getText("Message4").replace("[PH]", flagOBJ.getName()));
-                                Main.getInstance().getServer().getPluginManager().registerEvents(
-                                        new SpezialFormatString(p, flagOBJ.getFlag(), flagOBJ.getName(), Main.getInstance(), Main.worldguard), Main.getInstance());
+                            if (rg != null && FlagUtil.payment(p, e, flagOBJ.getName())) {
+                                rg.setFlag((StateFlag) flagOBJ.getFlag(), StateFlag.State.ALLOW);
+                                p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + flagOBJ.getName() + Main.getInstance().lang.getText("fEnabled"));
                             }
                         }
                     } else {
@@ -64,14 +75,15 @@ public class StringFlag {
                     }
                     e.setCancelled(true);
                 }
+            } else {
+                p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("Permission"));
+                e.setCancelled(true);
             }
-        } else {
-            p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("Permission"));
-            e.setCancelled(true);
         }
         loadgui(menu);
         return false;
     }
+
     public boolean loadgui(Inventory menu) {
         if (p.hasPermission(flagOBJ.getPermission())) {
             ItemStack ITEM = new ItemStack(flagOBJ.getItem());

@@ -30,8 +30,9 @@ public class Editflags {
 	private void loadMenuItems() {
 		EditFlagsNavigation navigation = new EditFlagsNavigation();
 		navigation.loadguiitems(menu, plugin);
-		BuildFlag buildflag = new BuildFlag(plugin);
-		buildflag.loadgui(menu, p, worldguard);
+		FlagOBJ buildflag = new FlagOBJ("Build", "", DefaultFlag.BUILD, Material.STONE, 0);
+		BooleanFlag buildbolflag = new BooleanFlag(buildflag, p);
+		buildbolflag.loadgui(menu);
 		Greeting greeting = new Greeting(plugin);
 		greeting.loadgui(menu, p, worldguard);
 		Farewell farewell = new Farewell(plugin);
@@ -86,10 +87,10 @@ public class Editflags {
 		healmaxheal.loadgui(menu, p, worldguard);
 		FlagOBJ blockedcmdsflag = new FlagOBJ("BlockedCmds", "", DefaultFlag.BLOCKED_CMDS, Material.COMMAND_REPEATING, 28);
 		StringFlag blockedcmds = new StringFlag(blockedcmdsflag, p);
-		blockedcmds.loadgui(menu, p);
+		blockedcmds.loadgui(menu);
 		FlagOBJ alloedcmdsflag = new FlagOBJ("AllowedCmds", "", DefaultFlag.ALLOWED_CMDS,Material.COMMAND_CHAIN, 27);
 		StringFlag alloedcmds = new StringFlag(alloedcmdsflag, p);
-		alloedcmds.loadgui(menu, p);
+		alloedcmds.loadgui(menu);
 		TimeLock timelock = new TimeLock(plugin);
 		timelock.loadgui(menu, p, worldguard);
 		WeatherLock weather = new WeatherLock(plugin);
