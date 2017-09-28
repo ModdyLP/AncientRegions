@@ -14,7 +14,7 @@ public class LogFile {
 	private FileConfiguration Data;
 
 	public LogFile() {
-	    f = new File(Main.FOLDER, "data.yml");
+	    f = new File(Main.DRIVER.FOLDER, "data.yml");
 	}
 	public FileConfiguration getfile() {
 		return Data = YamlConfiguration.loadConfiguration(f);

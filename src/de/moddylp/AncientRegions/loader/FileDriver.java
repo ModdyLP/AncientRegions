@@ -22,7 +22,8 @@ import java.util.Set;
 public class FileDriver {
 
     //FILEDRIVE IS NOT TRANSLATED - CAUSES ERRORS BECAUSE LANGUAGE IS NOT LOADED
-    public String CONFIG = Main.FOLDER+"config.json";;
+    public String FOLDER = "plugins/AncientRegions/";
+    public String CONFIG = FOLDER+"config.json";
 
     private static FileDriver instance;
     private static HashMap<String, File> files = new HashMap<>();
