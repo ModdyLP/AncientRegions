@@ -2,12 +2,10 @@ package de.moddylp.AncientRegions.flags;
 
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.AncientRegions.loader.LoadConfig;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,23 +16,36 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class FlagUtil {
     public static HashMap<String, FlagOBJ> flagOBJHashMap = new HashMap<>();
-    public static HashMap<String, BooleanFlag> booleanFlagHashMap = new HashMap<>();
-    public static HashMap<String, StringSetFlag> stringsetFlagHashMap = new HashMap<>();
+    static HashMap<String, BooleanFlag> booleanFlagHashMap = new HashMap<>();
+    static HashMap<String, StringFlag> stringFlagHashMap = new HashMap<>();
+    static HashMap<String, EntitySetFlag> setFlagEntityHashmap = new HashMap<>();
+    static HashMap<String, DoubleFlag> doubleflag = new HashMap<>();
+    static HashMap<String, IntegerFlag> integerFlagHashMap = new HashMap<>();
+    static HashMap<String, GamemodeFlag> gamemodeFlagHashMap = new HashMap<>();
+    static HashMap<String, LocationFlagimpl> locationFlagHashMap = new HashMap<>();
+    static HashMap<String, WeatherFlag> weatherFlagHashMap = new HashMap<>();
+
     public static <T> T convertInstanceOfObject(Object o, Class<T> clazz) {
         try {
             return clazz.cast(o);
-        } catch(ClassCastException e) {
+        } catch (ClassCastException e) {
             return null;
         }
     }
-    public static String loadPricefromConfig(String flagname) {
+
+    public static Double loadPricefromConfig(String flagname) {
         try {
-            LoadConfig config = new LoadConfig(Main.getInstance());
-            return config.getOption(flagname.toLowerCase());
+            if (Main.DRIVER.hasKey(Main.DRIVER.CONFIG, flagname.toLowerCase())) {
+                return Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, flagname.toLowerCase()));
+            } else {
+                return 0.0;
+            }
         } catch (Exception ex) {
             Main.getInstance().getLogger().info(ex.toString());
         }
@@ -43,13 +54,13 @@ public class FlagUtil {
 
     public static String loadCurrencyfromConfig() {
         try {
-            LoadConfig config = new LoadConfig(Main.getInstance());
-            return config.getOption("currency");
+            return Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "currency");
         } catch (Exception ex) {
             Main.getInstance().getLogger().info(ex.toString());
         }
         return null;
     }
+
     public static boolean payment(Player p, Cancellable e, String flagname) {
         RegisteredServiceProvider<Economy> service = Bukkit.getServicesManager()
                 .getRegistration(net.milkbowl.vault.economy.Economy.class);
@@ -59,9 +70,9 @@ public class FlagUtil {
             return true;
         }
         if (vaultEcon != null) {
-            String price = loadPricefromConfig(flagname);
-            if (price != null && vaultEcon.getBalance(p) != 0 && vaultEcon.getBalance(p) >= Double.valueOf(price)) {
-                vaultEcon.withdrawPlayer(p, Double.valueOf(price));
+            Double price = loadPricefromConfig(flagname);
+            if (price != null && vaultEcon.getBalance(p) != 0 && vaultEcon.getBalance(p) >= price) {
+                vaultEcon.withdrawPlayer(p, price);
                 p.sendMessage(ChatColor.BLUE + "[AR][INFO]" + Main.getInstance().lang.getText("PayNote").replace("[PH]",
                         loadPricefromConfig(flagname) + " " + loadCurrencyfromConfig()));
                 e.setCancelled(true);
@@ -77,8 +88,9 @@ public class FlagUtil {
         }
         return false;
     }
-    public static String isSet(WorldGuardPlugin worldguard, Player p, Flag<?> flag) {
-        RegionContainer container = worldguard.getRegionContainer();
+
+    public static String isSet(Player p, Flag<?> flag) {
+        RegionContainer container = Main.worldguard.getRegionContainer();
         RegionManager regions = container.get(p.getWorld());
         Vector pt = new Vector(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ());
         if (regions != null) {
@@ -99,6 +111,7 @@ public class FlagUtil {
         }
         return "null";
     }
+
     public static void checkPerm(ItemStack ITEM, String flagname) {
         if (ITEM.getItemMeta().getLore() == null) {
             List<String> lore = new ArrayList<String>();

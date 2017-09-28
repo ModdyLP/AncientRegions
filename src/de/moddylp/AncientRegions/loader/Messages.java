@@ -19,7 +19,7 @@ public class Messages {
 		lang.setTextOnce("1", "ATTENTION: Please don't touch the placeholder ( [PH] ) tag!!");
 		lang.setTextOnce("2", "------------------------------------------------------------");
 		lang.setTextOnce("Enabled", "AncientRegions has been enabled!");
-		lang.setTextOnce("Disabled", "AncientRegions has been enabled!");
+		lang.setTextOnce("Disabled", "AncientRegions has been disabled!");
 
 		// Config Reload
 		lang.setTextOnce("ConfigReload", "Config and LanguageFile have been reloaded!");

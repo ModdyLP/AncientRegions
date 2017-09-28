@@ -10,14 +10,11 @@ import de.moddylp.AncientRegions.Main;
 public class LogFile {
 
 
-	private Main plugin;
 	private File f;
 	private FileConfiguration Data;
 
-	public LogFile(Main plugin) {
-		this.plugin = plugin;
-	    f = new File(plugin.getDataFolder(), "data.yml");
-	    
+	public LogFile() {
+	    f = new File(Main.getInstance().getDataFolder(), "data.yml");
 	}
 	public FileConfiguration getfile() {
 		return Data = YamlConfiguration.loadConfiguration(f);

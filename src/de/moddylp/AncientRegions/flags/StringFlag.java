@@ -3,11 +3,11 @@ package de.moddylp.AncientRegions.flags;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.SetFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.gui.Events.SetValueFromChatEvent;
 import de.moddylp.AncientRegions.gui.Events.SpezialFormatString;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -24,32 +24,32 @@ import java.util.List;
 import static de.moddylp.AncientRegions.flags.FlagUtil.*;
 import static de.moddylp.AncientRegions.flags.FlagUtil.isSet;
 
-public class StringSetFlag {
+public class StringFlag {
     private final FlagOBJ flagOBJ;
     private final Player p;
 
-    public StringSetFlag(FlagOBJ flagOBJ, Player p) {
+    public StringFlag(FlagOBJ flagOBJ, Player p) {
         this.flagOBJ = flagOBJ;
         this.p = p;
     }
     public static void createandload(FlagOBJ flagOBJ, Player p, Inventory menu) {
-        StringSetFlag flag;
-        if (FlagUtil.stringsetFlagHashMap.containsKey(flagOBJ.getName())) {
-            flag = FlagUtil.stringsetFlagHashMap.get(flagOBJ.getName());
+        StringFlag flag;
+        if (FlagUtil.stringFlagHashMap.containsKey(flagOBJ.getName())) {
+            flag = FlagUtil.stringFlagHashMap.get(flagOBJ.getName());
         } else {
-            flag = new StringSetFlag(flagOBJ, p);
-            FlagUtil.stringsetFlagHashMap.put(flagOBJ.getName(), flag);
+            flag = new StringFlag(flagOBJ, p);
+            FlagUtil.stringFlagHashMap.put(flagOBJ.getName(), flag);
         }
         flag.loadgui(menu);
     }
     public static void createandtoggle(FlagOBJ flagOBJ, Player p, Inventory menu, InventoryClickEvent event) {
         event.setCancelled(true);
-        StringSetFlag flag;
-        if (FlagUtil.stringsetFlagHashMap.containsKey(flagOBJ.getName())) {
-            flag = FlagUtil.stringsetFlagHashMap.get(flagOBJ.getName());
+        StringFlag flag;
+        if (FlagUtil.stringFlagHashMap.containsKey(flagOBJ.getName())) {
+            flag = FlagUtil.stringFlagHashMap.get(flagOBJ.getName());
         } else {
-            flag = new StringSetFlag(flagOBJ, p);
-            FlagUtil.stringsetFlagHashMap.put(flagOBJ.getName(), flag);
+            flag = new StringFlag(flagOBJ, p);
+            FlagUtil.stringFlagHashMap.put(flagOBJ.getName(), flag);
         }
         flag.toggle(event, menu);
     }
@@ -79,6 +79,12 @@ public class StringSetFlag {
                                             + Main.getInstance().lang.getText("Message4").replace("[PH]", flagOBJ.getName()));
                                     Main.getInstance().getServer().getPluginManager().registerEvents(
                                             new SpezialFormatString(p, flagOBJ), Main.getInstance());
+                                } else if (flagOBJ.getFlag() instanceof com.sk89q.worldguard.protection.flags.StringFlag) {
+                                    p.closeInventory();
+                                    p.sendMessage(ChatColor.GREEN + "[AR][INFO] "
+                                            + Main.getInstance().lang.getText("Message").replace("[PH]", flagOBJ.getName()));
+                                    Main.getInstance().getServer().getPluginManager().registerEvents(
+                                            new SetValueFromChatEvent(p, flagOBJ), Main.getInstance());
                                 }
                             }
                         }
@@ -101,13 +107,13 @@ public class StringSetFlag {
             ItemStack ITEM = new ItemStack(flagOBJ.getItem());
             List<String> lore = new ArrayList<>();
             lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Set").replace("[PH]", flagOBJ.getName()));
-            lore.add(ChatColor.YELLOW + loadPricefromConfig(flagOBJ.getName()) + " " + loadCurrencyfromConfig());
-            if (!isSet(Main.worldguard, p, flagOBJ.getFlag()).equals("null")) {
+            lore.add(ChatColor.YELLOW + loadPricefromConfig(flagOBJ.getName()).toString() + " " + loadCurrencyfromConfig());
+            if (!isSet(p, flagOBJ.getFlag()).equals("null")) {
                 lore.add(
-                        ChatColor.GOLD + Main.getInstance().lang.getText("Current") + ": " + ChatColor.AQUA + isSet(Main.worldguard, p, flagOBJ.getFlag()));
+                        ChatColor.GOLD + Main.getInstance().lang.getText("Current") + ": " + ChatColor.AQUA + isSet(p, flagOBJ.getFlag()));
             }
             ItemMeta imeta = ITEM.getItemMeta();
-            if (!isSet(Main.worldguard, p, flagOBJ.getFlag()).equals("null")) {
+            if (!isSet(p, flagOBJ.getFlag()).equals("null")) {
                 imeta.setDisplayName(ChatColor.GREEN + "[ON] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + flagOBJ.getName());
             } else {
                 imeta.setDisplayName(ChatColor.BLUE + "[/] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + flagOBJ.getName());

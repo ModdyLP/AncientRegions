@@ -3,6 +3,7 @@ package de.moddylp.AncientRegions.flags;
 import com.google.common.base.CaseFormat;
 import com.sk89q.worldguard.protection.flags.*;
 import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.loader.FileDriver;
 import org.bukkit.Material;
 
 public class FlagOBJ {
@@ -16,8 +17,7 @@ public class FlagOBJ {
     private String permission;
 
 
-    public FlagOBJ(String description, Flag<?> flag, Material item, int menuposition) {
-        Main.getInstance().getLogger().info("New Name: "+flag.getName().replaceAll("-", "_").toUpperCase());
+    public FlagOBJ(String description, int menuposition, Material item, Flag<?> flag) {
         this.name = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, flag.getName().replaceAll("-", "_").toUpperCase());
         this.description = description;
         this.flag = flag;
@@ -30,20 +30,24 @@ public class FlagOBJ {
         this.item = item;
         this.menuposition = menuposition;
         FlagUtil.flagOBJHashMap.put(name, this);
-        Main.config.setifunsetOption(configname, "100");
+        FileDriver.getInstance().getProperty(FileDriver.getInstance().CONFIG, configname, 100);
         Main.getInstance().getLogger().info("Created: "+name);
     }
-    public static FlagOBJ getFlagObj(String name) {
-        if (FlagUtil.flagOBJHashMap.containsKey(name)) {
-            return FlagUtil.flagOBJHashMap.get(name);
+    public static FlagOBJ getFlagObj(Flag flag) {
+        String search = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, flag.getName().replaceAll("-", "_").toUpperCase());
+        if (FlagUtil.flagOBJHashMap.containsKey(search)) {
+            return FlagUtil.flagOBJHashMap.get(search);
         } else {
-            Main.getInstance().getLogger().warning("No Flag found with name: "+name);
+            Main.getInstance().getLogger().warning("No Flag found with name: "+search);
         }
-        return null;
+        return new FlagOBJ("", 0, Material.CARROT, flag);
     }
-
     public String getName() {
-        return name;
+        if (name != null) {
+            return name;
+        } else {
+            return "NoName";
+        }
     }
 
     public void setName(String name) {

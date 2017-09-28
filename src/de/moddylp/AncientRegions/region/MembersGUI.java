@@ -1,12 +1,14 @@
 package de.moddylp.AncientRegions.region;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
-import de.moddylp.AncientRegions.loader.LoadConfig;
-import net.milkbowl.vault.economy.Economy;
+import com.sk89q.worldedit.Vector;
+import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.bukkit.RegionContainer;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.domains.DefaultDomain;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.flags.FlagUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -19,16 +21,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldguard.LocalPlayer;
-import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.domains.DefaultDomain;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-
-import de.moddylp.AncientRegions.Main;
-import org.bukkit.plugin.RegisteredServiceProvider;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 public class MembersGUI {
 	private Main plugin;
@@ -57,8 +53,8 @@ public class MembersGUI {
 				for (UUID p : players) {
 					ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
 					SkullMeta meta = (SkullMeta) skull.getItemMeta();
-					meta.setOwner(playername(p));
-					meta.setDisplayName(ChatColor.GREEN + playername(p));
+					meta.setOwningPlayer(playername(p));
+					meta.setDisplayName(ChatColor.GREEN + playername(p).getName());
 					skull.setItemMeta(meta);
 					menu.addItem(skull);
 				}
@@ -80,7 +76,7 @@ public class MembersGUI {
 		for (Player p : players) {
 			ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
 			SkullMeta meta = (SkullMeta) skull.getItemMeta();
-			meta.setOwner(p.getName());
+			meta.setOwningPlayer(p);
 			meta.setDisplayName(ChatColor.GREEN + p.getName());
 			skull.setItemMeta(meta);
 			menu.addItem(skull);
@@ -107,7 +103,7 @@ public class MembersGUI {
 			} else {
 				ProtectedRegion rg = regions.getRegion(region.get(0));
 				if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
-					if (payment(p,e) || p.hasPermission("ancient.regions.admin.bypass")) {
+					if (FlagUtil.payment(p,e, "removemember") || p.hasPermission("ancient.regions.admin.bypass")) {
 						DefaultDomain member;
 						member = rg.getMembers();
 						member.removePlayer(uuid);
@@ -133,16 +129,16 @@ public class MembersGUI {
 		}
 		loadregionskulls(worldguard);
 	}
-	public String playername(UUID p) {
+	public OfflinePlayer playername(UUID p) {
 		OfflinePlayer[] allplayers = plugin.getServer().getOfflinePlayers();
 		for (int i = 0; allplayers.length >= i; i++) {
 			UUID uuidname = allplayers[i].getUniqueId();
 			if (p.equals(uuidname)) {
-				return allplayers[i].getName();
+				return allplayers[i];
 			}
 
 		}
-		return p.toString();
+		return null;
 	}
 
 	public void changeowner(InventoryClickEvent e) {
@@ -180,56 +176,6 @@ public class MembersGUI {
 	// Return this
 	public Inventory getMenu() {
 		return menu;
-	}
-	public String loadPricefromConfig() {
-		try {
-			LoadConfig config = new LoadConfig(plugin);
-			String price = config.getOption("removemember");
-			return price;
-		} catch (Exception ex) {
-			Main.getInstance().getLogger().info(ex.toString());
-		}
-		return null;
-	}
-
-	public String loadCurrencyfromConfig() {
-		try {
-			LoadConfig config = new LoadConfig(plugin);
-			String currency = config.getOption("currency");
-			return currency;
-		} catch (Exception ex) {
-			Main.getInstance().getLogger().info(ex.toString());
-		}
-		return null;
-	}
-
-	@SuppressWarnings("deprecation")
-	public boolean payment(Player p, InventoryClickEvent e) {
-		RegisteredServiceProvider<Economy> service = Bukkit.getServicesManager()
-				.getRegistration(net.milkbowl.vault.economy.Economy.class);
-		Economy vaultEcon = service.getProvider();
-		if (p.hasPermission("ancient.regions.admin.bypass")) {
-			e.setCancelled(true);
-			return true;
-		}
-		if (vaultEcon != null) {
-			String price = loadPricefromConfig();
-			if (vaultEcon.getBalance(p.getName()) != 0 && vaultEcon.getBalance(p.getName()) >= Double.valueOf(price)) {
-				vaultEcon.withdrawPlayer(p.getName(), Double.valueOf(price));
-				p.sendMessage(ChatColor.BLUE + "[AR][INFO]" + plugin.lang.getText("PayNote3").replace("[PH]",
-						loadPricefromConfig() + " " + loadCurrencyfromConfig()));
-				e.setCancelled(true);
-				return true;
-			} else {
-				p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("NoMoney"));
-				e.setCancelled(true);
-				return false;
-			}
-		} else {
-			p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("VaultError"));
-			e.setCancelled(true);
-		}
-		return false;
 	}
 
 }

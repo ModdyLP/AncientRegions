@@ -5,14 +5,10 @@ import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.moddylp.AncientRegions.gui.Events.GUIEvents;
 import de.moddylp.AncientRegions.gui.Events.GUIOpener;
-import de.moddylp.AncientRegions.loader.FlagLoader;
-import de.moddylp.AncientRegions.loader.LoadConfig;
-import de.moddylp.AncientRegions.loader.Messages;
-import de.moddylp.AncientRegions.loader.VaultLoader;
+import de.moddylp.AncientRegions.loader.*;
 import de.moddylp.AncientRegions.particle.LogFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,9 +26,9 @@ public class Main extends JavaPlugin {
     protected GUIEvents loader;
     public static WorldGuardPlugin worldguard;
     public Language lang;
-    public static LoadConfig config;
     public static WorldEditPlugin worldedit;
     private static Main instance;
+    public static FileDriver DRIVER = FileDriver.getInstance();
 
     public static Main getInstance() {
         return instance;
@@ -49,11 +45,10 @@ public class Main extends JavaPlugin {
             this.onDisable();
             return;
         } else {
-            config = new LoadConfig(this);
-            config.setup();
-            lang = new Language(this, new File(this.getDataFolder(), "messages.yml"));
+            ConfigLoader.saveDefaultconfig();
+            lang = new Language(new File(this.getDataFolder(), "messages.yml"));
             loadMessages();
-            LogFile file = new LogFile(this);
+            LogFile file = new LogFile();
             file.setup();
             loader = new GUIEvents(this, worldguard, worldedit);
         }
@@ -74,14 +69,14 @@ public class Main extends JavaPlugin {
                     case "gui":
                         if (sender instanceof Player) {
                             Player p = ((Player) sender).getPlayer();
-                            if (!config.getOption("worlds").equals("[]") && config.getOption("worlds") != null) {
-                                String[] worldconfig = config.getOption("worlds").split(",");
+                            if (!Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"worlds").equals("[]") && Main.DRIVER.hasKey(Main.DRIVER.CONFIG,"worlds")) {
+                                String[] worldconfig = Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"worlds").split(",");
                                 List<String> worlds = new ArrayList<>();
                                 worlds.addAll(Arrays.asList(worldconfig));
                                 if (worlds.contains(p.getWorld().getName())) {
                                     if (p.hasPermission("ancient.regions.flag.command")) {
 
-                                        GUIOpener opener = new GUIOpener(loader, worldguard);
+                                        GUIOpener opener = new GUIOpener(loader);
                                         opener.openstartgui(p);
                                         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_SNARE, 100, 100);
                                         return true;
@@ -104,9 +99,7 @@ public class Main extends JavaPlugin {
                         }
                     case "reload":
                         if (sender.hasPermission("ancient.regions.admin.reload")) {
-                            LoadConfig loadconfig;
-                            loadconfig = new LoadConfig(this);
-                            loadconfig.reload();
+                            Main.DRIVER.loadJson();
                             lang.reload();
                             sender.sendMessage(ChatColor.GOLD + "[AR][INFO] " + this.lang.getText("ConfigReload"));
                             return true;
@@ -117,7 +110,7 @@ public class Main extends JavaPlugin {
                     case "cancelall":
                         try {
                             if (sender.hasPermission("ancient.regions.admin.cancelall")) {
-                                LogFile file = new LogFile(this);
+                                LogFile file = new LogFile();
                                 RegionContainer container = worldguard.getRegionContainer();
                                 this.getServer().getWorlds().stream().map((world) -> container.get(world)).map((regions) -> regions.getRegions()).forEach((rgids) -> {
                                     rgids.values().stream().filter((rg) -> (file.getString(rg.getId()) != null)).forEach((rg) -> {

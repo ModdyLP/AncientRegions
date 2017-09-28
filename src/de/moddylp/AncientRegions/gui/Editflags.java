@@ -4,11 +4,8 @@ import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import de.moddylp.AncientRegions.flags.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 import de.moddylp.AncientRegions.Main;
 
@@ -16,120 +13,64 @@ public class Editflags {
 	private Inventory menu;
 	private Player p;
 	private Main plugin;
-	private WorldGuardPlugin worldguard;
 
-	public Editflags(Player p, Main plugin, WorldGuardPlugin worldguard) {
+	public Editflags(Player p, Main plugin) {
 		this.plugin = plugin;
 		this.p = p;
 		this.menu = Bukkit.createInventory(null, 54, ChatColor.RED + plugin.lang.getText("EditFlags") + " 1");
-		this.worldguard = worldguard;
-
 	}
 
 	// Load the menu items/icons
 	private void loadMenuItems() {
 		EditFlagsNavigation navigation = new EditFlagsNavigation();
 		navigation.loadguiitems(menu, plugin);
-		//BUILD FLAG B
-		BooleanFlag.createandload(FlagOBJ.getFlagObj("Build"),p, menu);
-		//Gretting FLAG S
-		Greeting greeting = new Greeting(plugin);
-		greeting.loadgui(menu, p, worldguard);
-		//Farewell FLAG S
-		Farewell farewell = new Farewell(plugin);
-		farewell.loadgui(menu, p, worldguard);
-		//PVP FLAG B
-		BooleanFlag.createandload(FlagOBJ.getFlagObj("PvP"), p, menu);
-        //Mobdamage FLAG B
-        BooleanFlag.createandload(FlagOBJ.getFlagObj("MobDamage"), p, menu);
-        //Entry FLAG B
-        BooleanFlag.createandload(FlagOBJ.getFlagObj("Entry"), p, menu);
-        //Exit FLAG B
-        BooleanFlag.createandload(FlagOBJ.getFlagObj("Exit"), p, menu);
-        //Enderpearl FLAG B
-		EnderPearlTeleport enderpearl = new EnderPearlTeleport(plugin);
-		enderpearl.loadgui(menu, p, worldguard);
-        //Teleport FLAG L
-		Teleportlocation teleloc = new Teleportlocation(plugin);
-		teleloc.loadgui(menu, p, worldguard);
-        //Itempickup FLAG B
-		ItemPickup itempickup = new ItemPickup(plugin);
-		itempickup.loadgui(menu, p, worldguard);
-        //Itemdrop FLAG B
-		ItemDrop itemdrop = new ItemDrop(plugin);
-		itemdrop.loadgui(menu, p, worldguard);
-        //EXPDrop FLAG B
-		ExpDrop expdrop = new ExpDrop(plugin);
-		expdrop.loadgui(menu, p, worldguard);
-        //Mobspawn FLAG B
-		MobSpawn mobspawn = new MobSpawn(plugin);
-		mobspawn.loadgui(menu, p, worldguard);
-        //Creeperexplosion FLAG B
-		CreeperExplosion creeperexplosion = new CreeperExplosion(plugin);
-		creeperexplosion.loadgui(menu, p, worldguard);
-        //Enderpearl FLAG B
-		TNTExplosion tntexplosion = new TNTExplosion(plugin);
-		tntexplosion.loadgui(menu, p, worldguard);
-		Invisible invisible = new Invisible(plugin);
-		invisible.loadgui(menu, p, worldguard);
-		EnderDragonDamage enderdragondamage = new EnderDragonDamage(plugin);
-		enderdragondamage.loadgui(menu, p, worldguard);
-		DenySpawn denyspawn = new DenySpawn(plugin, worldguard, p);
-		denyspawn.loadgui(menu, p, worldguard);
-		Snowfall snowfall = new Snowfall(plugin);
-		snowfall.loadgui(menu, p, worldguard);
-		Snowmelt snowmelt = new Snowmelt(plugin);
-		snowmelt.loadgui(menu, p, worldguard);
-		IceForm iceform = new IceForm(plugin);
-		iceform.loadgui(menu, p, worldguard);
-		IceMelt icemelt = new IceMelt(plugin);
-		icemelt.loadgui(menu, p, worldguard);
-		GrassGrowth grassgrowth = new GrassGrowth(plugin);
-		grassgrowth.loadgui(menu, p, worldguard);
-		HealDelay healdelay = new HealDelay(plugin, worldguard, p);
-		healdelay.loadgui(menu, p, worldguard);
-		HealAmount healamount = new HealAmount(plugin, worldguard, p);
-		healamount.loadgui(menu, p, worldguard);
-		HealMinHealth healminheal = new HealMinHealth(plugin, worldguard, p);
-		healminheal.loadgui(menu, p, worldguard);
-		HealMaxHealth healmaxheal = new HealMaxHealth(plugin, worldguard, p);
-		healmaxheal.loadgui(menu, p, worldguard);
-        StringSetFlag.createandload(FlagOBJ.getFlagObj("AllowedCmds"), p, menu);
-        StringSetFlag.createandload(FlagOBJ.getFlagObj("BlockedCmds"), p, menu);
-		TimeLock timelock = new TimeLock(plugin);
-		timelock.loadgui(menu, p, worldguard);
-		WeatherLock weather = new WeatherLock(plugin);
-		weather.loadgui(menu, p, worldguard);
-		SpawnLocation spawnlocation = new SpawnLocation(plugin);
-		spawnlocation.loadgui(menu, p, worldguard);
-		FeedDelay Feeddelay = new FeedDelay(plugin, worldguard, p);
-		Feeddelay.loadgui(menu, p, worldguard);
-		FeedAmount Feedamount = new FeedAmount(plugin, worldguard, p);
-		Feedamount.loadgui(menu, p, worldguard);
-		FeedMinHunger FeedminFeed = new FeedMinHunger(plugin, worldguard, p);
-		FeedminFeed.loadgui(menu, p, worldguard);
-		FeedMaxHunger FeedmaxFeed = new FeedMaxHunger(plugin, worldguard, p);
-		FeedmaxFeed.loadgui(menu, p, worldguard);
-		LavaFlow lavaflow = new LavaFlow(plugin);
-		lavaflow.loadgui(menu, p, worldguard);
-		WaterFlow waterflow = new WaterFlow(plugin);
-		waterflow.loadgui(menu, p, worldguard);
-		Lightning lightning = new Lightning(plugin);
-		lightning.loadgui(menu, p, worldguard);
-		LavaFire lavafire = new LavaFire(plugin);
-		lavafire.loadgui(menu, p, worldguard);
-		MushroomGrowth mushroom = new MushroomGrowth(plugin);
-		mushroom.loadgui(menu, p, worldguard);
-		Piston piston = new Piston(plugin);
-		piston.loadgui(menu, p, worldguard);
-		SendChat senchat = new SendChat(plugin);
-		senchat.loadgui(menu, p, worldguard);
-		RecieveChat recieve = new RecieveChat(plugin);
-		recieve.loadgui(menu, p, worldguard);
-		PotionSplash potion = new PotionSplash(plugin);
-		potion.loadgui(menu, p, worldguard);
-		LeafDecay leafdecay = new LeafDecay(plugin);
-		leafdecay.loadgui(menu, p, worldguard); // 51
+
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.BUILD), p, menu);
+        StringFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.GREET_MESSAGE), p, menu);
+        StringFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.FAREWELL_MESSAGE), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.PVP), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.MOB_DAMAGE), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ENTRY), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.EXIT), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ENDERPEARL), p, menu);
+        LocationFlagimpl.createandload(FlagOBJ.getFlagObj(DefaultFlag.TELE_LOC), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ITEM_PICKUP), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ITEM_DROP), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.EXP_DROPS), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.MOB_SPAWNING), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.CREEPER_EXPLOSION), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.TNT), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.INVINCIBILITY), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ENDERDRAGON_BLOCK_DAMAGE), p, menu);
+        EntitySetFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.DENY_SPAWN), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.SNOW_FALL), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.SNOW_MELT), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ICE_FORM), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ICE_MELT), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.GRASS_SPREAD), p, menu);
+        IntegerFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.HEAL_AMOUNT), p, menu);
+		IntegerFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.HEAL_DELAY), p, menu);
+        DoubleFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.MIN_HEAL), p, menu);
+		DoubleFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.MAX_HEAL), p, menu);
+        StringFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ALLOWED_CMDS), p, menu);
+        StringFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.BLOCKED_CMDS), p, menu);
+		StringFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.TIME_LOCK), p, menu);
+        WeatherFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.WEATHER_LOCK), p, menu);
+		LocationFlagimpl.createandload(FlagOBJ.getFlagObj(DefaultFlag.SPAWN_LOC), p, menu);
+        IntegerFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.FEED_AMOUNT), p, menu);
+        IntegerFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.FEED_DELAY), p, menu);
+        DoubleFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.MIN_FOOD), p, menu);
+        DoubleFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.MAX_FOOD), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FLOW), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.WATER_FLOW), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.LIGHTNING), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FIRE), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.MUSHROOMS), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.PISTONS), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.SEND_CHAT), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.RECEIVE_CHAT), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.POTION_SPLASH), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.LEAF_DECAY), p, menu);
 	}
 
 	// Open the inventory inGame

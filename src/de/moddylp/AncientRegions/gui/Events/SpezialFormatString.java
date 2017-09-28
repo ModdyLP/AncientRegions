@@ -54,7 +54,7 @@ public class SpezialFormatString implements Listener {
 							rg.setFlag((SetFlag<String>)flag.getFlag(), set);
 
 							p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", flag.getName()));
-							Editflags gui = new Editflags(p, Main.getInstance(), Main.worldguard);
+							Editflags gui = new Editflags(p, Main.getInstance());
 							gui.open();
 							HandlerList.unregisterAll(this);
 							e.setCancelled(true);
