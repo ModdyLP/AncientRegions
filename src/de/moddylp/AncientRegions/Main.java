@@ -5,6 +5,7 @@ import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.moddylp.AncientRegions.gui.Events.GUIEvents;
 import de.moddylp.AncientRegions.gui.Events.GUIOpener;
+import de.moddylp.AncientRegions.loader.FlagLoader;
 import de.moddylp.AncientRegions.loader.LoadConfig;
 import de.moddylp.AncientRegions.loader.Messages;
 import de.moddylp.AncientRegions.loader.VaultLoader;
@@ -56,6 +57,7 @@ public class Main extends JavaPlugin {
             file.setup();
             loader = new GUIEvents(this, worldguard, worldedit);
         }
+        FlagLoader.load();
         System.out.println(this.lang.getText("Enabled"));
     }
 

@@ -120,10 +120,7 @@ public class Menu_Click implements Listener {
 			}
 			try {
 				if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Build")) {
-					FlagOBJ buildflag = new FlagOBJ("Build", "", DefaultFlag.BUILD, Material.STONE, 0);
-					BooleanFlag buildbolflag = new BooleanFlag(buildflag, p);
-					buildbolflag.toggle(e, menu);
-					e.setCancelled(true);
+					BooleanFlag.createandtoggle(FlagOBJ.getFlagObj("Build"),p, menu, e);
 				} else if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Greeting")) {
 					Greeting greeting = new Greeting(plugin);
 					greeting.toggle(worldguard, p, e, menu);
@@ -133,21 +130,13 @@ public class Menu_Click implements Listener {
 					farewell.toggle(worldguard, p, e, menu);
 					e.setCancelled(true);
 				} else if (e.getCurrentItem().getItemMeta().getDisplayName().contains("PvP")) {
-					PvP pvp = new PvP(plugin);
-					pvp.toggle(worldguard, p, e, menu);
-					e.setCancelled(true);
+					BooleanFlag.createandtoggle(FlagOBJ.getFlagObj("PvP"),p, menu, e);
 				} else if (e.getCurrentItem().getItemMeta().getDisplayName().contains("MobDamage")) {
-					MobDamage mobdamage = new MobDamage(plugin);
-					mobdamage.toggle(worldguard, p, e, menu);
-					e.setCancelled(true);
+					BooleanFlag.createandtoggle(FlagOBJ.getFlagObj("MobDamage"), p, menu, e);
 				} else if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Entry")) {
-					Entry entry = new Entry(plugin);
-					entry.toggle(worldguard, p, e, menu);
-					e.setCancelled(true);
+					BooleanFlag.createandtoggle(FlagOBJ.getFlagObj("Entry"),p, menu, e);
 				} else if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Exit")) {
-					Exit exit = new Exit(plugin);
-					exit.toggle(worldguard, p, e, menu);
-					e.setCancelled(true);
+					BooleanFlag.createandtoggle(FlagOBJ.getFlagObj("Exit"),p, menu, e);
 				} else if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Enderpearl")) {
 					EnderPearlTeleport enderpearl = new EnderPearlTeleport(plugin);
 					enderpearl.toggle(worldguard, p, e, menu);
@@ -229,15 +218,9 @@ public class Menu_Click implements Listener {
 					healMaxhealth.toggle(e, menu);
 					e.setCancelled(true);
 				} else if (e.getCurrentItem().getItemMeta().getDisplayName().contains("BlockedCmds")) {
-                    FlagOBJ blockedcmdsflag = new FlagOBJ("BlockedCmds", "", DefaultFlag.BLOCKED_CMDS, Material.COMMAND_REPEATING, 28);
-                    StringFlag blockedcmds = new StringFlag(blockedcmdsflag, p);
-                    blockedcmds.toggle(e,menu);
-					e.setCancelled(true);
+                    StringSetFlag.createandtoggle(FlagOBJ.getFlagObj("BlockedCmds"), p, menu, e);
 				} else if (e.getCurrentItem().getItemMeta().getDisplayName().contains("AllowedCmds")) {
-					FlagOBJ flag = new FlagOBJ("AllowedCmds", "", DefaultFlag.ALLOWED_CMDS, Material.COMMAND_CHAIN, 27);
-					StringFlag alloedcmds = new StringFlag(flag, p);
-					alloedcmds.toggle(e, menu);
-					e.setCancelled(true);
+					StringSetFlag.createandtoggle(FlagOBJ.getFlagObj("AllowedCmds"), p, menu, e);
 				} else if (e.getCurrentItem().getItemMeta().getDisplayName().contains("TimeLock")) {
 					TimeLock timelock = new TimeLock(plugin);
 					timelock.toggle(worldguard, p, e, menu);

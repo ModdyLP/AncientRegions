@@ -3,11 +3,7 @@ package de.moddylp.AncientRegions.flags;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.Flag;
-import com.sk89q.worldguard.protection.flags.SetFlag;
-import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
-import com.sk89q.worldguard.protection.flags.registry.SimpleFlagRegistry;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
@@ -17,8 +13,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -27,6 +21,9 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import java.util.*;
 
 public class FlagUtil {
+    public static HashMap<String, FlagOBJ> flagOBJHashMap = new HashMap<>();
+    public static HashMap<String, BooleanFlag> booleanFlagHashMap = new HashMap<>();
+    public static HashMap<String, StringSetFlag> stringsetFlagHashMap = new HashMap<>();
     public static <T> T convertInstanceOfObject(Object o, Class<T> clazz) {
         try {
             return clazz.cast(o);

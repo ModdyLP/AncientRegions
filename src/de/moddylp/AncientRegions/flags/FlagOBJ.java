@@ -1,6 +1,7 @@
 package de.moddylp.AncientRegions.flags;
 
 import com.sk89q.worldguard.protection.flags.*;
+import de.moddylp.AncientRegions.Main;
 import org.bukkit.Material;
 
 public class FlagOBJ {
@@ -26,6 +27,16 @@ public class FlagOBJ {
         }
         this.item = item;
         this.menuposition = menuposition;
+        FlagUtil.flagOBJHashMap.put(name, this);
+        Main.getInstance().getLogger().info("Created: "+name);
+    }
+    public static FlagOBJ getFlagObj(String name) {
+        if (FlagUtil.flagOBJHashMap.containsKey(name)) {
+            return FlagUtil.flagOBJHashMap.get(name);
+        } else {
+            Main.getInstance().getLogger().warning("No Flag found with name: "+name);
+        }
+        return null;
     }
 
     public String getName() {

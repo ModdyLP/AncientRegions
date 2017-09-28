@@ -34,6 +34,27 @@ public class BooleanFlag {
         this.flagOBJ = flagOBJ;
         this.p = p;
     }
+    public static void createandload(FlagOBJ flagOBJ, Player p, Inventory menu) {
+        BooleanFlag flag;
+        if (FlagUtil.booleanFlagHashMap.containsKey(flagOBJ.getName())) {
+            flag = FlagUtil.booleanFlagHashMap.get(flagOBJ.getName());
+        } else {
+            flag = new BooleanFlag(flagOBJ, p);
+            FlagUtil.booleanFlagHashMap.put(flagOBJ.getName(), flag);
+        }
+        flag.loadgui(menu);
+    }
+    public static void createandtoggle(FlagOBJ flagOBJ, Player p, Inventory menu, InventoryClickEvent event) {
+        event.setCancelled(true);
+        BooleanFlag flag;
+        if (FlagUtil.booleanFlagHashMap.containsKey(flagOBJ.getName())) {
+            flag = FlagUtil.booleanFlagHashMap.get(flagOBJ.getName());
+        } else {
+            flag = new BooleanFlag(flagOBJ, p);
+            FlagUtil.booleanFlagHashMap.put(flagOBJ.getName(), flag);
+        }
+        flag.toggle(event, menu);
+    }
 
     public boolean toggle(InventoryClickEvent e, Inventory menu) {
 

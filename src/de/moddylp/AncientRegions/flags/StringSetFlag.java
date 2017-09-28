@@ -24,13 +24,34 @@ import java.util.List;
 import static de.moddylp.AncientRegions.flags.FlagUtil.*;
 import static de.moddylp.AncientRegions.flags.FlagUtil.isSet;
 
-public class StringFlag {
+public class StringSetFlag {
     private final FlagOBJ flagOBJ;
     private final Player p;
 
-    public StringFlag(FlagOBJ flagOBJ, Player p) {
+    public StringSetFlag(FlagOBJ flagOBJ, Player p) {
         this.flagOBJ = flagOBJ;
         this.p = p;
+    }
+    public static void createandload(FlagOBJ flagOBJ, Player p, Inventory menu) {
+        StringSetFlag flag;
+        if (FlagUtil.stringsetFlagHashMap.containsKey(flagOBJ.getName())) {
+            flag = FlagUtil.stringsetFlagHashMap.get(flagOBJ.getName());
+        } else {
+            flag = new StringSetFlag(flagOBJ, p);
+            FlagUtil.stringsetFlagHashMap.put(flagOBJ.getName(), flag);
+        }
+        flag.loadgui(menu);
+    }
+    public static void createandtoggle(FlagOBJ flagOBJ, Player p, Inventory menu, InventoryClickEvent event) {
+        event.setCancelled(true);
+        StringSetFlag flag;
+        if (FlagUtil.stringsetFlagHashMap.containsKey(flagOBJ.getName())) {
+            flag = FlagUtil.stringsetFlagHashMap.get(flagOBJ.getName());
+        } else {
+            flag = new StringSetFlag(flagOBJ, p);
+            FlagUtil.stringsetFlagHashMap.put(flagOBJ.getName(), flag);
+        }
+        flag.toggle(event, menu);
     }
     public boolean toggle(InventoryClickEvent e, Inventory menu) {
         if (p.hasPermission(flagOBJ.getPermission())) {

@@ -34,8 +34,7 @@ public class LoadConfig {
 		plugin.reloadConfig();
 	}
 	public String getOption(String option) {
-		String value = plugin.getConfig().getString(option);
-		return value;
+		return plugin.getConfig().getString(option);
 	}
 	public String searchoption(String search) {
 		Set<String> keys = plugin.getConfig().getKeys(true);

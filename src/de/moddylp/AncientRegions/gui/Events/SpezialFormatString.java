@@ -1,34 +1,23 @@
 package de.moddylp.AncientRegions.gui.Events;
 
 import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.util.command.composition.FlagParser;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import de.moddylp.AncientRegions.flags.FlagOBJ;
 import de.moddylp.AncientRegions.flags.FlagUtil;
-import de.moddylp.AncientRegions.flags.StringFlag;
-import de.moddylp.AncientRegions.gui.EditflagsPage2;
-import de.moddylp.AncientRegions.loader.LoadConfig;
-import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.flags.InvalidFlagFormat;
 import com.sk89q.worldguard.protection.flags.SetFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.gui.Editflags;
-import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.util.HashSet;
 import java.util.List;

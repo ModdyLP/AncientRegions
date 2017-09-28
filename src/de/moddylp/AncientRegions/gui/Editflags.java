@@ -30,35 +30,44 @@ public class Editflags {
 	private void loadMenuItems() {
 		EditFlagsNavigation navigation = new EditFlagsNavigation();
 		navigation.loadguiitems(menu, plugin);
-		FlagOBJ buildflag = new FlagOBJ("Build", "", DefaultFlag.BUILD, Material.STONE, 0);
-		BooleanFlag buildbolflag = new BooleanFlag(buildflag, p);
-		buildbolflag.loadgui(menu);
+		//BUILD FLAG B
+		BooleanFlag.createandload(FlagOBJ.getFlagObj("Build"),p, menu);
+		//Gretting FLAG S
 		Greeting greeting = new Greeting(plugin);
 		greeting.loadgui(menu, p, worldguard);
+		//Farewell FLAG S
 		Farewell farewell = new Farewell(plugin);
 		farewell.loadgui(menu, p, worldguard);
-		PvP pvp = new PvP(plugin);
-		pvp.loadgui(menu, p, worldguard);
-		MobDamage mobdamage = new MobDamage(plugin);
-		mobdamage.loadgui(menu, p, worldguard);
-		Entry entry = new Entry(plugin);
-		entry.loadgui(menu, p, worldguard);
-		Exit exit = new Exit(plugin);
-		exit.loadgui(menu, p, worldguard);
+		//PVP FLAG B
+		BooleanFlag.createandload(FlagOBJ.getFlagObj("PvP"), p, menu);
+        //Mobdamage FLAG B
+        BooleanFlag.createandload(FlagOBJ.getFlagObj("MobDamage"), p, menu);
+        //Entry FLAG B
+        BooleanFlag.createandload(FlagOBJ.getFlagObj("Entry"), p, menu);
+        //Exit FLAG B
+        BooleanFlag.createandload(FlagOBJ.getFlagObj("Exit"), p, menu);
+        //Enderpearl FLAG B
 		EnderPearlTeleport enderpearl = new EnderPearlTeleport(plugin);
 		enderpearl.loadgui(menu, p, worldguard);
+        //Teleport FLAG L
 		Teleportlocation teleloc = new Teleportlocation(plugin);
 		teleloc.loadgui(menu, p, worldguard);
+        //Itempickup FLAG B
 		ItemPickup itempickup = new ItemPickup(plugin);
 		itempickup.loadgui(menu, p, worldguard);
+        //Itemdrop FLAG B
 		ItemDrop itemdrop = new ItemDrop(plugin);
 		itemdrop.loadgui(menu, p, worldguard);
+        //EXPDrop FLAG B
 		ExpDrop expdrop = new ExpDrop(plugin);
 		expdrop.loadgui(menu, p, worldguard);
+        //Mobspawn FLAG B
 		MobSpawn mobspawn = new MobSpawn(plugin);
 		mobspawn.loadgui(menu, p, worldguard);
+        //Creeperexplosion FLAG B
 		CreeperExplosion creeperexplosion = new CreeperExplosion(plugin);
 		creeperexplosion.loadgui(menu, p, worldguard);
+        //Enderpearl FLAG B
 		TNTExplosion tntexplosion = new TNTExplosion(plugin);
 		tntexplosion.loadgui(menu, p, worldguard);
 		Invisible invisible = new Invisible(plugin);
@@ -85,12 +94,8 @@ public class Editflags {
 		healminheal.loadgui(menu, p, worldguard);
 		HealMaxHealth healmaxheal = new HealMaxHealth(plugin, worldguard, p);
 		healmaxheal.loadgui(menu, p, worldguard);
-		FlagOBJ blockedcmdsflag = new FlagOBJ("BlockedCmds", "", DefaultFlag.BLOCKED_CMDS, Material.COMMAND_REPEATING, 28);
-		StringFlag blockedcmds = new StringFlag(blockedcmdsflag, p);
-		blockedcmds.loadgui(menu);
-		FlagOBJ alloedcmdsflag = new FlagOBJ("AllowedCmds", "", DefaultFlag.ALLOWED_CMDS,Material.COMMAND_CHAIN, 27);
-		StringFlag alloedcmds = new StringFlag(alloedcmdsflag, p);
-		alloedcmds.loadgui(menu);
+        StringSetFlag.createandload(FlagOBJ.getFlagObj("AllowedCmds"), p, menu);
+        StringSetFlag.createandload(FlagOBJ.getFlagObj("BlockedCmds"), p, menu);
 		TimeLock timelock = new TimeLock(plugin);
 		timelock.loadgui(menu, p, worldguard);
 		WeatherLock weather = new WeatherLock(plugin);

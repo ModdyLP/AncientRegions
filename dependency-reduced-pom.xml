@@ -133,14 +133,14 @@
       <artifactId>worldguard-legacy</artifactId>
       <version>6.2.1</version>
       <scope>system</scope>
-      <systemPath>E:\Programme\Repositories\AncientRegions/lib/worldguard-6.2.1.jar</systemPath>
+      <systemPath>C:\Users\N.Hartmann\workspace\AncientRegions/lib/worldguard-6.2.1.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>com.sk89q.worldedit</groupId>
       <artifactId>worldedit-bukkit</artifactId>
       <version>6.1.7.3</version>
       <scope>system</scope>
-      <systemPath>E:\Programme\Repositories\AncientRegions/lib/worldedit-bukkit-6.1.7.3.jar</systemPath>
+      <systemPath>C:\Users\N.Hartmann\workspace\AncientRegions/lib/worldedit-bukkit-6.1.7.3.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>net.milkbowl.vault</groupId>
