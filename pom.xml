@@ -35,8 +35,8 @@
                     <artifactSet>
                         <includes>
                             <include>org.inventivetalent:*</include>
-                            <include>com.google.code.gson.*</include>
-                            <include>org.json.*</include>
+                            <include>com.google.code.gson:*</include>
+                            <include>org.json:*</include>
                         </includes>
                     </artifactSet>
                 </configuration>
