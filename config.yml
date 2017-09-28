@@ -54,7 +54,7 @@ build: 100
 greeting: 100
 farewell: 100
 pvp: 100
-mobdamage: 100
+mob_damage: 100
 entry: 100
 exit: 100
 enderpearl: 100

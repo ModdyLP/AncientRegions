@@ -1,5 +1,6 @@
 package de.moddylp.AncientRegions.flags;
 
+import com.google.common.base.CaseFormat;
 import com.sk89q.worldguard.protection.flags.*;
 import de.moddylp.AncientRegions.Main;
 import org.bukkit.Material;
@@ -15,8 +16,8 @@ public class FlagOBJ {
     private String permission;
 
 
-    public FlagOBJ(String name, String description, Flag<?> flag, Material item, int menuposition) {
-        this.name = name;
+    public FlagOBJ(String description, Flag<?> flag, Material item, int menuposition) {
+        this.name = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, flag.getName().toUpperCase().replaceAll("-", "_"));
         this.description = description;
         this.flag = flag;
         this.configname = name.toLowerCase();
@@ -28,6 +29,7 @@ public class FlagOBJ {
         this.item = item;
         this.menuposition = menuposition;
         FlagUtil.flagOBJHashMap.put(name, this);
+        Main.config.setifunsetOption(configname, "100");
         Main.getInstance().getLogger().info("Created: "+name);
     }
     public static FlagOBJ getFlagObj(String name) {

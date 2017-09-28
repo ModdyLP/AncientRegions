@@ -30,7 +30,7 @@ public class Main extends JavaPlugin {
     protected GUIEvents loader;
     public static WorldGuardPlugin worldguard;
     public Language lang;
-    private LoadConfig config;
+    public static LoadConfig config;
     public static WorldEditPlugin worldedit;
     private static Main instance;
 

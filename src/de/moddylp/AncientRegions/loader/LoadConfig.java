@@ -3,6 +3,7 @@ package de.moddylp.AncientRegions.loader;
 import java.io.File;
 import java.util.Set;
 
+import com.sk89q.worldguard.protection.flags.StringFlag;
 import de.moddylp.AncientRegions.Main;
 
 
@@ -45,6 +46,12 @@ public class LoadConfig {
 			}
 		}
 		return null;
+	}
+	public void setifunsetOption(String option, String value) {
+		if (getOption(option) == null || getOption(option).equals("")) {
+			plugin.getConfig().set(option, value);
+			plugin.saveConfig();
+		}
 	}
 	public void setOption(String option, String value) {
 		plugin.getConfig().set(option, value);
