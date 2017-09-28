@@ -30,6 +30,7 @@ public class Main extends JavaPlugin {
     public static WorldEditPlugin worldedit;
     private static Main instance;
     public static FileDriver DRIVER = FileDriver.getInstance();
+    public static String FOLDER = "plugins/AncientRegions/";
 
     public static Main getInstance() {
         return instance;
@@ -47,7 +48,7 @@ public class Main extends JavaPlugin {
             return;
         } else {
             ConfigLoader.saveDefaultconfig();
-            lang = new Language(new File(this.getDataFolder(), "messages.yml"));
+            lang = new Language(new File(Main.FOLDER, "messages.yml"));
             loadMessages();
             LogFile file = new LogFile();
             file.setup();

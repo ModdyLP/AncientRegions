@@ -36,7 +36,7 @@ public class FileDriver {
         if (instance == null) {
             instance = new FileDriver();
         }
-        instance.CONFIG = Main.getInstance().getDataFolder().getAbsolutePath()+"/config.json";
+        instance.CONFIG = Main.FOLDER+"config.json";
         Main.getInstance().getLogger().info("Config: "+instance.CONFIG);
         return instance;
     }
