@@ -71,7 +71,7 @@ public class Main extends JavaPlugin {
                         if (sender instanceof Player) {
                             Player p = ((Player) sender).getPlayer();
                             if (Main.DRIVER.hasKey(Main.DRIVER.CONFIG,"worlds")) {
-                                JSONArray worldconfig =FileDriver.objectToJSONArray(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"worlds"));
+                                JSONArray worldconfig =FileDriver.objectToJSONArray(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "worlds"));
                                 ArrayList<String> worlds = new ArrayList<>();
                                 for (Object object: worldconfig) {
                                     worlds.add(object.toString());

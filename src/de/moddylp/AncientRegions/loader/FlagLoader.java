@@ -22,6 +22,7 @@ public class FlagLoader {
         new FlagOBJ("", 5, Material.IRON_DOOR, DefaultFlag.ENTRY);
         new FlagOBJ("", 6, Material.WOOD_DOOR, DefaultFlag.EXIT);
         new FlagOBJ("", 7, Material.ENDER_PEARL, DefaultFlag.ENDERPEARL);
+        new FlagOBJ("", 8, Material.COMPASS, DefaultFlag.TELE_LOC);
         new FlagOBJ("", 9, Material.HOPPER, DefaultFlag.ITEM_PICKUP);
         new FlagOBJ("", 10, Material.DROPPER, DefaultFlag.ITEM_DROP);
         new FlagOBJ("", 11, Material.EXP_BOTTLE, DefaultFlag.EXP_DROPS);
@@ -34,6 +35,7 @@ public class FlagLoader {
         new FlagOBJ("", 18, Material.MYCEL, DefaultFlag.MYCELIUM_SPREAD);
         new FlagOBJ("", 19, Material.VINE, DefaultFlag.VINE_GROWTH);
         new FlagOBJ("", 20, Material.SOIL, DefaultFlag.SOIL_DRY);
+        new FlagOBJ("", 21, Material.SKULL_ITEM, DefaultFlag.GAME_MODE);
         new FlagOBJ("", 22, Material.GRASS, DefaultFlag.GRASS_SPREAD);
         new FlagOBJ("", 23, Material.GOLDEN_APPLE, DefaultFlag.HEAL_AMOUNT);
         new FlagOBJ("", 24, Material.GOLDEN_APPLE, DefaultFlag.HEAL_DELAY);
@@ -43,6 +45,7 @@ public class FlagLoader {
         new FlagOBJ("", 28, Material.COMMAND_REPEATING, DefaultFlag.BLOCKED_CMDS);
         new FlagOBJ("", 29, Material.EMERALD, DefaultFlag.TIME_LOCK);
         new FlagOBJ("", 30, Material.FIREBALL, DefaultFlag.WEATHER_LOCK);
+        new FlagOBJ("", 31, Material.BED, DefaultFlag.SPAWN_LOC);
         new FlagOBJ("", 32, Material.COOKED_BEEF, DefaultFlag.FEED_AMOUNT);
         new FlagOBJ("", 33, Material.COOKED_BEEF, DefaultFlag.FEED_DELAY);
         new FlagOBJ("", 34, Material.COOKED_BEEF, DefaultFlag.MIN_FOOD);
