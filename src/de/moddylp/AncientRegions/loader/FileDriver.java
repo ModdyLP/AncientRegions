@@ -22,7 +22,7 @@ import java.util.Set;
 public class FileDriver {
 
     //FILEDRIVE IS NOT TRANSLATED - CAUSES ERRORS BECAUSE LANGUAGE IS NOT LOADED
-    public String CONFIG = "config.json";
+    public String CONFIG = Main.getInstance().getDataFolder()+"/config.json";
 
     private static FileDriver instance;
     private static HashMap<String, File> files = new HashMap<>();

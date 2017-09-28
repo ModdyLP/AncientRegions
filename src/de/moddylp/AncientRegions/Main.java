@@ -21,6 +21,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.json.JSONArray;
 
 public class Main extends JavaPlugin {
     protected GUIEvents loader;
@@ -69,10 +70,12 @@ public class Main extends JavaPlugin {
                     case "gui":
                         if (sender instanceof Player) {
                             Player p = ((Player) sender).getPlayer();
-                            if (!Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"worlds").equals("[]") && Main.DRIVER.hasKey(Main.DRIVER.CONFIG,"worlds")) {
-                                String[] worldconfig = Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"worlds").split(",");
-                                List<String> worlds = new ArrayList<>();
-                                worlds.addAll(Arrays.asList(worldconfig));
+                            if (Main.DRIVER.hasKey(Main.DRIVER.CONFIG,"worlds")) {
+                                JSONArray worldconfig =FileDriver.objectToJSONArray(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"worlds"));
+                                ArrayList<String> worlds = new ArrayList<>();
+                                for (Object object: worldconfig) {
+                                    worlds.add(object.toString());
+                                }
                                 if (worlds.contains(p.getWorld().getName())) {
                                     if (p.hasPermission("ancient.regions.flag.command")) {
 
