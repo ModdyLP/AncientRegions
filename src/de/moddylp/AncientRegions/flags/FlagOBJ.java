@@ -17,7 +17,8 @@ public class FlagOBJ {
 
 
     public FlagOBJ(String description, Flag<?> flag, Material item, int menuposition) {
-        this.name = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, flag.getName().toUpperCase().replaceAll("-", "_"));
+        Main.getInstance().getLogger().info("New Name: "+flag.getName().replaceAll("-", "_").toUpperCase());
+        this.name = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, flag.getName().replaceAll("-", "_").toUpperCase());
         this.description = description;
         this.flag = flag;
         this.configname = name.toLowerCase();
@@ -85,7 +86,7 @@ public class FlagOBJ {
         return item;
     }
 
-    public int getMenuposition() {
+    int getMenuposition() {
         return menuposition;
     }
 }
