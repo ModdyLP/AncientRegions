@@ -36,7 +36,6 @@ public class FileDriver {
         if (instance == null) {
             instance = new FileDriver();
         }
-        Main.getInstance().getLogger().info("Config: "+instance.CONFIG);
         return instance;
     }
     public boolean checkIfFileExists(String filename) {
