@@ -31,7 +31,6 @@ public class FlagOBJ {
         this.menuposition = menuposition;
         FlagUtil.flagOBJHashMap.put(name, this);
         FileDriver.getInstance().getProperty(FileDriver.getInstance().CONFIG, configname, 100);
-        Main.getInstance().getLogger().info("Created: "+name);
     }
     public static FlagOBJ getFlagObj(Flag flag) {
         String search = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, flag.getName().replaceAll("-", "_").toUpperCase());
