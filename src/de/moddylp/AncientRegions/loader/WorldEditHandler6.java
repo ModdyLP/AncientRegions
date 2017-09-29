@@ -33,7 +33,7 @@ public class WorldEditHandler6 {
     }
 
     public boolean restoreRegionBlocks(File file, String regionname, Player p, ProtectedRegion region, Vector dimension) {
-        this.plugin.getLogger().info("Restore in progress...");
+        Main.getInstance().getLogger().info("Restore in progress...");
         try {
             World world = LocalWorldAdapter.adapt(new BukkitWorld(p.getWorld()));
             EditSession editSession = plugin.setupWorldEdit().getWorldEdit().getEditSessionFactory().getEditSession(world, 999999999);
@@ -59,7 +59,7 @@ public class WorldEditHandler6 {
             }
             file.delete();
         } catch (Exception e) {
-            this.plugin.getLogger().warning(e.getMessage());
+            Main.getInstance().getLogger().warning(e.getMessage());
             return false;
         }
         return true;
@@ -71,7 +71,7 @@ public class WorldEditHandler6 {
             world = LocalWorldAdapter.adapt(new BukkitWorld(p.getWorld()));
         }
         if (world == null) {
-            this.plugin.getLogger().warning("Did not save region " + regionname + ", world not found: " + p.getWorld().getName());
+            Main.getInstance().getLogger().warning("Did not save region " + regionname + ", world not found: " + p.getWorld().getName());
             return false;
         }
         EditSession editSession = this.plugin.setupWorldEdit().getWorldEdit().getEditSessionFactory().getEditSession(world, 9999999);
@@ -83,7 +83,7 @@ public class WorldEditHandler6 {
         try {
             Operations.completeLegacy(copy);
         } catch (MaxChangedBlocksException e1) {
-            this.plugin.getLogger().warning("Exeeded the block limit while saving schematic of " + regionname);
+            Main.getInstance().getLogger().warning("Exeeded the block limit while saving schematic of " + regionname);
             return false;
         }
         Closer closer = Closer.create();
@@ -95,7 +95,7 @@ public class WorldEditHandler6 {
 
             return true;
         } catch (IOException e) {
-            this.plugin.getLogger().warning("An error occured while saving schematic of " + regionname + ", " + e.getMessage());
+            Main.getInstance().getLogger().warning("An error occured while saving schematic of " + regionname + ", " + e.getMessage());
             return false;
         } finally {
             try {

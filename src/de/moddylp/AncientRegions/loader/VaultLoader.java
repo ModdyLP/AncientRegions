@@ -17,14 +17,14 @@ public class VaultLoader {
         Plugin vault = plugin.getServer().getPluginManager().getPlugin("Vault"); // speichert das Objekt des Plugins Vault in vault
 
         if (vault != null && vault instanceof Vault && setupEconomy()) { // wenn vault erfolgreich geladen wurde, d.h. auf dem Server vorhanden ist und aktiv ist und wirklich eine Instanz vom Vault plugin ist EDIT wenn dies nicht der Fall ist das plugin unloaden ??? warum war hier ein & geht nicht auch &&
-            plugin.getLogger().info(String.format("Enabled Version %s", vault.getDescription().getVersion())); // Informiere, dass Plugin aktiviert wurde MOVE zum ende von enable
+            Main.getInstance().getLogger().info(String.format("Enabled Version %s", vault.getDescription().getVersion())); // Informiere, dass Plugin aktiviert wurde MOVE zum ende von enable
         } else {
-            plugin.getLogger().warning("Vault was not found or some Economy Plugin is missing! Disabling plugin."); // warnen, dass Vault nicht gefunden wurde.
-            plugin.getLogger().warning("!!!!!!!!!!!!!!!!!!!! MAKE SURE YOU HAVE INSTALLED A ECONOMY PLUGIN AND VAULT !!!!!!!!!!!!!!!!!!!!!!!!");
+            Main.getInstance().getLogger().warning("Vault was not found or some Economy Plugin is missing! Disabling plugin."); // warnen, dass Vault nicht gefunden wurde.
+            Main.getInstance().getLogger().warning("!!!!!!!!!!!!!!!!!!!! MAKE SURE YOU HAVE INSTALLED A ECONOMY PLUGIN AND VAULT !!!!!!!!!!!!!!!!!!!!!!!!");
             return false;
         }
         if (!setupPermissions()) {
-            this.plugin.getLogger().warning("Vault permission not loaded");
+            Main.getInstance().getLogger().warning("Vault permission not loaded");
             return false;
         }
         return true;

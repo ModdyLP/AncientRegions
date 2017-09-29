@@ -1,5 +1,5 @@
 name: AncientRegions
-version: 1.1
+version: 20170929
 author: ModdyLP
 description: To edit Worldguard Regions
 website: https://moddylp.de
@@ -307,5 +307,5 @@ permissions:
     description: Reload Config.
     default: op
   ancient.regions.admin.bypass:
-    description: Admin dont need to pay for the Flag Changes.
+    description: Admin dont need to pay for the FlagOBJ Changes.
     default: op

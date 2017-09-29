@@ -1,12 +1,14 @@
 package de.moddylp.AncientRegions.region;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
-import de.moddylp.AncientRegions.loader.LoadConfig;
-import net.milkbowl.vault.economy.Economy;
+import com.sk89q.worldedit.Vector;
+import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.bukkit.RegionContainer;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.domains.DefaultDomain;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.flags.FlagUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -19,217 +21,174 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldguard.LocalPlayer;
-import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.domains.DefaultDomain;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-
-import de.moddylp.AncientRegions.Main;
-import org.bukkit.plugin.RegisteredServiceProvider;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 public class MembersGUI {
-	private Main plugin;
-	private Player p;
-	private Inventory menu;
-	private WorldGuardPlugin worldguard;
+    private Main plugin;
+    private Player p;
+    private Inventory menu;
+    private WorldGuardPlugin worldguard;
 
-	public MembersGUI(Player p, Main plugin, WorldGuardPlugin worldguard) {
-		this.p = p;
-		this.plugin = plugin;
-		this.worldguard = worldguard;
-	}
+    public MembersGUI(Player p, Main plugin, WorldGuardPlugin worldguard) {
+        this.p = p;
+        this.plugin = plugin;
+        this.worldguard = worldguard;
+    }
 
-	public void loadregionskulls(WorldGuardPlugin worldguard) {
-		RegionContainer container = worldguard.getRegionContainer();
-		RegionManager regions = container.get(p.getWorld());
-		Vector pt = new Vector(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ());
-		LocalPlayer ply = worldguard.wrapPlayer(p);
-		List<String> region = regions.getApplicableRegionsIDs(pt);
-		if (region.isEmpty()) {
-			p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("GobalError"));
-		} else {
-			ProtectedRegion rg = regions.getRegion(region.get(0));
-			if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
-				Set<UUID> players = rg.getMembers().getUniqueIds();
-				for (UUID p : players) {
-					ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
-					SkullMeta meta = (SkullMeta) skull.getItemMeta();
-					meta.setOwner(playername(p));
-					meta.setDisplayName(ChatColor.GREEN + playername(p));
-					skull.setItemMeta(meta);
-					menu.addItem(skull);
-				}
-			} else {
-				ItemStack ITEM = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
-				ItemMeta imeta = ITEM.getItemMeta();
-				imeta.setDisplayName(ChatColor.RED + plugin.lang.getText("Owner"));
-				imeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-				ITEM.setItemMeta(imeta);
-				menu.addItem(ITEM);
-			}
-		}
-		Navigation2 navi = new Navigation2();
-		navi.loadguiitems(menu, plugin);
-	}
+    public void loadregionskulls(WorldGuardPlugin worldguard) {
+        try {
+            RegionContainer container = worldguard.getRegionContainer();
+            RegionManager regions = container.get(p.getWorld());
+            Vector pt = new Vector(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ());
+            LocalPlayer ply = worldguard.wrapPlayer(p);
+            List<String> region = regions.getApplicableRegionsIDs(pt);
+            if (region.isEmpty()) {
+                p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("GobalError"));
+            } else {
+                ProtectedRegion rg = regions.getRegion(region.get(0));
+                if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
+                    Set<UUID> players = rg.getMembers().getUniqueIds();
+                    for (UUID p : players) {
+                        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
+                        SkullMeta meta = (SkullMeta) skull.getItemMeta();
+                        meta.setOwningPlayer(playername(p));
+                        meta.setDisplayName(ChatColor.GREEN + playername(p).getName());
+                        skull.setItemMeta(meta);
+                        menu.addItem(skull);
+                    }
+                } else {
+                    ItemStack ITEM = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+                    ItemMeta imeta = ITEM.getItemMeta();
+                    imeta.setDisplayName(ChatColor.RED + plugin.lang.getText("Owner"));
+                    imeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+                    ITEM.setItemMeta(imeta);
+                    menu.addItem(ITEM);
+                }
+            }
+            Navigation2 navi = new Navigation2();
+            navi.loadguiitems(menu, plugin);
+        } catch (Exception ex) {
+            Main.getInstance().getLogger().warning("Minecraft Version incompatible: " + ex.getMessage());
+        }
+    }
 
-	public void loadserverskulls() {
-		Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
-		for (Player p : players) {
-			ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
-			SkullMeta meta = (SkullMeta) skull.getItemMeta();
-			meta.setOwner(p.getName());
-			meta.setDisplayName(ChatColor.GREEN + p.getName());
-			skull.setItemMeta(meta);
-			menu.addItem(skull);
-		}
-		Navigation2 navi = new Navigation2();
-		navi.loadguiitems(menu, plugin);
-	}
+    public void loadserverskulls() {
+        try {
+            Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
+            for (Player p : players) {
+                ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
+                SkullMeta meta = (SkullMeta) skull.getItemMeta();
+                meta.setOwningPlayer(playername(p.getUniqueId()));
+                meta.setDisplayName(ChatColor.GREEN + p.getName());
+                skull.setItemMeta(meta);
+                menu.addItem(skull);
+            }
+            Navigation2 navi = new Navigation2();
+            navi.loadguiitems(menu, plugin);
+        } catch (Exception ex) {
+            Main.getInstance().getLogger().warning("Minecraft Version incompatible: " + ex.getMessage());
+        }
+    }
 
-	public void addMember(InventoryClickEvent e) {
-		p.closeInventory();
-		p.sendMessage(ChatColor.GOLD+plugin.lang.getText("Playername"));
-		plugin.getServer().getPluginManager().registerEvents(new SetValueFromChatEvent(p, plugin.lang.getText("AddMember"), plugin, worldguard), plugin);
-	}
+    public void addMember(InventoryClickEvent e) {
+        p.closeInventory();
+        p.sendMessage(ChatColor.GOLD + plugin.lang.getText("Playername"));
+        plugin.getServer().getPluginManager().registerEvents(new SetValueFromChatEvent(p, plugin.lang.getText("AddMember"), plugin, worldguard), plugin);
+    }
 
-	public void removeMember(UUID uuid, InventoryClickEvent e, String name) {
-		if (p.hasPermission("ancient.regions.region.removemember")) {
-			RegionContainer container = worldguard.getRegionContainer();
-			RegionManager regions = container.get(p.getWorld());
-			Vector pt = new Vector(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ());
-			LocalPlayer ply = worldguard.wrapPlayer(p);
-			List<String> region = regions.getApplicableRegionsIDs(pt);
-			if (region.isEmpty()) {
-				p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("GobalError"));
-			} else {
-				ProtectedRegion rg = regions.getRegion(region.get(0));
-				if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
-					if (payment(p,e) || p.hasPermission("ancient.regions.admin.bypass")) {
-						DefaultDomain member;
-						member = rg.getMembers();
-						member.removePlayer(uuid);
-						rg.setMembers(member);
-						p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("PlayerRemoved").replace("[PH]", name));
-						container.reload();
-						p.closeInventory();
-						RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
-						gui.open();
-					} else {
-						p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("NoMoney"));
-						e.setCancelled(true);
-					}
-				} else {
-					p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("Owner"));
-					e.setCancelled(true);
-				}
-				e.setCancelled(true);
-			}
-		} else {
-			p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("Permission"));
-			e.setCancelled(true);
-		}
-		loadregionskulls(worldguard);
-	}
-	public String playername(UUID p) {
-		OfflinePlayer[] allplayers = plugin.getServer().getOfflinePlayers();
-		for (int i = 0; allplayers.length >= i; i++) {
-			UUID uuidname = allplayers[i].getUniqueId();
-			if (p.equals(uuidname)) {
-				return allplayers[i].getName();
-			}
+    public void removeMember(UUID uuid, InventoryClickEvent e, String name) {
+        try {
+            if (p.hasPermission("ancient.regions.region.removemember")) {
+                RegionContainer container = worldguard.getRegionContainer();
+                RegionManager regions = container.get(p.getWorld());
+                Vector pt = new Vector(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ());
+                LocalPlayer ply = worldguard.wrapPlayer(p);
+                List<String> region = regions.getApplicableRegionsIDs(pt);
+                if (region.isEmpty()) {
+                    p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("GobalError"));
+                } else {
+                    ProtectedRegion rg = regions.getRegion(region.get(0));
+                    if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
+                        if (FlagUtil.payment(p, e, "removemember") || p.hasPermission("ancient.regions.admin.bypass")) {
+                            DefaultDomain member;
+                            member = rg.getMembers();
+                            member.removePlayer(uuid);
+                            rg.setMembers(member);
+                            p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("PlayerRemoved").replace("[PH]", name));
+                            container.reload();
+                            p.closeInventory();
+                            RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
+                            gui.open();
+                        } else {
+                            p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("NoMoney"));
+                            e.setCancelled(true);
+                        }
+                    } else {
+                        p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("Owner"));
+                        e.setCancelled(true);
+                    }
+                    e.setCancelled(true);
+                }
+            } else {
+                p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("Permission"));
+                e.setCancelled(true);
+            }
+            loadregionskulls(worldguard);
+        } catch (Exception ex) {
+            Main.getInstance().getLogger().warning("Minecraft Version incompatible: " + ex.getMessage());
+        }
+    }
 
-		}
-		return p.toString();
-	}
+    public OfflinePlayer playername(UUID p) {
+        OfflinePlayer[] allplayers = plugin.getServer().getOfflinePlayers();
+        for (int i = 0; allplayers.length >= i; i++) {
+            UUID uuidname = allplayers[i].getUniqueId();
+            if (p.equals(uuidname)) {
+                return allplayers[i];
+            }
 
-	public void changeowner(InventoryClickEvent e) {
-		p.closeInventory();
-		p.sendMessage(ChatColor.GOLD+plugin.lang.getText("Playername"));
-		plugin.getServer().getPluginManager().registerEvents(new SetValueFromChatEvent(p, plugin.lang.getText("ChangeOwner"), plugin, worldguard), plugin);
-	}
+        }
+        return null;
+    }
 
-	public void openregion() {
-		this.menu = Bukkit.createInventory(null, 54, ChatColor.GOLD + plugin.lang.getText("RemoveMember"));
-		loadregionskulls(worldguard);
-		p.openInventory(menu);
+    public void changeowner(InventoryClickEvent e) {
+        p.closeInventory();
+        p.sendMessage(ChatColor.GOLD + plugin.lang.getText("Playername"));
+        plugin.getServer().getPluginManager().registerEvents(new SetValueFromChatEvent(p, plugin.lang.getText("ChangeOwner"), plugin, worldguard), plugin);
+    }
 
-	}
+    public void openregion() {
+        this.menu = Bukkit.createInventory(null, 54, ChatColor.GOLD + plugin.lang.getText("RemoveMember"));
+        loadregionskulls(worldguard);
+        p.openInventory(menu);
 
-	public void openserver() {
-		this.menu = Bukkit.createInventory(null, 54, ChatColor.GOLD + plugin.lang.getText("AddMember"));
-		loadserverskulls();
-		p.openInventory(menu);
+    }
 
-	}
+    public void openserver() {
+        this.menu = Bukkit.createInventory(null, 54, ChatColor.GOLD + plugin.lang.getText("AddMember"));
+        loadserverskulls();
+        p.openInventory(menu);
 
-	public void openserver2() {
-		this.menu = Bukkit.createInventory(null, 54, ChatColor.GOLD + plugin.lang.getText("SetOwner"));
-		loadserverskulls();
-		p.openInventory(menu);
+    }
 
-	}
+    public void openserver2() {
+        this.menu = Bukkit.createInventory(null, 54, ChatColor.GOLD + plugin.lang.getText("SetOwner"));
+        loadserverskulls();
+        p.openInventory(menu);
 
-	// Return menu-name
-	public String getName() {
-		return menu.getName();
-	}
+    }
 
-	// Return this
-	public Inventory getMenu() {
-		return menu;
-	}
-	public String loadPricefromConfig() {
-		try {
-			LoadConfig config = new LoadConfig(plugin);
-			String price = config.getOption("removemember");
-			return price;
-		} catch (Exception ex) {
-			plugin.getLogger().info(ex.toString());
-		}
-		return null;
-	}
+    // Return menu-name
+    public String getName() {
+        return menu.getName();
+    }
 
-	public String loadCurrencyfromConfig() {
-		try {
-			LoadConfig config = new LoadConfig(plugin);
-			String currency = config.getOption("currency");
-			return currency;
-		} catch (Exception ex) {
-			plugin.getLogger().info(ex.toString());
-		}
-		return null;
-	}
-
-	@SuppressWarnings("deprecation")
-	public boolean payment(Player p, InventoryClickEvent e) {
-		RegisteredServiceProvider<Economy> service = Bukkit.getServicesManager()
-				.getRegistration(net.milkbowl.vault.economy.Economy.class);
-		Economy vaultEcon = service.getProvider();
-		if (p.hasPermission("ancient.regions.admin.bypass")) {
-			e.setCancelled(true);
-			return true;
-		}
-		if (vaultEcon != null) {
-			String price = loadPricefromConfig();
-			if (vaultEcon.getBalance(p.getName()) != 0 && vaultEcon.getBalance(p.getName()) >= Double.valueOf(price)) {
-				vaultEcon.withdrawPlayer(p.getName(), Double.valueOf(price));
-				p.sendMessage(ChatColor.BLUE + "[AR][INFO]" + plugin.lang.getText("PayNote3").replace("[PH]",
-						loadPricefromConfig() + " " + loadCurrencyfromConfig()));
-				e.setCancelled(true);
-				return true;
-			} else {
-				p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("NoMoney"));
-				e.setCancelled(true);
-				return false;
-			}
-		} else {
-			p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("VaultError"));
-			e.setCancelled(true);
-		}
-		return false;
-	}
+    // Return this
+    public Inventory getMenu() {
+        return menu;
+    }
 
 }

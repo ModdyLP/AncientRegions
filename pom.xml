@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.moddylp</groupId>
   <artifactId>AncientRegions</artifactId>
-  <version>20170923</version>
+  <version>20170929</version>
   <name>AncientRegions</name>
   <description>Plugin for Minecraft Spigot to control Worldguard</description>
   <build>
@@ -35,6 +35,8 @@
                     <artifactSet>
                         <includes>
                             <include>org.inventivetalent:*</include>
+                            <include>com.google.code.gson:*</include>
+                            <include>org.json:*</include>
                         </includes>
                     </artifactSet>
                 </configuration>
@@ -114,6 +116,16 @@
         <groupId>org.inventivetalent</groupId>
         <artifactId>particleapi</artifactId>
         <version>2.1.2</version>
+    </dependency>
+    <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>2.3</version>
+    </dependency>
+    <dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>20170516</version>
     </dependency>
 </dependencies>
 

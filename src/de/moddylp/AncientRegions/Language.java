@@ -8,17 +8,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Language {
-	//Made by th3shadowbroker
-    @SuppressWarnings("unused")
-	private final Main plugin;
     private final File langFile;
     private final FileConfiguration lang;
     
     //Construction
-    public Language(Main plugin, File config )
+    public Language(File config)
     {
-        
-        this.plugin = plugin;
         this.langFile = config;
         this.lang = YamlConfiguration.loadConfiguration(langFile);
         

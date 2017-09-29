@@ -10,14 +10,11 @@ import de.moddylp.AncientRegions.Main;
 public class LogFile {
 
 
-	private Main plugin;
 	private File f;
 	private FileConfiguration Data;
 
-	public LogFile(Main plugin) {
-		this.plugin = plugin;
-	    f = new File(plugin.getDataFolder(), "data.yml");
-	    
+	public LogFile() {
+	    f = new File(Main.DRIVER.FOLDER, "data.yml");
 	}
 	public FileConfiguration getfile() {
 		return Data = YamlConfiguration.loadConfiguration(f);
@@ -25,7 +22,7 @@ public class LogFile {
     public void setup(){
     	try {
 	    	if (!f.exists()) {
-	    		plugin.getLogger().info("Creating data file");
+	    		Main.getInstance().getLogger().info("Creating data file");
 	    		f.createNewFile();
 	    		Data = getfile();
 	    		Data.createSection("regions");
