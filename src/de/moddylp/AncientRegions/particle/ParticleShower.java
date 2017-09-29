@@ -197,7 +197,7 @@ public class ParticleShower {
                 }
 
             }
-        }.runTaskTimerAsynchronously(plugin, 0, 25);
+        }.runTaskTimerAsynchronously(plugin, 0, 50);
     }
 
 

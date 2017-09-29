@@ -49,7 +49,7 @@ public class WeatherFormat implements Listener {
                         if (msg.contains("sun") || msg.contains("clear")) {
                             if (FlagUtil.payment(p, e, flag.getName())) {
 
-                                rg.setFlag((EnumFlag<WeatherType>) flag.getFlag(), WeatherType.valueOf("clear"));
+                                rg.setFlag((EnumFlag<WeatherType>) flag.getFlag(), WeatherType.CLEAR);
                                 p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", flag.getName()));
                                 Editflags gui = new Editflags(p, Main.getInstance());
                                 gui.open();
@@ -58,7 +58,7 @@ public class WeatherFormat implements Listener {
                             }
                         } else if (msg.contains("storm") || msg.contains("thunder") || msg.contains("rain") || msg.contains("downfall")) {
                             if (FlagUtil.payment(p, e, flag.getName())) {
-                                rg.setFlag((EnumFlag<WeatherType>) flag.getFlag(), WeatherType.valueOf("downfall"));
+                                rg.setFlag((EnumFlag<WeatherType>) flag.getFlag(), WeatherType.DOWNFALL);
                                 p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", flag.getName()));
                                 Editflags gui = new Editflags(p, Main.getInstance());
                                 gui.open();

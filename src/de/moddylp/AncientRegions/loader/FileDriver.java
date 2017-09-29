@@ -145,7 +145,6 @@ public class FileDriver {
         Object json = null;
         JSONArray jsonArray = null;
         try {
-            Main.getInstance().getLogger().info(object.toString());
             json = new JSONTokener(object.toString()).nextValue();
         } catch (JSONException e) {
             e.printStackTrace();

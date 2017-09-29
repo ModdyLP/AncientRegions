@@ -1,10 +1,13 @@
 package de.moddylp.AncientRegions.loader;
 
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.flags.Flag;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagOBJ;
 import de.moddylp.AncientRegions.flags.FlagUtil;
 import org.bukkit.Material;
+
+import java.util.ArrayList;
 
 /**
  * Created by N.Hartmann on 28.09.2017.
@@ -86,10 +89,30 @@ public class FlagLoader {
         new FlagOBJ("", 21, Material.PACKED_ICE, DefaultFlag.ICE_FORM);
         new FlagOBJ("", 22, Material.SIGN, DefaultFlag.NOTIFY_ENTER);
         new FlagOBJ("", 23, Material.SIGN, DefaultFlag.NOTIFY_LEAVE);
+        new FlagOBJ("", 24, Material.FIREWORK, DefaultFlag.FIREWORK_DAMAGE);
+        new FlagOBJ("", 25, Material.SKULL_ITEM, DefaultFlag.WITHER_DAMAGE);
+        new FlagOBJ("", 26, Material.SIGN, DefaultFlag.DENY_MESSAGE);
         new FlagOBJ("", 27, Material.CHORUS_FRUIT, DefaultFlag.CHORUS_TELEPORT);
+        new FlagOBJ("", 28, Material.SIGN, DefaultFlag.EXIT_DENY_MESSAGE);
+        new FlagOBJ("", 29, Material.SIGN, DefaultFlag.ENTRY_DENY_MESSAGE);
+        new FlagOBJ("", 30, Material.COMPASS, DefaultFlag.EXIT_VIA_TELEPORT);
+        new FlagOBJ("", 31, Material.COMPASS, DefaultFlag.EXIT_OVERRIDE);
+        new FlagOBJ("", 32, Material.COMPASS, DefaultFlag.FALL_DAMAGE);
 
         //SAVE
+        ArrayList<Flag> deprecated = new ArrayList<>();
+        deprecated.add(DefaultFlag.BUYABLE);
+        deprecated.add(DefaultFlag.PRICE);
+        deprecated.add(DefaultFlag.ENABLE_SHOP);
         FileDriver.getInstance().saveJson();
-        Main.getInstance().getLogger().info("Finished loading flags: "+ FlagUtil.flagOBJHashMap.size()+"  of Worldguard Flags (diff is normal) "+DefaultFlag.getDefaultFlags().size());
+        Main.getInstance().getLogger().info("Finished loading flags: "+ (FlagUtil.flagOBJHashMap.size()+deprecated.size())+"  of Worldguard Flags (diff is normal) "+DefaultFlag.getDefaultFlags().size());
+        if ((FlagUtil.flagOBJHashMap.size()+deprecated.size()) != DefaultFlag.getDefaultFlags().size()) {
+            Main.getInstance().getLogger().info("This Flags arent implemented yet.");
+        }
+        for (Flag flag: DefaultFlag.getDefaultFlags()) {
+            if (!deprecated.contains(flag)) {
+                FlagOBJ.getFlagObj(flag);
+            }
+        }
     }
 }

@@ -26,31 +26,39 @@ public class EditflagsPage2 {
     {
 		EditFlagsNavigation2 navigation = new EditFlagsNavigation2();
 		navigation.loadguiitems(menu, plugin);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.PASSTHROUGH), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.INTERACT), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_BREAK), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_PLACE), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.USE), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.DAMAGE_ANIMALS), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.CHEST_ACCESS), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.RIDE), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.SLEEP), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.PLACE_VEHICLE), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.DESTROY_VEHICLE), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.LIGHTER), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.GHAST_FIREBALL), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.OTHER_EXPLOSION), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.FIRE_SPREAD), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ENDER_BUILD), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_PAINTING_DESTROY), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_ITEM_FRAME_DESTROY), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.MYCELIUM_SPREAD), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.VINE_GROWTH), p, menu);
-		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.SOIL_DRY), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.PASSTHROUGH), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.INTERACT), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_BREAK), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_PLACE), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.USE), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.DAMAGE_ANIMALS), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.CHEST_ACCESS), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.RIDE), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.SLEEP), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.PLACE_VEHICLE), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.DESTROY_VEHICLE), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.LIGHTER), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.GHAST_FIREBALL), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.OTHER_EXPLOSION), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.FIRE_SPREAD), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ENDER_BUILD), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_PAINTING_DESTROY), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_ITEM_FRAME_DESTROY), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.MYCELIUM_SPREAD), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.VINE_GROWTH), p, menu);
+		StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.SOIL_DRY), p, menu);
         GamemodeFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.GAME_MODE), p, menu);
 		BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.NOTIFY_ENTER), p, menu);
         BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.NOTIFY_LEAVE), p, menu);
-        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.CHORUS_TELEPORT), p, menu);
+        StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.FIREWORK_DAMAGE), p, menu);
+        StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.WITHER_DAMAGE), p, menu);
+        StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.CHORUS_TELEPORT), p, menu);
+        StringFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.EXIT_DENY_MESSAGE), p, menu);
+        StringFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ENTRY_DENY_MESSAGE), p, menu);
+        StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.EXIT_VIA_TELEPORT), p, menu);
+        BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.EXIT_OVERRIDE), p, menu);
+        StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.FALL_DAMAGE), p, menu);
+
     }
     
     //Open the inventory inGame

@@ -93,8 +93,8 @@ public class Menu_Click implements Listener {
                             p.sendMessage(ChatColor.GOLD + "Flags:            \n" + ChatColor.GREEN
                                     + rg.getFlags().toString().replace("{", " ").replace("}", " ")
                                     .replace("StateFlag", "").replace("EnumFlag", "").replace("DoubleFlag", "")
-                                    .replace("BooleanFlag", "").replace("IntegerFlag", "")
-                                    .replace("SetFlag", "").replace("LocationFlag", "").replace("BuildFlag", "")
+                                    .replace("StateFlag", "").replace("IntegerFlag", "")
+                                    .replace("SetFlag", "").replace("LocationFlag", "").replace("BooleanFlag", "").replace("BuildFlag", "")
                                     .replace("StringFlag", "").replace(",", "\n").replace("name=", ""));
                             p.sendMessage(ChatColor.BLUE + "========================================");
                         } else {
@@ -116,57 +116,57 @@ public class Menu_Click implements Listener {
             }
             try {
                 if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.BUILD).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.BUILD), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.BUILD), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.GREET_MESSAGE).getName())) {
                     StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.GREET_MESSAGE), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.FAREWELL_MESSAGE).getName())) {
                     StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FAREWELL_MESSAGE), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.PVP).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.PVP), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.PVP), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MOB_DAMAGE).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MOB_DAMAGE), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MOB_DAMAGE), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ENTRY).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENTRY), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENTRY), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.EXIT).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.EXIT), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.EXIT), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ENDERPEARL).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENDERPEARL), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENDERPEARL), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.TELE_LOC).getName())) {
                     LocationFlagimpl.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.TELE_LOC), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ITEM_PICKUP).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ITEM_PICKUP), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ITEM_PICKUP), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ITEM_DROP).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ITEM_DROP), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ITEM_DROP), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.EXP_DROPS).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.EXP_DROPS), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.EXP_DROPS), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MOB_SPAWNING).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MOB_SPAWNING), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MOB_SPAWNING), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.CREEPER_EXPLOSION).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.CREEPER_EXPLOSION), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.CREEPER_EXPLOSION), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.TNT).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.TNT), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.TNT), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.INVINCIBILITY).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.INVINCIBILITY), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.INVINCIBILITY), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ENDERDRAGON_BLOCK_DAMAGE).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENDERDRAGON_BLOCK_DAMAGE), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENDERDRAGON_BLOCK_DAMAGE), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.DENY_SPAWN).getName())) {
                     EntitySetFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.DENY_SPAWN), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.SNOW_MELT).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SNOW_MELT), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SNOW_MELT), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.SNOW_FALL).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SNOW_FALL), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SNOW_FALL), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ICE_FORM).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ICE_FORM), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ICE_FORM), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ICE_MELT).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ICE_MELT), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ICE_MELT), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.GRASS_SPREAD).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.GRASS_SPREAD), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.GRASS_SPREAD), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.HEAL_DELAY).getName())) {
-                    IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.HEAL_DELAY),p, menu, e);
+                    IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.HEAL_DELAY), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.HEAL_AMOUNT).getName())) {
-                    IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.HEAL_AMOUNT),p, menu, e);
+                    IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.HEAL_AMOUNT), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MIN_HEAL).getName())) {
-                    DoubleFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MIN_HEAL),p, menu, e);
+                    DoubleFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MIN_HEAL), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MAX_HEAL).getName())) {
                     DoubleFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MAX_HEAL), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.BLOCKED_CMDS).getName())) {
@@ -174,39 +174,39 @@ public class Menu_Click implements Listener {
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ALLOWED_CMDS).getName())) {
                     StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ALLOWED_CMDS), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.TIME_LOCK).getName())) {
-                    StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.TIME_LOCK),p, menu, e);
+                    StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.TIME_LOCK), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.WEATHER_LOCK).getName())) {
-                    WeatherFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.WEATHER_LOCK),p, menu, e);
+                    WeatherFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.WEATHER_LOCK), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.SPAWN_LOC).getName())) {
-                    LocationFlagimpl.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SPAWN_LOC),p, menu, e);
+                    LocationFlagimpl.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SPAWN_LOC), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.FEED_DELAY).getName())) {
-                    IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FEED_DELAY),p, menu, e);
+                    IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FEED_DELAY), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.FEED_AMOUNT).getName())) {
-                    IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FEED_AMOUNT),p, menu, e);
+                    IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FEED_AMOUNT), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MIN_FOOD).getName())) {
-                    DoubleFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MIN_FOOD),p, menu, e);
+                    IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MIN_FOOD), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MAX_FOOD).getName())) {
-                    DoubleFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MAX_FOOD), p, menu, e);
+                    IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MAX_FOOD), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FLOW).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FLOW), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FLOW), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.WATER_FLOW).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.WATER_FLOW), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.WATER_FLOW), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.LIGHTNING).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LIGHTNING), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LIGHTNING), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FIRE).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FIRE), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FIRE), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MUSHROOMS).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MUSHROOMS), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MUSHROOMS), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.PISTONS).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.PISTONS), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.PISTONS), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.SEND_CHAT).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SEND_CHAT), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SEND_CHAT), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.RECEIVE_CHAT).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.RECEIVE_CHAT), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.RECEIVE_CHAT), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.POTION_SPLASH).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.POTION_SPLASH), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.POTION_SPLASH), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.LEAF_DECAY).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LEAF_DECAY), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LEAF_DECAY), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName()
                         .contains(plugin.lang.getText("Mainmenu"))) {
                     e.setCancelled(true);
@@ -242,55 +242,69 @@ public class Menu_Click implements Listener {
                     start.open();
                     e.setCancelled(true);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.PASSTHROUGH).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.PASSTHROUGH), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.PASSTHROUGH), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_BREAK).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_BREAK), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_BREAK), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_PLACE).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_PLACE), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_PLACE), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.INTERACT).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.INTERACT), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.INTERACT), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.USE).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.USE), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.USE), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.DAMAGE_ANIMALS).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.DAMAGE_ANIMALS), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.DAMAGE_ANIMALS), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.CHEST_ACCESS).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.CHEST_ACCESS), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.CHEST_ACCESS), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.RIDE).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.RIDE), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.RIDE), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.SLEEP).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SLEEP), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SLEEP), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.PLACE_VEHICLE).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.PLACE_VEHICLE), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.PLACE_VEHICLE), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.DESTROY_VEHICLE).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.DESTROY_VEHICLE), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.DESTROY_VEHICLE), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.LIGHTER).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LIGHTER), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LIGHTER), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.GHAST_FIREBALL).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.GHAST_FIREBALL), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.GHAST_FIREBALL), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.OTHER_EXPLOSION).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.OTHER_EXPLOSION), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.OTHER_EXPLOSION), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.FIRE_SPREAD).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FIRE_SPREAD), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FIRE_SPREAD), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ENDER_BUILD).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENDER_BUILD), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENDER_BUILD), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_PAINTING_DESTROY).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_PAINTING_DESTROY), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_PAINTING_DESTROY), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_ITEM_FRAME_DESTROY).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_ITEM_FRAME_DESTROY), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_ITEM_FRAME_DESTROY), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MYCELIUM_SPREAD).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MYCELIUM_SPREAD), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MYCELIUM_SPREAD), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.VINE_GROWTH).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.VINE_GROWTH), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.VINE_GROWTH), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.SOIL_DRY).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SOIL_DRY), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SOIL_DRY), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.GAME_MODE).getName())) {
                     GamemodeFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.GAME_MODE), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.NOTIFY_ENTER).getName())) {
                     BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.NOTIFY_ENTER), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.NOTIFY_LEAVE).getName())) {
                     BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.NOTIFY_LEAVE), p, menu, e);
+                } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.FIREWORK_DAMAGE).getName())) {
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FIREWORK_DAMAGE), p, menu, e);
+                } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.WITHER_DAMAGE).getName())) {
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.WITHER_DAMAGE), p, menu, e);
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.CHORUS_TELEPORT).getName())) {
-                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.CHORUS_TELEPORT), p, menu, e);
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.CHORUS_TELEPORT), p, menu, e);
+                }else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.EXIT_DENY_MESSAGE).getName())) {
+                    StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.EXIT_DENY_MESSAGE), p, menu, e);
+                }else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ENTRY_DENY_MESSAGE).getName())) {
+                    StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENTRY_DENY_MESSAGE), p, menu, e);
+                }else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.EXIT_VIA_TELEPORT).getName())) {
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.EXIT_VIA_TELEPORT), p, menu, e);
+                }else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.EXIT_OVERRIDE).getName())) {
+                    BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.EXIT_OVERRIDE), p, menu, e);
+                }else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.FALL_DAMAGE).getName())) {
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FALL_DAMAGE), p, menu, e);
                 } else {
                     e.setCancelled(true);
                 }

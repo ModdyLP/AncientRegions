@@ -29,28 +29,28 @@ public class GamemodeFormat implements Listener {
         if (e.getPlayer().equals(p)) {
             String msg = e.getMessage();
             if (msg.contains("creative") || msg.contains("c") || msg.contains("1")) {
-                rg.setFlag((EnumFlag<GameMode>) flag.getFlag(), GameMode.valueOf("creative"));
+                rg.setFlag((EnumFlag<GameMode>) flag.getFlag(), GameMode.CREATIVE);
                 p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", flag.getName()));
                 EditflagsPage2 gui = new EditflagsPage2(p, Main.getInstance());
                 gui.open();
                 e.setCancelled(true);
                 HandlerList.unregisterAll(this);
             } else if (msg.contains("survival") || msg.contains("sv") || msg.contains("0")) {
-                rg.setFlag((EnumFlag<GameMode>) flag.getFlag(), GameMode.valueOf("survival"));
+                rg.setFlag((EnumFlag<GameMode>) flag.getFlag(), GameMode.SURVIVAL);
                 p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", flag.getName()));
                 EditflagsPage2 gui = new EditflagsPage2(p, Main.getInstance());
                 gui.open();
                 e.setCancelled(true);
                 HandlerList.unregisterAll(this);
             } else if (msg.contains("spectator") || msg.contains("sp") || msg.contains("3")) {
-                rg.setFlag((EnumFlag<GameMode>) flag.getFlag(), GameMode.valueOf("spectator"));
+                rg.setFlag((EnumFlag<GameMode>) flag.getFlag(), GameMode.SPECTATOR);
                 p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", flag.getName()));
                 EditflagsPage2 gui = new EditflagsPage2(p, Main.getInstance());
                 gui.open();
                 e.setCancelled(true);
                 HandlerList.unregisterAll(this);
             } else if (msg.contains("adventure") || msg.contains("a") || msg.contains("2")) {
-                rg.setFlag((EnumFlag<GameMode>) flag.getFlag(), GameMode.valueOf("adventure"));
+                rg.setFlag((EnumFlag<GameMode>) flag.getFlag(), GameMode.ADVENTURE);
                 p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", flag.getName()));
                 EditflagsPage2 gui = new EditflagsPage2(p, Main.getInstance());
                 gui.open();

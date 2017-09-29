@@ -71,7 +71,7 @@ public class WeatherFlag {
                             p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + flagOBJ.getName() + Main.getInstance().lang.getText("FlagRemoved"));
                         } else {
                             p.closeInventory();
-                            p.sendMessage(ChatColor.GOLD + Main.getInstance().lang.getText("Gamemode"));
+                            p.sendMessage(ChatColor.GOLD + Main.getInstance().lang.getText("WeatherInfo"));
                             Main.getInstance().getServer().getPluginManager().registerEvents(new WeatherFormat(p, flagOBJ), Main.getInstance());
                         }
                     } else {

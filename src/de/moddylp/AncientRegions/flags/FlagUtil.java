@@ -22,6 +22,7 @@ import java.util.List;
 
 public class FlagUtil {
     public static HashMap<String, FlagOBJ> flagOBJHashMap = new HashMap<>();
+    static HashMap<String, StateFlag> stateFlagHashMap = new HashMap<>();
     static HashMap<String, BooleanFlag> booleanFlagHashMap = new HashMap<>();
     static HashMap<String, StringFlag> stringFlagHashMap = new HashMap<>();
     static HashMap<String, EntitySetFlag> setFlagEntityHashmap = new HashMap<>();
@@ -100,9 +101,9 @@ public class FlagUtil {
                 if (rg == null || rg.getFlag(flag) == null) {
                     return "null";
                 } else {
-                    Object locflag = rg.getFlag(flag);
-                    if (locflag != null) {
-                        return locflag.toString();
+                    Object flagobj = rg.getFlag(flag);
+                    if (flagobj != null) {
+                        return flagobj.toString();
                     } else {
                         return "null";
                     }

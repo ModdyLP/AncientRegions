@@ -97,8 +97,9 @@ public class LocationFlagimpl {
             List<String> lore = new ArrayList<String>();
             lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Set").replace("[PH]", flagobj.getName()));
             lore.add(ChatColor.YELLOW + FlagUtil.loadPricefromConfig(flagobj.getName()).toString() + " " + FlagUtil.loadCurrencyfromConfig());
-            if (!FlagUtil.isSet(p, flagobj.getFlag()).equals("false")) {
+            if (!FlagUtil.isSet(p, flagobj.getFlag()).equals("null")) {
                 lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Current") + ":");
+                Main.getInstance().getLogger().info(FlagUtil.isSet(p, flagobj.getFlag()));
                 String[] location = FlagUtil.isSet(p, flagobj.getFlag()).split(",");
                 location[1] = location[1].replace(" :", "X: ");
                 location[2] = "Y: " + location[2];
@@ -109,7 +110,7 @@ public class LocationFlagimpl {
 
             }
             ItemMeta imeta = ITEM.getItemMeta();
-            if (!FlagUtil.isSet(p, flagobj.getFlag()).equals("false")) {
+            if (!FlagUtil.isSet(p, flagobj.getFlag()).equals("null")) {
                 imeta.setDisplayName(ChatColor.GREEN + "[ON] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + flagobj.getName());
             } else {
                 imeta.setDisplayName(ChatColor.BLUE + "[/] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + flagobj.getName());

@@ -25,32 +25,32 @@ import static de.moddylp.AncientRegions.flags.FlagUtil.*;
  * Created by N.Hartmann on 27.09.2017.
  * Copyright 2017
  */
-public class BooleanFlag {
+public class StateFlag {
     private final FlagOBJ flagOBJ;
     private final Player p;
 
-    public BooleanFlag(FlagOBJ flagOBJ, Player p) {
+    public StateFlag(FlagOBJ flagOBJ, Player p) {
         this.flagOBJ = flagOBJ;
         this.p = p;
     }
     public static void createandload(FlagOBJ flagOBJ, Player p, Inventory menu) {
-        BooleanFlag flag;
-        if (FlagUtil.booleanFlagHashMap.containsKey(flagOBJ.getName())) {
-            flag = FlagUtil.booleanFlagHashMap.get(flagOBJ.getName());
+        StateFlag flag;
+        if (FlagUtil.stateFlagHashMap.containsKey(flagOBJ.getName())) {
+            flag = FlagUtil.stateFlagHashMap.get(flagOBJ.getName());
         } else {
-            flag = new BooleanFlag(flagOBJ, p);
-            FlagUtil.booleanFlagHashMap.put(flagOBJ.getName(), flag);
+            flag = new StateFlag(flagOBJ, p);
+            FlagUtil.stateFlagHashMap.put(flagOBJ.getName(), flag);
         }
         flag.loadgui(menu);
     }
     public static void createandtoggle(FlagOBJ flagOBJ, Player p, Inventory menu, InventoryClickEvent event) {
         event.setCancelled(true);
-        BooleanFlag flag;
-        if (FlagUtil.booleanFlagHashMap.containsKey(flagOBJ.getName())) {
-            flag = FlagUtil.booleanFlagHashMap.get(flagOBJ.getName());
+        StateFlag flag;
+        if (FlagUtil.stateFlagHashMap.containsKey(flagOBJ.getName())) {
+            flag = FlagUtil.stateFlagHashMap.get(flagOBJ.getName());
         } else {
-            flag = new BooleanFlag(flagOBJ, p);
-            FlagUtil.booleanFlagHashMap.put(flagOBJ.getName(), flag);
+            flag = new StateFlag(flagOBJ, p);
+            FlagUtil.stateFlagHashMap.put(flagOBJ.getName(), flag);
         }
         flag.toggle(event, menu);
     }
@@ -72,12 +72,12 @@ public class BooleanFlag {
                     ProtectedRegion rg = regions.getRegion(region.get(0));
                     if (rg != null && rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
                         if (rg != null && rg.getFlag(flagOBJ.getFlag()) != null) {
-                            if (Objects.equals(rg.getFlag(flagOBJ.getFlag()), false)) {
+                            if (Objects.equals(rg.getFlag(flagOBJ.getFlag()), com.sk89q.worldguard.protection.flags.StateFlag.State.DENY)) {
                                 rg.setFlag(flagOBJ.getFlag(), null);
                                 p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + flagOBJ.getName() + Main.getInstance().lang.getText("FlagRemoved"));
-                            } else if (Objects.equals(rg.getFlag(flagOBJ.getFlag()), true)) {
+                            } else if (Objects.equals(rg.getFlag(flagOBJ.getFlag()), com.sk89q.worldguard.protection.flags.StateFlag.State.ALLOW)) {
                                 if (FlagUtil.payment(p, e, flagOBJ.getName())) {
-                                    rg.setFlag((com.sk89q.worldguard.protection.flags.BooleanFlag) flagOBJ.getFlag(), false);
+                                    rg.setFlag((com.sk89q.worldguard.protection.flags.StateFlag) flagOBJ.getFlag(), com.sk89q.worldguard.protection.flags.StateFlag.State.DENY);
                                     p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.RED + " " + flagOBJ.getName() + Main.getInstance().lang.getText("fDisabled"));
                                 }
                             } else {
@@ -85,7 +85,7 @@ public class BooleanFlag {
                             }
                         } else {
                             if (rg != null && FlagUtil.payment(p, e, flagOBJ.getName())) {
-                                rg.setFlag((com.sk89q.worldguard.protection.flags.BooleanFlag) flagOBJ.getFlag(), true);
+                                rg.setFlag((com.sk89q.worldguard.protection.flags.StateFlag) flagOBJ.getFlag(), com.sk89q.worldguard.protection.flags.StateFlag.State.ALLOW);
                                 p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + flagOBJ.getName() + Main.getInstance().lang.getText("fEnabled"));
                             }
                         }
@@ -115,9 +115,9 @@ public class BooleanFlag {
                         ChatColor.GOLD + Main.getInstance().lang.getText("Current") + ": " + ChatColor.AQUA + isSet(p, flagOBJ.getFlag()));
             }
             ItemMeta imeta = ITEM.getItemMeta();
-            if (isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("true")) {
+            if (isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("allow")) {
                 imeta.setDisplayName(ChatColor.GREEN + "[ON] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + flagOBJ.getName());
-            } else if (isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("false")) {
+            } else if (isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("deny")) {
                 imeta.setDisplayName(ChatColor.RED + "[OFF] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + flagOBJ.getName());
             } else {
                 imeta.setDisplayName(ChatColor.BLUE + "[/] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + flagOBJ.getName());

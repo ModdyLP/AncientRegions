@@ -40,7 +40,7 @@ public class FlagOBJ {
         } else {
             Main.getInstance().getLogger().warning("No Flag found with name: "+search);
         }
-        return new FlagOBJ("", 0, Material.CARROT, flag);
+        return null;
     }
     public String getName() {
         if (name != null) {
