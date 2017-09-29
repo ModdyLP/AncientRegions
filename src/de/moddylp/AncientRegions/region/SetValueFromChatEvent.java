@@ -54,7 +54,7 @@ public class SetValueFromChatEvent implements Listener {
                             } else {
                                 ProtectedRegion rg = regions.getRegion(region.get(0));
                                 if (rg != null && rg.isOwner(ply) || rg != null && p.hasPermission("ancient.regions.admin.bypass")) {
-                                    if (FlagUtil.payment(p, e, "addmember") || p.hasPermission("ancient.regions.admin.bypass")) {
+                                    if (FlagUtil.payment(p, e, "_addmember") || p.hasPermission("ancient.regions.admin.bypass")) {
                                         DefaultDomain member = new DefaultDomain();
                                         member.addPlayer(uuid);
                                         rg.setMembers(member);
@@ -88,7 +88,7 @@ public class SetValueFromChatEvent implements Listener {
                         } else {
                             ProtectedRegion rg = regions.getRegion(region.get(0));
                             if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
-                                if (FlagUtil.payment(p, e, "changeowner") || p.hasPermission("ancient.regions.admin.bypass")) {
+                                if (FlagUtil.payment(p, e, "_changeowner") || p.hasPermission("ancient.regions.admin.bypass")) {
                                     DefaultDomain owner;
                                     owner = rg.getOwners();
                                     owner.removePlayer(p.getUniqueId());

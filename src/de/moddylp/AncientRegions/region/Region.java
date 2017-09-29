@@ -14,6 +14,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion.CircularInheritanceException;
 import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.loader.FileDriver;
 import de.moddylp.AncientRegions.loader.WorldEditHandler6;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
@@ -26,6 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.json.JSONArray;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,11 +49,11 @@ public class Region {
         String region = "region" + number;
         this.number = number;
         this.permission = "buy" + region.toLowerCase();
-        this.regionname = Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, region + "name");
-        this.regionprice = Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, region + "price"));
-        this.regionsize = Integer.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, region + "size"));
-        this.intregionheight = Integer.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "regionheight"));
-        this.intregiondepth = Integer.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "regiondepth"));
+        this.regionname = Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_"+region + "name");
+        this.regionprice = Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_"+region + "price"));
+        this.regionsize = Integer.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_"+region + "size"));
+        this.intregionheight = Integer.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_regionheight"));
+        this.intregiondepth = Integer.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_regiondepth"));
 
     }
 
@@ -79,7 +81,7 @@ public class Region {
                                         p.getName() + seperator + regionname + seperator + id, edges.get(0),
                                         edges.get(2));
                                 ProtectedRegion grg = regions.getRegion(ProtectedRegion.GLOBAL_REGION);
-                                region.setPriority(Integer.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "regionpriority")));
+                                region.setPriority(Integer.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_regionpriority")));
                                 try {
                                     region.setParent(grg);
                                 } catch (CircularInheritanceException e2) {
@@ -88,8 +90,12 @@ public class Region {
                                 DefaultDomain owner = region.getOwners();
                                 owner.addPlayer(p.getUniqueId());
                                 if (payment(p, e) || p.hasPermission("ancient.regions.admin.bypass")) {
-                                    if (!Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "standartdenyflags").contains("[]")) {
-                                        String[] flags = Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "standartdenyflags").split(",");
+                                    if (!Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_standartdenyflags").contains("[]")) {
+                                        JSONArray standartdenyflags = FileDriver.objectToJSONArray(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_standartdenyflags"));
+                                        ArrayList<String> flags = new ArrayList<>();
+                                        for (Object object: standartdenyflags) {
+                                            flags.add(object.toString());
+                                        }
                                         for (String flag : flags) {
                                             if (Main.DRIVER.hasKey(Main.DRIVER.CONFIG, flag)) {
                                                 region.setFlag(new StateFlag(flag, false), State.DENY);
@@ -97,7 +103,7 @@ public class Region {
                                         }
 
                                     }
-                                    if (Boolean.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "backuprg"))) {
+                                    if (Boolean.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_backuprg"))) {
                                         File schematic = new File(plugin.getDataFolder(), "/schematics/" + region.getId() + ".schematic");
                                         File dir = new File(plugin.getDataFolder(), "/schematics/");
                                         if (!dir.exists())
@@ -161,7 +167,7 @@ public class Region {
                     ProtectedRegion rg = regions.getRegion(region.get(0));
                     if (rg != null) {
                         if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
-                            if (Boolean.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "backuprg"))) {
+                            if (Boolean.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_backuprg"))) {
                                 File file = new File(plugin.getDataFolder(), "/schematics/" + rg.getId() + ".schematic");
                                 Vector max = rg.getMaximumPoint();
                                 Vector min = rg.getMinimumPoint();
@@ -214,7 +220,7 @@ public class Region {
     public String loadCurrencyfromConfig() {
         try {
 
-            return Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "currency");
+            return Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_currency");
         } catch (Exception ex) {
             Main.getInstance().getLogger().info(ex.toString());
         }
@@ -339,9 +345,9 @@ public class Region {
             return true;
         }
         if (vaultEcon != null) {
-            vaultEcon.depositPlayer(p, (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "region" + getregionnumber(regionname, p) + "price")) * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "payback"))) / 100));
+            vaultEcon.depositPlayer(p, (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "region" + getregionnumber(regionname, p) + "price")) * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_payback"))) / 100));
             p.sendMessage(ChatColor.BLUE + "[AR][INFO]" + plugin.lang.getText("Payback").replace("[PH]",
-                    Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "region" + getregionnumber(regionname, p) + "price")) * ((Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "payback")) / 100)) + " " + loadCurrencyfromConfig()));
+                    Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "region" + getregionnumber(regionname, p) + "price")) * ((Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_payback")) / 100)) + " " + loadCurrencyfromConfig()));
             e.setCancelled(true);
             return true;
         } else {

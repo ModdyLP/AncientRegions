@@ -77,9 +77,9 @@ public class ParticleShower {
                     particles.cancel();
                     timertask.cancel();
                 }
-                if (!(Integer.valueOf(Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "showtimeofparticle", 20)) == -1)) {
+                if (!(Integer.valueOf(Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showtimeofparticle", 20)) == -1)) {
                     timernum++;
-                    if (timernum >= (Integer.valueOf(Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "showtimeofparticle", 20)) * 2)) {
+                    if (timernum >= (Integer.valueOf(Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showtimeofparticle", 20)) * 2)) {
                         data.setString(rg.getId(), null);
                     }
                 }
@@ -177,11 +177,11 @@ public class ParticleShower {
                 try {
                     for (Vector vector : pt(rg, p)) {
                         Location loc = new Location(world, vector.getBlockX(), vector.getBlockY(), vector.getBlockZ());
-                        if (Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "showfor", 20).equals("player")) {
+                        if (Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showfor", 20).equals("player")) {
                             List<Player> player = new ArrayList<>();
                             player.add(p);
                             ParticleEffect.FIREWORKS_SPARK.send(player, loc, 0, 0, 0, 0, 1);
-                        } else if (Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "showfor", 20).equals("all")) {
+                        } else if (Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showfor", 20).equals("all")) {
                             if (players.size() > 0) {
                                 ParticleEffect.FIREWORKS_SPARK.send(players, loc, 0, 0, 0, 0, 1);
                             }

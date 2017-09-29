@@ -112,7 +112,7 @@ public class MembersGUI {
                 } else {
                     ProtectedRegion rg = regions.getRegion(region.get(0));
                     if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
-                        if (FlagUtil.payment(p, e, "removemember") || p.hasPermission("ancient.regions.admin.bypass")) {
+                        if (FlagUtil.payment(p, e, "_removemember") || p.hasPermission("ancient.regions.admin.bypass")) {
                             DefaultDomain member;
                             member = rg.getMembers();
                             member.removePlayer(uuid);

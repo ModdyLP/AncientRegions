@@ -55,7 +55,7 @@ public class FlagUtil {
 
     public static String loadCurrencyfromConfig() {
         try {
-            return Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "currency");
+            return Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_currency");
         } catch (Exception ex) {
             Main.getInstance().getLogger().info(ex.toString());
         }

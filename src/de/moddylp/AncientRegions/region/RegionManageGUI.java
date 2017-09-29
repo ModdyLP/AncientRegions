@@ -44,7 +44,7 @@ public class RegionManageGUI {
 		ItemMeta meta2 = addmember.getItemMeta();
 		meta2.setDisplayName(ChatColor.GREEN+plugin.lang.getText("AddMember"));
 		List<String> values = new ArrayList<>();
-		values.add(ChatColor.YELLOW + Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"addmember") + " " + Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"currency"));
+		values.add(ChatColor.YELLOW + Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"_addmember") + " " + Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"currency"));
 		meta2.setLore(values);
 		addmember.setItemMeta(meta2);
 		menu.setItem(3, addmember);
@@ -52,7 +52,7 @@ public class RegionManageGUI {
 		ItemMeta meta3 = removemember.getItemMeta();
 		meta3.setDisplayName(ChatColor.RED+plugin.lang.getText("RemoveMember"));
 		List<String> values2 = new ArrayList<>();
-		values2.add(ChatColor.YELLOW + Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"removemember") + " " + Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"currency"));
+		values2.add(ChatColor.YELLOW + Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"_removemember") + " " + Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"currency"));
 		meta3.setLore(values2);
 		removemember.setItemMeta(meta3);
 		menu.setItem(5, removemember);
@@ -61,7 +61,7 @@ public class RegionManageGUI {
 		ItemMeta meta4 = setowner.getItemMeta();
 		meta4.setDisplayName(ChatColor.GOLD+plugin.lang.getText("SetOwner"));
 		List<String> values3 = new ArrayList<>();
-		values3.add(ChatColor.YELLOW + Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"changeowner") + " " + Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"currency"));
+		values3.add(ChatColor.YELLOW + Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"_changeowner") + " " + Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"currency"));
 		meta4.setLore(values3);
 		setowner.setItemMeta(meta4);
 		menu.setItem(4, setowner);
@@ -75,7 +75,7 @@ public class RegionManageGUI {
 			desc.add(ChatColor.AQUA+plugin.lang.getText("RemoveRegionLore2").replace("[PH]", "XX"));
 		} else {
 				desc.add(ChatColor.AQUA+plugin.lang.getText("RemoveRegionLore2").replace("[PH]",
-				Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"region"+getregionnumber()+"price"))*(Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"payback"))/100) + " " + Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"currency")));
+				Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"_region"+getregionnumber()+"price"))*(Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"_payback"))/100) + " " + Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG,"_currency")));
 		}
 		meta5.setLore(desc);
 		removeregion.setItemMeta(meta5);

@@ -2,6 +2,8 @@ package de.moddylp.AncientRegions.flags;
 
 import com.google.common.base.CaseFormat;
 import com.sk89q.worldguard.protection.flags.*;
+import com.sk89q.worldguard.protection.flags.BooleanFlag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.loader.FileDriver;
 import org.bukkit.Material;
@@ -22,7 +24,7 @@ public class FlagOBJ {
         this.description = description;
         this.flag = flag;
         this.configname = name.toLowerCase();
-        if (flag instanceof com.sk89q.worldguard.protection.flags.BooleanFlag) {
+        if (flag instanceof BooleanFlag || flag instanceof StateFlag) {
             this.permission = "ancient.regions.flag.toggle" + configname;
         } else {
             this.permission = "ancient.regions.flag." + configname;
