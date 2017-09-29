@@ -47,7 +47,7 @@ public class Main extends JavaPlugin {
             return;
         } else {
             ConfigLoader.saveDefaultconfig();
-            lang = new Language(new File(DRIVER.FOLDER, "messages.yml"));
+            lang = new Language(new File(getDataFolder(), "messages.yml"));
             loadMessages();
             LogFile file = new LogFile();
             file.setup();
