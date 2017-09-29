@@ -9,8 +9,8 @@ import de.moddylp.AncientRegions.Main;
 public class ConfigLoader {
     public static void saveDefaultconfig() {
         Main.getInstance().getLogger().info("Loading Config Default Options");
-        Main.getInstance().getLogger().info("Config: "+Main.DRIVER.CONFIG);
-        Main.DRIVER.createNewFile(Main.DRIVER.CONFIG);
+        Main.getInstance().getLogger().info("Config: "+Main.getInstance().getDataFolder()+"/config.json");
+        Main.DRIVER.createNewFile();
         Main.DRIVER.getProperty(Main.DRIVER.CONFIG,"wikisite", "https://git.moddylp.de/ModdyLP/AncientRegions/wiki");
         Main.DRIVER.getProperty(Main.DRIVER.CONFIG,"metrics", true);
         Main.DRIVER.getProperty(Main.DRIVER.CONFIG,"currency", "EURO");

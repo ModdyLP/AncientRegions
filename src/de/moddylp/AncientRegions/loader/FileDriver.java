@@ -1,9 +1,6 @@
 package de.moddylp.AncientRegions.loader;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.sk89q.worldguard.protection.flags.StringFlag;
 import de.moddylp.AncientRegions.Main;
 import org.json.JSONArray;
@@ -12,8 +9,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by N.Hartmann on 28.06.2017.
@@ -22,8 +18,7 @@ import java.util.Set;
 public class FileDriver {
 
     //FILEDRIVE IS NOT TRANSLATED - CAUSES ERRORS BECAUSE LANGUAGE IS NOT LOADED
-    public String FOLDER = "plugins/AncientRegions/";
-    public String CONFIG = FOLDER+"config.json";
+    public String CONFIG = "";
 
     private static FileDriver instance;
     private static HashMap<String, File> files = new HashMap<>();
@@ -48,31 +43,22 @@ public class FileDriver {
 
     /**
      * Create new File
-     * @param filenamewithpath FileName
      */
-    public void createNewFile(String filenamewithpath) {
+    public void createNewFile() {
         try {
-            String[] parts = filenamewithpath.split("/");
-            for (int i = 0; i < parts.length-1; i++) {
-                File file = new File(parts[i]);
-                if(!file.exists()) {
-                    if (!file.mkdir()) {
-                        Main.getInstance().getLogger().warning("Cant create Folder: "+file.getAbsolutePath());
-                    }
-                }
-            }
-            File file = new File(filenamewithpath);
-            files.put(filenamewithpath, file);
+            File file = new File(Main.getInstance().getDataFolder(), "config.json");
+            CONFIG = Main.getInstance().getDataFolder()+"/config.json";
+            files.put(Main.getInstance().getDataFolder()+"/config.json", file);
             if (!file.exists()) {
                 if (file.createNewFile()) {
-                    Main.getInstance().getLogger().info(filenamewithpath + " created at " + file.getAbsolutePath());
+                    Main.getInstance().getLogger().info(Main.getInstance().getDataFolder()+"config.json" + " created at " + file.getAbsolutePath());
                 }
             } else {
-                Main.getInstance().getLogger().info(filenamewithpath + " loaded at " + file.getAbsolutePath());
+                Main.getInstance().getLogger().info(Main.getInstance().getDataFolder()+"config.json" + " loaded at " + file.getAbsolutePath());
             }
             loadJson();
         } catch (Exception ex) {
-            Main.getInstance().getLogger().warning("File can not be accessed: "+filenamewithpath);
+            Main.getInstance().getLogger().warning("File can not be accessed: "+Main.getInstance().getDataFolder()+"config.json"+" "+ex.getMessage());
         }
     }
 
@@ -130,16 +116,25 @@ public class FileDriver {
                 writer.close();
             }
         } catch (Exception ex) {
-            Main.getInstance().getLogger().warning("File can not be saved");
+            Main.getInstance().getLogger().warning("File can not be saved"+ex.getMessage());
         }
     }
     public String crunchifyPrettyJSONUtility(String simpleJSON) {
         JsonParser crunhifyParser = new JsonParser();
         JsonObject json = crunhifyParser.parse(simpleJSON).getAsJsonObject();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.setPrettyPrinting().create();
 
-        Gson prettyGson = new GsonBuilder().setPrettyPrinting().create();
-
-        return prettyGson.toJson(json);
+        ArrayList<String> keys = new ArrayList<>();
+        for (Map.Entry<String, JsonElement> entry: json.entrySet()) {
+            keys.add(entry.getKey());
+        }
+        keys.sort(Comparator.naturalOrder());
+        JsonObject sortedJson = new JsonObject();
+        for (String key: keys) {
+            sortedJson.add(key, json.get(key));
+        }
+        return gson.toJson(sortedJson);
     }
     public static JSONArray objectToJSONArray(Object object){
         Object json = null;
