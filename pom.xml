@@ -39,6 +39,7 @@
                             <include>com.google.code.gson:*</include>
                             <include>org.json:*</include>
                             <include>com.fasterxml.jackson.datatype:*</include>
+                            <include>org.bstats:*</include>
                         </includes>
                     </artifactSet>
                 </configuration>
@@ -76,6 +77,10 @@
         <repository>
             <id>inventive-repo</id>
             <url>https://repo.inventivetalent.org/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>bstats-repo</id>
+            <url>http://repo.bstats.org/content/repositories/releases/</url>
         </repository>
     </repositories>
 
@@ -128,6 +133,11 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20170516</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>1.2</version>
         </dependency>
     </dependencies>
 
