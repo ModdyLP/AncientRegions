@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.moddylp</groupId>
     <artifactId>AncientRegions</artifactId>
-    <version>20170929</version>
+    <version>20170930</version>
     <name>AncientRegions</name>
     <description>Plugin for Minecraft Spigot to control Worldguard</description>
     <build>
@@ -39,8 +39,20 @@
                             <include>com.google.code.gson:*</include>
                             <include>org.json:*</include>
                             <include>com.fasterxml.jackson.datatype:*</include>
+                            <include>org.bstats:*</include>
+                            <include>org.mcstats.*:*</include>
                         </includes>
                     </artifactSet>
+                    <relocations>
+                        <relocation>
+                            <pattern>org.mcstats</pattern>
+                            <shadedPattern>de.moddylp.AncientRegions</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.bstats</pattern>
+                            <shadedPattern>de.moddylp.AncientRegions</shadedPattern>
+                        </relocation>
+                    </relocations>
                 </configuration>
                 <executions>
                     <execution>
@@ -76,6 +88,14 @@
         <repository>
             <id>inventive-repo</id>
             <url>https://repo.inventivetalent.org/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>bstats-repo</id>
+            <url>http://repo.bstats.org/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>Plugin Metrics</id>
+            <url>http://repo.mcstats.org/content/repositories/public</url>
         </repository>
     </repositories>
 
@@ -128,6 +148,17 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20170516</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mcstats.bukkit</groupId>
+            <artifactId>metrics</artifactId>
+            <version>R8-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

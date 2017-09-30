@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -54,6 +55,15 @@ public class Main extends JavaPlugin {
             loader = new GUIEvents(this, worldguard, worldedit);
         }
         FlagLoader.load();
+        if (DRIVER.getPropertyOnly(DRIVER.CONFIG, "_metrics").equals("true")) {
+            try {
+                Metrics metrics = new Metrics(this);
+                org.mcstats.Metrics metrics1 = new org.mcstats.Metrics(this);
+                metrics1.start();
+            } catch (Exception ex) {
+                this.getLogger().warning("Metrics cant be enabled because there was an error: "+ex.getLocalizedMessage());
+            }
+        }
         System.out.println(this.lang.getText("Enabled"));
     }
 
