@@ -58,6 +58,8 @@ public class Main extends JavaPlugin {
         if (DRIVER.getPropertyOnly(DRIVER.CONFIG, "_metrics").equals("true")) {
             try {
                 Metrics metrics = new Metrics(this);
+                org.mcstats.Metrics metrics1 = new org.mcstats.Metrics(this);
+                metrics1.start();
             } catch (Exception ex) {
                 this.getLogger().warning("Metrics cant be enabled because there was an error: "+ex.getLocalizedMessage());
             }
