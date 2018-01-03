@@ -1,50 +1,55 @@
 package de.moddylp.AncientRegions.loader;
 
 import de.moddylp.AncientRegions.Main;
+import java.util.logging.Logger;
 import net.milkbowl.vault.Vault;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicesManager;
 
 public class VaultLoader {
-	private final Main plugin;
+    private final Main plugin;
 
     public VaultLoader(Main plugin) {
         this.plugin = plugin;
     }
-    public boolean load() {
-        Plugin vault = plugin.getServer().getPluginManager().getPlugin("Vault"); // speichert das Objekt des Plugins Vault in vault
 
-        if (vault != null && vault instanceof Vault && setupEconomy()) { // wenn vault erfolgreich geladen wurde, d.h. auf dem Server vorhanden ist und aktiv ist und wirklich eine Instanz vom Vault plugin ist EDIT wenn dies nicht der Fall ist das plugin unloaden ??? warum war hier ein & geht nicht auch &&
-            Main.getInstance().getLogger().info(String.format("Enabled Version %s", vault.getDescription().getVersion())); // Informiere, dass Plugin aktiviert wurde MOVE zum ende von enable
-        } else {
-            Main.getInstance().getLogger().warning("Vault was not found or some Economy Plugin is missing! Disabling plugin."); // warnen, dass Vault nicht gefunden wurde.
+    public boolean load() {
+        Plugin vault = this.plugin.getServer().getPluginManager().getPlugin("Vault");
+        if (vault == null || !(vault instanceof Vault) || !this.setupEconomy().booleanValue()) {
+            Main.getInstance().getLogger().warning("Vault was not found or some Economy Plugin is missing! Disabling plugin.");
             Main.getInstance().getLogger().warning("!!!!!!!!!!!!!!!!!!!! MAKE SURE YOU HAVE INSTALLED A ECONOMY PLUGIN AND VAULT !!!!!!!!!!!!!!!!!!!!!!!!");
             return false;
         }
-        if (!setupPermissions()) {
+        Main.getInstance().getLogger().info(String.format("Enabled Version %s", vault.getDescription().getVersion()));
+        if (!this.setupPermissions()) {
             Main.getInstance().getLogger().warning("Vault permission not loaded");
             return false;
         }
         return true;
     }
+
     private Boolean setupEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class); // eine liste aller mit vault verbundenen Economy systeme erstellen
+        RegisteredServiceProvider economyProvider = this.plugin.getServer().getServicesManager().getRegistration(Economy.class);
         Economy economy = null;
-        if (economyProvider != null) { // wenn es einen Economy provider gibt
-            economy = economyProvider.getProvider(); // diesen Benutzen
+        if (economyProvider != null) {
+            economy = (Economy)economyProvider.getProvider();
         }
-        return (economy != null); // --- überflüssig, wird sowieso nicht überprüft
+        return economy != null;
     }
 
     private boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> permissionProvider = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+        RegisteredServiceProvider permissionProvider = this.plugin.getServer().getServicesManager().getRegistration(Permission.class);
         Permission permissionHandler = null;
         if (permissionProvider != null) {
-            permissionHandler = permissionProvider.getProvider();
+            permissionHandler = (Permission)permissionProvider.getProvider();
         }
-        return (permissionHandler != null);
+        return permissionHandler != null;
     }
-
 }
+

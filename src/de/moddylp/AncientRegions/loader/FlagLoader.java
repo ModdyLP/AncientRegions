@@ -1,22 +1,27 @@
 package de.moddylp.AncientRegions.loader;
 
+import com.sk89q.worldguard.protection.flags.BooleanFlag;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.flags.DoubleFlag;
+import com.sk89q.worldguard.protection.flags.EnumFlag;
 import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.flags.IntegerFlag;
+import com.sk89q.worldguard.protection.flags.LocationFlag;
+import com.sk89q.worldguard.protection.flags.SetFlag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.flags.StringFlag;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagOBJ;
 import de.moddylp.AncientRegions.flags.FlagUtil;
+import de.moddylp.AncientRegions.loader.FileDriver;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.logging.Logger;
 import org.bukkit.Material;
 
-import java.util.ArrayList;
-
-/**
- * Created by N.Hartmann on 28.09.2017.
- * Copyright 2017
- */
 public class FlagLoader {
     public static void load() {
         Main.getInstance().getLogger().info("Start loading flags");
-        //PAGE 1 Reserved Slots(36, 37, 43, 44, 45, 46, 52, 53)
         new FlagOBJ("", 0, Material.STONE, DefaultFlag.BUILD);
         new FlagOBJ("", 1, Material.SIGN, DefaultFlag.GREET_MESSAGE);
         new FlagOBJ("", 2, Material.SIGN, DefaultFlag.FAREWELL_MESSAGE);
@@ -63,8 +68,6 @@ public class FlagLoader {
         new FlagOBJ("", 49, Material.PAPER, DefaultFlag.RECEIVE_CHAT);
         new FlagOBJ("", 50, Material.POTION, DefaultFlag.POTION_SPLASH);
         new FlagOBJ("", 51, Material.LEAVES, DefaultFlag.LEAF_DECAY);
-
-        //PAGE 2 Reserved Slots(36, 37, 43, 44, 45, 46, 52, 53)
         new FlagOBJ("", 0, Material.COBBLESTONE, DefaultFlag.PASSTHROUGH);
         new FlagOBJ("", 1, Material.BARRIER, DefaultFlag.INTERACT);
         new FlagOBJ("", 2, Material.DIAMOND_PICKAXE, DefaultFlag.BLOCK_BREAK);
@@ -98,21 +101,20 @@ public class FlagLoader {
         new FlagOBJ("", 30, Material.COMPASS, DefaultFlag.EXIT_VIA_TELEPORT);
         new FlagOBJ("", 31, Material.COMPASS, DefaultFlag.EXIT_OVERRIDE);
         new FlagOBJ("", 32, Material.COMPASS, DefaultFlag.FALL_DAMAGE);
-
-        //SAVE
-        ArrayList<Flag> deprecated = new ArrayList<>();
+        ArrayList<Object> deprecated = new ArrayList<Object>();
         deprecated.add(DefaultFlag.BUYABLE);
         deprecated.add(DefaultFlag.PRICE);
         deprecated.add(DefaultFlag.ENABLE_SHOP);
         FileDriver.getInstance().saveJson();
-        Main.getInstance().getLogger().info("Finished loading flags: "+ (FlagUtil.flagOBJHashMap.size()+deprecated.size())+"  of Worldguard Flags (diff is normal) "+DefaultFlag.getDefaultFlags().size());
-        if ((FlagUtil.flagOBJHashMap.size()+deprecated.size()) != DefaultFlag.getDefaultFlags().size()) {
+        Main.getInstance().getLogger().info("Finished loading flags: " + (FlagUtil.flagOBJHashMap.size() + deprecated.size()) + "  of Worldguard Flags (diff is normal) " + DefaultFlag.getDefaultFlags().size());
+        if (FlagUtil.flagOBJHashMap.size() + deprecated.size() != DefaultFlag.getDefaultFlags().size()) {
             Main.getInstance().getLogger().info("This Flags arent implemented yet.");
         }
-        for (Flag flag: DefaultFlag.getDefaultFlags()) {
-            if (!deprecated.contains(flag)) {
-                FlagOBJ.getFlagObj(flag);
-            }
+        for (Flag flag : DefaultFlag.getDefaultFlags()) {
+            if (deprecated.contains(flag)) continue;
+            FlagOBJ.getFlagObj(flag);
         }
+        FileDriver.getInstance().loadJson();
     }
 }
+

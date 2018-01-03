@@ -1,57 +1,54 @@
 package de.moddylp.AncientRegions.region;
 
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import de.moddylp.AncientRegions.Language;
+import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.region.Navigation;
+import de.moddylp.AncientRegions.region.Region;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-
-import de.moddylp.AncientRegions.Main;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.InventoryView;
 
 public class BuyRegionGUI {
-	private Main plugin;
-	private Player p;
-	private Inventory menu;
-	private WorldGuardPlugin worldguard;
+    private Main plugin;
+    private Player p;
+    private Inventory menu;
+    private WorldGuardPlugin worldguard;
 
-	public BuyRegionGUI(Player p, Main plugin, WorldGuardPlugin worldguard) {
-		this.p = p;
-		this.plugin = plugin;
-		this.worldguard = worldguard;
-		this.menu = Bukkit.createInventory(null, 27, ChatColor.GOLD + plugin.lang.getText("RegionBuy"));
-	}
-    //Load the menu items/icons
-	private void loadMenuItems()
-    {
-		Region region1 = new Region(plugin, 1);
-		region1.loadgui(menu, p, worldguard);
-		Region region2 = new Region(plugin, 2);
-		region2.loadgui(menu, p, worldguard);
-		Region region3 = new Region(plugin, 3);
-		region3.loadgui(menu, p, worldguard);
-		Region region4 = new Region(plugin, 4);
-		region4.loadgui(menu, p, worldguard);
-		Navigation navi = new Navigation();
-		navi.loadguiitems(menu, plugin);
+    public BuyRegionGUI(Player p, Main plugin, WorldGuardPlugin worldguard) {
+        this.p = p;
+        this.plugin = plugin;
+        this.worldguard = worldguard;
+        this.menu = Bukkit.createInventory((InventoryHolder)null, (int)27, (String)(ChatColor.GOLD + plugin.lang.getText("RegionBuy")));
     }
-	//Open the inventory inGame
-    public void open()
-    {
-       loadMenuItems(); 
-       p.openInventory(menu);
-        
+
+    private void loadMenuItems() {
+        Region region1 = new Region(this.plugin, 1);
+        region1.loadgui(this.menu, this.p, this.worldguard);
+        Region region2 = new Region(this.plugin, 2);
+        region2.loadgui(this.menu, this.p, this.worldguard);
+        Region region3 = new Region(this.plugin, 3);
+        region3.loadgui(this.menu, this.p, this.worldguard);
+        Region region4 = new Region(this.plugin, 4);
+        region4.loadgui(this.menu, this.p, this.worldguard);
+        Navigation navi = new Navigation();
+        navi.loadguiitems(this.menu, this.plugin);
     }
-    
-    //Return menu-name
-    public String getName()
-    {
-        return menu.getName();
+
+    public void open() {
+        this.loadMenuItems();
+        this.p.openInventory(this.menu);
     }
-    
-    //Return this
-    public Inventory getMenu()
-    {
-        return menu;
+
+    public String getName() {
+        return this.menu.getName();
+    }
+
+    public Inventory getMenu() {
+        return this.menu;
     }
 }
+

@@ -2,7 +2,6 @@ package de.moddylp.AncientRegions;
 
 import java.io.File;
 import java.io.IOException;
-
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -10,63 +9,42 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public class Language {
     private final File langFile;
     private final FileConfiguration lang;
-    
-    //Construction
-    public Language(File config)
-    {
+
+    public Language(File config) {
         this.langFile = config;
-        this.lang = YamlConfiguration.loadConfiguration(langFile);
-        
+        this.lang = YamlConfiguration.loadConfiguration((File)this.langFile);
     }
+
     public void reload() {
-    	try {
-			lang.load(langFile);
-		} catch (IOException | InvalidConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-    
-    //Save lang file
-    private void save()
-    {
         try {
-        
-            lang.save(langFile);
-            
-        } catch ( Exception ex ) {
-            
+            this.lang.load(this.langFile);
+        }
+        catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void save() {
+        try {
+            this.lang.save(this.langFile);
+        }
+        catch (Exception ex) {
             ex.printStackTrace();
-            
         }
     }
-    
-    //Set default message
-    public void setTextOnce(String path , String text)
-    {
-        if (lang.getString(path) == null )
-        {
-            
-            lang.set( path , text );
-            
+
+    public void setTextOnce(String path, String text) {
+        if (this.lang.getString(path) == null) {
+            this.lang.set(path, text);
             this.save();
-            
         }
     }
-    
-    //Get message from message-file
-    public String getText(String path)
-    {
-        if (lang.getString(path) != null)
-        {
-            
-            return lang.getString(path).replaceAll("&" , "§");
-            
-        } else {
-            
-            return "&cThis sentence does not exist. Please check lang-file message ".replaceAll( "&" , "§" ) + path ;
-            
+
+    public String getText(String path) {
+        if (this.lang.getString(path) != null) {
+            return this.lang.getString(path).replaceAll("&", "\u00a7");
         }
+        return "&cThis sentence does not exist. Please check lang-file message ".replaceAll("&", "\u00a7") + path;
     }
-    
 }
+

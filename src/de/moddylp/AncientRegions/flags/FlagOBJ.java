@@ -1,15 +1,17 @@
 package de.moddylp.AncientRegions.flags;
 
 import com.google.common.base.CaseFormat;
-import com.sk89q.worldguard.protection.flags.*;
 import com.sk89q.worldguard.protection.flags.BooleanFlag;
+import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.loader.FileDriver;
+import java.util.HashMap;
+import java.util.logging.Logger;
 import org.bukkit.Material;
 
 public class FlagOBJ {
-
     private final Material item;
     private final int menuposition;
     private String name;
@@ -18,37 +20,32 @@ public class FlagOBJ {
     private Flag<?> flag;
     private String permission;
 
-
     public FlagOBJ(String description, int menuposition, Material item, Flag<?> flag) {
         this.name = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, flag.getName().replaceAll("-", "_").toUpperCase());
         this.description = description;
         this.flag = flag;
-        this.configname = name.toLowerCase();
-        if (flag instanceof BooleanFlag || flag instanceof StateFlag) {
-            this.permission = "ancient.regions.flag.toggle" + configname;
-        } else {
-            this.permission = "ancient.regions.flag." + configname;
-        }
+        this.configname = this.name.toLowerCase();
+        this.permission = flag instanceof BooleanFlag || flag instanceof StateFlag ? "ancient.regions.flag.toggle" + this.configname : "ancient.regions.flag." + this.configname;
         this.item = item;
         this.menuposition = menuposition;
-        FlagUtil.flagOBJHashMap.put(name, this);
-        FileDriver.getInstance().getProperty(FileDriver.getInstance().CONFIG, configname, 100);
+        FlagUtil.flagOBJHashMap.put(this.name, this);
+        FileDriver.getInstance().getProperty(FileDriver.getInstance().CONFIG, this.configname, 100);
     }
+
     public static FlagOBJ getFlagObj(Flag flag) {
         String search = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, flag.getName().replaceAll("-", "_").toUpperCase());
         if (FlagUtil.flagOBJHashMap.containsKey(search)) {
             return FlagUtil.flagOBJHashMap.get(search);
-        } else {
-            Main.getInstance().getLogger().warning("No Flag found with name: "+search);
         }
+        Main.getInstance().getLogger().warning("No Flag found with name: " + search);
         return null;
     }
+
     public String getName() {
-        if (name != null) {
-            return name;
-        } else {
-            return "NoName";
+        if (this.name != null) {
+            return this.name;
         }
+        return "NoName";
     }
 
     public void setName(String name) {
@@ -56,7 +53,7 @@ public class FlagOBJ {
     }
 
     public String getConfigname() {
-        return configname;
+        return this.configname;
     }
 
     public void setConfigname(String configname) {
@@ -64,7 +61,7 @@ public class FlagOBJ {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public void setDescription(String description) {
@@ -72,7 +69,7 @@ public class FlagOBJ {
     }
 
     public Flag<?> getFlag() {
-        return flag;
+        return this.flag;
     }
 
     public void setFlag(Flag<?> flag) {
@@ -80,7 +77,7 @@ public class FlagOBJ {
     }
 
     public String getPermission() {
-        return permission;
+        return this.permission;
     }
 
     public void setPermission(String permission) {
@@ -88,10 +85,11 @@ public class FlagOBJ {
     }
 
     public Material getItem() {
-        return item;
+        return this.item;
     }
 
     int getMenuposition() {
-        return menuposition;
+        return this.menuposition;
     }
 }
+

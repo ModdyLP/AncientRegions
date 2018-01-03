@@ -1,98 +1,107 @@
 package de.moddylp.AncientRegions.gui;
 
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import de.moddylp.AncientRegions.flags.*;
+import com.sk89q.worldguard.protection.flags.EnumFlag;
+import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.flags.LocationFlag;
+import com.sk89q.worldguard.protection.flags.SetFlag;
+import com.sk89q.worldguard.protection.flags.StringFlag;
+import de.moddylp.AncientRegions.Language;
+import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.flags.DoubleFlag;
+import de.moddylp.AncientRegions.flags.EditFlagsNavigation;
+import de.moddylp.AncientRegions.flags.EntitySetFlag;
+import de.moddylp.AncientRegions.flags.FlagOBJ;
+import de.moddylp.AncientRegions.flags.IntegerFlag;
+import de.moddylp.AncientRegions.flags.LocationFlagimpl;
+import de.moddylp.AncientRegions.flags.StateFlag;
+import de.moddylp.AncientRegions.flags.WeatherFlag;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-
-import de.moddylp.AncientRegions.Main;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.InventoryView;
 
 public class Editflags {
-	private Inventory menu;
-	private Player p;
-	private Main plugin;
+    private Inventory menu;
+    private Player p;
+    private Main plugin;
 
-	public Editflags(Player p, Main plugin) {
-		this.plugin = plugin;
-		this.p = p;
-		this.menu = Bukkit.createInventory(null, 54, ChatColor.RED + plugin.lang.getText("EditFlags") + " 1");
-	}
+    public Editflags(Player p, Main plugin) {
+        this.plugin = plugin;
+        this.p = p;
+        this.menu = Bukkit.createInventory((InventoryHolder)null, (int)54, (String)(ChatColor.RED + plugin.lang.getText("EditFlags") + " 1"));
+    }
 
-	// Load the menu items/icons
-	private void loadMenuItems() {
-	    try {
+    private void loadMenuItems() {
+        try {
             EditFlagsNavigation navigation = new EditFlagsNavigation();
-            navigation.loadguiitems(menu, plugin);
-
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.BUILD), p, menu);
-            StringFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.GREET_MESSAGE), p, menu);
-            StringFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.FAREWELL_MESSAGE), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.PVP), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.MOB_DAMAGE), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ENTRY), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.EXIT), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ENDERPEARL), p, menu);
-            LocationFlagimpl.createandload(FlagOBJ.getFlagObj(DefaultFlag.TELE_LOC), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ITEM_PICKUP), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ITEM_DROP), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.EXP_DROPS), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.MOB_SPAWNING), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.CREEPER_EXPLOSION), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.TNT), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.INVINCIBILITY), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ENDERDRAGON_BLOCK_DAMAGE), p, menu);
-            EntitySetFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.DENY_SPAWN), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.SNOW_FALL), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.SNOW_MELT), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ICE_FORM), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ICE_MELT), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.GRASS_SPREAD), p, menu);
-            IntegerFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.HEAL_AMOUNT), p, menu);
-            IntegerFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.HEAL_DELAY), p, menu);
-            DoubleFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.MIN_HEAL), p, menu);
-            DoubleFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.MAX_HEAL), p, menu);
-            StringFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.ALLOWED_CMDS), p, menu);
-            StringFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.BLOCKED_CMDS), p, menu);
-            StringFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.TIME_LOCK), p, menu);
-            WeatherFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.WEATHER_LOCK), p, menu);
-            LocationFlagimpl.createandload(FlagOBJ.getFlagObj(DefaultFlag.SPAWN_LOC), p, menu);
-            IntegerFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.FEED_AMOUNT), p, menu);
-            IntegerFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.FEED_DELAY), p, menu);
-            IntegerFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.MIN_FOOD), p, menu);
-            IntegerFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.MAX_FOOD), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FLOW), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.WATER_FLOW), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.LIGHTNING), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FIRE), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.MUSHROOMS), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.PISTONS), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.SEND_CHAT), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.RECEIVE_CHAT), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.POTION_SPLASH), p, menu);
-            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.LEAF_DECAY), p, menu);
-            StringFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.DENY_MESSAGE), p, menu);
-
-
-        } catch (Exception ex) {
-	        ex.printStackTrace();
+            navigation.loadguiitems(this.menu, this.plugin);
+            StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.BUILD), this.p, this.menu);
+            de.moddylp.AncientRegions.flags.StringFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.GREET_MESSAGE), this.p, this.menu);
+            de.moddylp.AncientRegions.flags.StringFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.FAREWELL_MESSAGE), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.PVP), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.MOB_DAMAGE), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.ENTRY), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.EXIT), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.ENDERPEARL), this.p, this.menu);
+            LocationFlagimpl.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.TELE_LOC), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.ITEM_PICKUP), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.ITEM_DROP), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.EXP_DROPS), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.MOB_SPAWNING), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.CREEPER_EXPLOSION), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.TNT), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.INVINCIBILITY), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.ENDERDRAGON_BLOCK_DAMAGE), this.p, this.menu);
+            EntitySetFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.DENY_SPAWN), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.SNOW_FALL), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.SNOW_MELT), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.ICE_FORM), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.ICE_MELT), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.GRASS_SPREAD), this.p, this.menu);
+            IntegerFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.HEAL_AMOUNT), this.p, this.menu);
+            IntegerFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.HEAL_DELAY), this.p, this.menu);
+            DoubleFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.MIN_HEAL), this.p, this.menu);
+            DoubleFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.MAX_HEAL), this.p, this.menu);
+            de.moddylp.AncientRegions.flags.StringFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.ALLOWED_CMDS), this.p, this.menu);
+            de.moddylp.AncientRegions.flags.StringFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.BLOCKED_CMDS), this.p, this.menu);
+            de.moddylp.AncientRegions.flags.StringFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.TIME_LOCK), this.p, this.menu);
+            WeatherFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.WEATHER_LOCK), this.p, this.menu);
+            LocationFlagimpl.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.SPAWN_LOC), this.p, this.menu);
+            IntegerFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.FEED_AMOUNT), this.p, this.menu);
+            IntegerFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.FEED_DELAY), this.p, this.menu);
+            IntegerFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.MIN_FOOD), this.p, this.menu);
+            IntegerFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.MAX_FOOD), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.LAVA_FLOW), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.WATER_FLOW), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.LIGHTNING), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.LAVA_FIRE), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.MUSHROOMS), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.PISTONS), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.SEND_CHAT), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.RECEIVE_CHAT), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.POTION_SPLASH), this.p, this.menu);
+            StateFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.LEAF_DECAY), this.p, this.menu);
+            de.moddylp.AncientRegions.flags.StringFlag.createandload(FlagOBJ.getFlagObj((Flag)DefaultFlag.DENY_MESSAGE), this.p, this.menu);
         }
-	}
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
-	// Open the inventory inGame
-	public void open() {
-		loadMenuItems();
-		p.openInventory(menu);
-	}
+    public void open() {
+        this.loadMenuItems();
+        this.p.openInventory(this.menu);
+    }
 
-	// Return menu-name
-	public String getName() {
-		return menu.getName();
-	}
+    public String getName() {
+        return this.menu.getName();
+    }
 
-	// Return this
-	public Inventory getMenu() {
-		return menu;
-	}
+    public Inventory getMenu() {
+        return this.menu;
+    }
 }
+

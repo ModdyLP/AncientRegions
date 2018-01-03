@@ -7,20 +7,26 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import de.moddylp.AncientRegions.Language;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagUtil;
+import de.moddylp.AncientRegions.region.RegionManageGUI;
+import java.util.List;
+import java.util.UUID;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.List;
-import java.util.UUID;
-
-public class SetValueFromChatEvent implements Listener {
+public class SetValueFromChatEvent
+implements Listener {
     private Player p;
     private Main plugin;
     private WorldGuardPlugin worldguard;
@@ -35,111 +41,108 @@ public class SetValueFromChatEvent implements Listener {
 
     @EventHandler
     public String getChat(AsyncPlayerChatEvent e) {
-        if (e.getPlayer().equals(p)) {
+        if (e.getPlayer().equals(this.p)) {
             String msg = e.getMessage();
-            UUID uuid = uuid(msg);
+            UUID uuid = this.uuid(msg);
             if (uuid != null) {
-                if (mode.equals(plugin.lang.getText("AddMember"))) {
-                    if (p.hasPermission("ancient.regions.region.addmember")) {
-                        RegionContainer container = worldguard.getRegionContainer();
-                        RegionManager regions = container.get(p.getWorld());
-                        Vector pt = new Vector(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ());
-                        LocalPlayer ply = worldguard.wrapPlayer(p);
-                        List<String> region = null;
+                RegionContainer container;
+                if (this.mode.equals(this.plugin.lang.getText("AddMember"))) {
+                    if (this.p.hasPermission("ancient.regions.region.addmember")) {
+                        container = this.worldguard.getRegionContainer();
+                        RegionManager regions = container.get(this.p.getWorld());
+                        Vector pt = new Vector(this.p.getLocation().getX(), this.p.getLocation().getY(), this.p.getLocation().getZ());
+                        LocalPlayer ply = this.worldguard.wrapPlayer(this.p);
+                        List region = null;
                         if (regions != null) {
                             region = regions.getApplicableRegionsIDs(pt);
-
                             if (region.isEmpty()) {
-                                p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("GobalError"));
+                                this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("GobalError"));
                             } else {
-                                ProtectedRegion rg = regions.getRegion(region.get(0));
-                                if (rg != null && rg.isOwner(ply) || rg != null && p.hasPermission("ancient.regions.admin.bypass")) {
-                                    if (FlagUtil.payment(p, e, "_addmember") || p.hasPermission("ancient.regions.admin.bypass")) {
+                                ProtectedRegion rg = regions.getRegion((String)region.get(0));
+                                if (rg != null && rg.isOwner(ply) || rg != null && this.p.hasPermission("ancient.regions.admin.bypass")) {
+                                    if (FlagUtil.payment(this.p, (Cancellable)e, "_addmember") || this.p.hasPermission("ancient.regions.admin.bypass")) {
                                         DefaultDomain member = new DefaultDomain();
                                         member.addPlayer(uuid);
                                         rg.setMembers(member);
-                                        p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("PlayerAdded").replace("[PH]", msg));
+                                        this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("PlayerAdded").replace("[PH]", msg));
                                         container.reload();
                                         e.setCancelled(true);
                                     } else {
-                                        p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("NoMoney"));
+                                        this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("NoMoney"));
                                         e.setCancelled(true);
                                     }
                                 } else {
-                                    p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("Owner"));
+                                    this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("Owner"));
                                     e.setCancelled(true);
                                 }
                                 e.setCancelled(true);
                             }
                         }
                     } else {
-                        p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("Permission"));
+                        this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("Permission"));
                         e.setCancelled(true);
                     }
-                } else if (mode.equals(plugin.lang.getText("ChangeOwner"))) {
-                    if (p.hasPermission("ancient.regions.region.changeowner")) {
-                        RegionContainer container = worldguard.getRegionContainer();
-                        RegionManager regions = container.get(p.getWorld());
-                        Vector pt = new Vector(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ());
-                        LocalPlayer ply = worldguard.wrapPlayer(p);
-                        List<String> region = regions.getApplicableRegionsIDs(pt);
+                } else if (this.mode.equals(this.plugin.lang.getText("ChangeOwner"))) {
+                    if (this.p.hasPermission("ancient.regions.region.changeowner")) {
+                        container = this.worldguard.getRegionContainer();
+                        RegionManager regions = container.get(this.p.getWorld());
+                        Vector pt = new Vector(this.p.getLocation().getX(), this.p.getLocation().getY(), this.p.getLocation().getZ());
+                        LocalPlayer ply = this.worldguard.wrapPlayer(this.p);
+                        List region = regions.getApplicableRegionsIDs(pt);
                         if (region.isEmpty()) {
-                            p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("GobalError"));
+                            this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("GobalError"));
                         } else {
-                            ProtectedRegion rg = regions.getRegion(region.get(0));
-                            if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
-                                if (FlagUtil.payment(p, e, "_changeowner") || p.hasPermission("ancient.regions.admin.bypass")) {
-                                    DefaultDomain owner;
-                                    owner = rg.getOwners();
-                                    owner.removePlayer(p.getUniqueId());
+                            ProtectedRegion rg = regions.getRegion((String)region.get(0));
+                            if (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass")) {
+                                if (FlagUtil.payment(this.p, (Cancellable)e, "_changeowner") || this.p.hasPermission("ancient.regions.admin.bypass")) {
+                                    DefaultDomain owner = rg.getOwners();
+                                    owner.removePlayer(this.p.getUniqueId());
                                     owner.addPlayer(uuid);
                                     rg.setOwners(owner);
-                                    p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("ChangeOwner").replace("[PH]", msg));
+                                    this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("ChangeOwner").replace("[PH]", msg));
                                     container.reload();
                                     e.setCancelled(true);
                                 } else {
-                                    p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("NoMoney"));
+                                    this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("NoMoney"));
                                     e.setCancelled(true);
                                 }
                             } else {
-                                p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("Owner"));
+                                this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("Owner"));
                                 e.setCancelled(true);
                             }
                             e.setCancelled(true);
                         }
                     } else {
-                        p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("Permission"));
+                        this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("Permission"));
                         e.setCancelled(true);
                     }
                 }
-                RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
+                RegionManageGUI gui = new RegionManageGUI(this.p, this.plugin, this.worldguard);
                 gui.open();
-                HandlerList.unregisterAll(this);
+                HandlerList.unregisterAll((Listener)this);
                 e.setCancelled(true);
             } else {
                 e.setCancelled(true);
-                p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("Player").replace("[PH]", msg));
-                RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
+                this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("Player").replace("[PH]", msg));
+                RegionManageGUI gui = new RegionManageGUI(this.p, this.plugin, this.worldguard);
                 gui.open();
-                HandlerList.unregisterAll(this);
+                HandlerList.unregisterAll((Listener)this);
             }
         }
-        return mode;
+        return this.mode;
     }
 
     public UUID uuid(String playername) {
-        OfflinePlayer[] allplayers = plugin.getServer().getOfflinePlayers();
-
-        for (int i = 0; allplayers.length >= i; ) {
+        int i;
+        OfflinePlayer[] allplayers = this.plugin.getServer().getOfflinePlayers();
+        if (allplayers.length >= (i = 0)) {
             String uuidname = allplayers[i].getName();
             if (playername.trim().equals(uuidname)) {
                 return allplayers[i].getUniqueId();
-            } else {
-                return null;
             }
-
+            return null;
         }
         return null;
     }
-
 }
+

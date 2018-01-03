@@ -1,28 +1,29 @@
 package de.moddylp.AncientRegions.gui.Events;
 
+import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.gui.Editflags;
+import de.moddylp.AncientRegions.gui.Events.GUIEvents;
+import de.moddylp.AncientRegions.gui.Startgui;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import de.moddylp.AncientRegions.gui.Editflags;
-import de.moddylp.AncientRegions.gui.Startgui;
-
 public class GUIOpener {
-	
-	private GUIEvents loader;
+    private GUIEvents loader;
 
-	public GUIOpener(GUIEvents loader) {
-		this.loader = loader;
-	}
-	
-	public void openstartgui(CommandSender sender) {
-		Startgui gui1 = new Startgui(Bukkit.getPlayer(sender.getName()), loader.plugin);
-            gui1.open();
-	}
-	public void openeditflagsgui(Player sender) {
+    public GUIOpener(GUIEvents loader) {
+        this.loader = loader;
+    }
+
+    public void openstartgui(CommandSender sender) {
+        Startgui gui1 = new Startgui(Bukkit.getPlayer((String)sender.getName()), this.loader.plugin);
+        gui1.open();
+    }
+
+    public void openeditflagsgui(Player sender) {
         sender.closeInventory();
-		Editflags gui2 = new Editflags(Bukkit.getPlayer(sender.getName()), loader.plugin);
+        Editflags gui2 = new Editflags(Bukkit.getPlayer((String)sender.getName()), this.loader.plugin);
         gui2.open();
-        
-        }
+    }
 }
+
