@@ -4,40 +4,34 @@ import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.BukkitUtil;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.LocationFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import de.moddylp.AncientRegions.Language;
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.AncientRegions.flags.FlagOBJ;
-import de.moddylp.AncientRegions.flags.FlagUtil;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-import java.util.logging.Logger;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 public class LocationFlagimpl {
     private FlagOBJ flagobj;
 
-    public LocationFlagimpl(FlagOBJ flagobj) {
+    private LocationFlagimpl(FlagOBJ flagobj) {
         this.flagobj = flagobj;
     }
 
     public static void createandload(FlagOBJ flagOBJ, Player p, Inventory menu) {
+        if (flagOBJ.getMenuposition() == 999) {
+            return;
+        }
         LocationFlagimpl flag;
         if (FlagUtil.locationFlagHashMap.containsKey(flagOBJ.getName())) {
             flag = FlagUtil.locationFlagHashMap.get(flagOBJ.getName());
@@ -49,6 +43,9 @@ public class LocationFlagimpl {
     }
 
     public static void createandtoggle(FlagOBJ flagOBJ, Player p, Inventory menu, InventoryClickEvent event) {
+        if (flagOBJ.getMenuposition() == 999) {
+            return;
+        }
         LocationFlagimpl flag;
         event.setCancelled(true);
         if (FlagUtil.locationFlagHashMap.containsKey(flagOBJ.getName())) {
@@ -66,7 +63,7 @@ public class LocationFlagimpl {
             RegionManager regions = container.get(p.getWorld());
             Vector pt = new Vector(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ());
             LocalPlayer ply = Main.worldguard.wrapPlayer(p);
-            List region = null;
+            List region;
             if (regions != null) {
                 region = regions.getApplicableRegionsIDs(pt);
                 if (region.isEmpty()) {
@@ -77,7 +74,7 @@ public class LocationFlagimpl {
                         if (rg.getFlag(this.flagobj.getFlag()) != null) {
                             rg.setFlag(this.flagobj.getFlag(), null);
                             p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagobj.getName() + Main.getInstance().lang.getText("FlagRemoved"));
-                        } else if (FlagUtil.payment(p, (Cancellable)e, this.flagobj.getName())) {
+                        } else if (FlagUtil.payment(p, e, this.flagobj.getName())) {
                             rg.setFlag((LocationFlag) flagobj.getFlag(), BukkitUtil.toLocation(p.getLocation()));
                             p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.flagobj.getName() + Main.getInstance().lang.getText("fEnabled"));
                         }
@@ -99,7 +96,7 @@ public class LocationFlagimpl {
     public boolean loadgui(Inventory menu, Player p) {
         if (p.hasPermission(this.flagobj.getPermission())) {
             ItemStack ITEM = new ItemStack(this.flagobj.getItem());
-            ArrayList<String> lore = new ArrayList<String>();
+            ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Set").replace("[PH]", this.flagobj.getName()));
             lore.add(ChatColor.YELLOW + Objects.requireNonNull(FlagUtil.loadPricefromConfig(this.flagobj.getName())).toString() + " " + FlagUtil.loadCurrencyfromConfig());
             if (!FlagUtil.isSet(p, this.flagobj.getFlag()).equals("null")) {
@@ -126,7 +123,7 @@ public class LocationFlagimpl {
         } else {
             ItemStack ITEM = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
             if (ITEM.getItemMeta().getLore() == null) {
-                ArrayList<String> lore = new ArrayList<String>();
+                ArrayList<String> lore = new ArrayList<>();
                 lore.add(ChatColor.RED + Main.getInstance().lang.getText("Permission"));
                 ItemMeta imeta = ITEM.getItemMeta();
                 imeta.setDisplayName(ChatColor.RED + "[OFF] " + Main.getInstance().lang.getText("Toggle") + this.flagobj.getName());

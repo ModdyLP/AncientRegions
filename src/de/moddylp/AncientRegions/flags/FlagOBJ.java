@@ -2,13 +2,12 @@ package de.moddylp.AncientRegions.flags;
 
 import com.google.common.base.CaseFormat;
 import com.sk89q.worldguard.protection.flags.BooleanFlag;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.loader.FileDriver;
-import java.util.HashMap;
-import java.util.logging.Logger;
 import org.bukkit.Material;
 
 public class FlagOBJ {
@@ -38,7 +37,7 @@ public class FlagOBJ {
             return FlagUtil.flagOBJHashMap.get(search);
         }
         Main.getInstance().getLogger().warning("No Flag found with name: " + search);
-        return null;
+        return new FlagOBJ("NOT FOUND", 999, Material.BARRIER, DefaultFlag.ALLOWED_CMDS);
     }
 
     public String getName() {

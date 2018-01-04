@@ -3,12 +3,9 @@ package de.moddylp.AncientRegions.gui.Events;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.SetFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import de.moddylp.AncientRegions.Language;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagOBJ;
 import de.moddylp.AncientRegions.flags.FlagUtil;
@@ -16,10 +13,7 @@ import de.moddylp.AncientRegions.gui.Editflags;
 import java.util.HashSet;
 import java.util.List;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -50,14 +44,14 @@ implements Listener {
                 } else {
                     ProtectedRegion rg = regions.getRegion((String)region.get(0));
                     if (rg != null && rg.isOwner(ply) || rg != null && this.p.hasPermission("ancient.regions.admin.bypass")) {
-                        if (FlagUtil.payment(this.p, (Cancellable)e, this.flag.getName())) {
-                            HashSet<String> set = new HashSet<String>();
+                        if (FlagUtil.payment(this.p, e, this.flag.getName())) {
+                            HashSet<String> set = new HashSet<>();
                             set.add(msg);
-                            rg.setFlag((Flag)((SetFlag)this.flag.getFlag()), set);
+                            rg.setFlag((SetFlag)this.flag.getFlag(), set);
                             this.p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
                             Editflags gui = new Editflags(this.p, Main.getInstance());
                             gui.open();
-                            HandlerList.unregisterAll((Listener)this);
+                            HandlerList.unregisterAll(this);
                             e.setCancelled(true);
                         }
                     } else {

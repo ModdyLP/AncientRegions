@@ -1,38 +1,23 @@
 package de.moddylp.AncientRegions;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.io.*;
 import java.lang.reflect.Method;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.zip.GZIPOutputStream;
-import org.bukkit.Bukkit;
-import org.bukkit.Server;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.configuration.file.YamlConfigurationOptions;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scheduler.BukkitTask;
 
 public class Metrics {
     private static final int REVISION = 7;
@@ -40,7 +25,7 @@ public class Metrics {
     private static final String REPORT_URL = "/plugin/%s";
     private static final int PING_INTERVAL = 15;
     private final Plugin plugin;
-    private final Set<Graph> graphs = Collections.synchronizedSet(new HashSet());
+    private final Set<Graph> graphs = Collections.synchronizedSet(new HashSet<>());
     private final YamlConfiguration configuration;
     private final File configurationFile;
     private final String guid;
@@ -54,7 +39,7 @@ public class Metrics {
         }
         this.plugin = plugin;
         this.configurationFile = this.getConfigFile();
-        this.configuration = YamlConfiguration.loadConfiguration((File)this.configurationFile);
+        this.configuration = YamlConfiguration.loadConfiguration(this.configurationFile);
         this.configuration.addDefault("opt-out", false);
         this.configuration.addDefault("guid", UUID.randomUUID().toString());
         this.configuration.addDefault("debug", false);
@@ -334,7 +319,7 @@ public class Metrics {
         }
     }
 
-    private static void appendJSONPair(StringBuilder json, String key, String value) throws UnsupportedEncodingException {
+    private static void appendJSONPair(StringBuilder json, String key, String value) {
         boolean isValueNumeric = false;
         try {
             if (value.equals("0") || !value.endsWith("0")) {
@@ -420,8 +405,6 @@ public class Metrics {
             return this.name;
         }
 
-        public void reset() {
-        }
 
         public int hashCode() {
             return this.getColumnName().hashCode();
@@ -434,6 +417,7 @@ public class Metrics {
             Plotter plotter = (Plotter)object;
             return plotter.name.equals(this.name) && plotter.getValue() == this.getValue();
         }
+        public void reset() {}
     }
 
     /*
@@ -441,7 +425,7 @@ public class Metrics {
      */
     public static class Graph {
         private final String name;
-        private final Set<Plotter> plotters = new LinkedHashSet<Plotter>();
+        private final Set<Plotter> plotters = new LinkedHashSet<>();
 
         private Graph(String name) {
             this.name = name;
@@ -474,9 +458,7 @@ public class Metrics {
             Graph graph = (Graph)object;
             return graph.name.equals(this.name);
         }
-
-        protected void onOptOut() {
-        }
+        public void onOptOut() {}
     }
 
 }

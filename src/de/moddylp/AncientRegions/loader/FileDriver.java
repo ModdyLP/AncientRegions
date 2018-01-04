@@ -11,14 +11,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.Reader;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +31,8 @@ public class FileDriver {
     public static FileDriver getInstance() {
         if (instance == null) {
             instance = new FileDriver();
+            files = new HashMap<>();
+            jsons = new HashMap<>();
         }
         return instance;
     }
@@ -117,7 +117,7 @@ public class FileDriver {
         JsonObject json = crunhifyParser.parse(simpleJSON).getAsJsonObject();
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.setPrettyPrinting().create();
-        ArrayList<String> keys = new ArrayList<String>();
+        ArrayList<String> keys = new ArrayList<>();
         for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
             keys.add(entry.getKey());
         }
@@ -228,21 +228,16 @@ public class FileDriver {
     }
 
     public HashMap<String, Object> getAllKeysWithValues(String filename) {
-        HashMap<String, Object> objects = new HashMap<String, Object>();
+        HashMap<String, Object> objects = new HashMap<>();
         try {
             for (String key : jsons.get(filename).keySet()) {
-                objects.put(key.toString(), jsons.get(filename).get(key.toString()));
+                objects.put(key, jsons.get(filename).get(key));
             }
         }
         catch (Exception ex) {
             Main.getInstance().getLogger().warning("Can not list Property: ");
         }
         return objects;
-    }
-
-    static {
-        files = new HashMap();
-        jsons = new HashMap();
     }
 }
 

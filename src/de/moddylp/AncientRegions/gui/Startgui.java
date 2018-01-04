@@ -1,10 +1,7 @@
 package de.moddylp.AncientRegions.gui;
 
-import de.moddylp.AncientRegions.Language;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.particle.ParticleShower;
-import java.util.ArrayList;
-import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -13,12 +10,12 @@ import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.ArrayList;
 
 public class Startgui {
     private Inventory menu;
@@ -28,7 +25,7 @@ public class Startgui {
     public Startgui(Player p, Main plugin) {
         this.plugin = plugin;
         this.p = p;
-        this.menu = Bukkit.createInventory((InventoryHolder)null, (int)9, (String)(ChatColor.GOLD + "AncientRegions"));
+        this.menu = Bukkit.createInventory(null, 9, ChatColor.GOLD + "AncientRegions");
     }
 
     private void loadMenuItems() {
@@ -49,12 +46,12 @@ public class Startgui {
         bannerMeta1.addPattern(new Pattern(DyeColor.BLACK, PatternType.BORDER));
         ItemStack rginfo = new ItemStack(Material.PAPER);
         ItemMeta meta3 = rginfo.getItemMeta();
-        ArrayList<String> desc = new ArrayList<String>();
+        ArrayList<String> desc = new ArrayList<>();
         desc.add(ChatColor.GREEN + this.plugin.lang.getText("DescriptionFlags1"));
         desc.add(ChatColor.GREEN + this.plugin.lang.getText("DescriptionFlags2"));
-        ArrayList<String> desc2 = new ArrayList<String>();
+        ArrayList<String> desc2 = new ArrayList<>();
         desc2.add(ChatColor.GREEN + this.plugin.lang.getText("RegionInfo"));
-        ArrayList<String> desc3 = new ArrayList<String>();
+        ArrayList<String> desc3 = new ArrayList<>();
         desc3.add(ChatColor.GREEN + this.plugin.lang.getText("RegionManage"));
         bannerMeta.setDisplayName(ChatColor.GOLD + this.plugin.lang.getText("EditFlagsItem"));
         bannerMeta.setLore(desc);
@@ -75,8 +72,8 @@ public class Startgui {
         bannerMeta1.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
         bannerMeta1.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
         rginfo.setItemMeta(meta3);
-        flagedit.setItemMeta((ItemMeta)bannerMeta);
-        regionmanage.setItemMeta((ItemMeta)bannerMeta1);
+        flagedit.setItemMeta(bannerMeta);
+        regionmanage.setItemMeta(bannerMeta1);
         this.menu.setItem(0, flagedit);
         this.menu.setItem(8, rginfo);
         this.menu.setItem(1, regionmanage);

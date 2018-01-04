@@ -3,43 +3,34 @@ package de.moddylp.AncientRegions.flags;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import de.moddylp.AncientRegions.Language;
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.AncientRegions.flags.FlagOBJ;
-import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.gui.Events.GamemodeFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Server;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class GamemodeFlag {
     private FlagOBJ flagOBJ;
 
-    public GamemodeFlag(FlagOBJ flagOBJ) {
+    private GamemodeFlag(FlagOBJ flagOBJ) {
         this.flagOBJ = flagOBJ;
     }
 
     public static void createandload(FlagOBJ flagOBJ, Player p, Inventory menu) {
+        if (flagOBJ.getMenuposition() == 999) {
+            return;
+        }
         GamemodeFlag flag;
         if (FlagUtil.gamemodeFlagHashMap.containsKey(flagOBJ.getName())) {
             flag = FlagUtil.gamemodeFlagHashMap.get(flagOBJ.getName());
@@ -51,6 +42,9 @@ public class GamemodeFlag {
     }
 
     public static void createandtoggle(FlagOBJ flagOBJ, Player p, Inventory menu, InventoryClickEvent event) {
+        if (flagOBJ.getMenuposition() == 999) {
+            return;
+        }
         GamemodeFlag flag;
         event.setCancelled(true);
         if (FlagUtil.gamemodeFlagHashMap.containsKey(flagOBJ.getName())) {
@@ -68,7 +62,7 @@ public class GamemodeFlag {
             RegionManager regions = container.get(p.getWorld());
             Vector pt = new Vector(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ());
             LocalPlayer ply = Main.worldguard.wrapPlayer(p);
-            List region = null;
+            List region;
             if (regions != null) {
                 region = regions.getApplicableRegionsIDs(pt);
                 if (region.isEmpty()) {
@@ -82,7 +76,7 @@ public class GamemodeFlag {
                         } else {
                             p.closeInventory();
                             p.sendMessage(ChatColor.GOLD + Main.getInstance().lang.getText("Gamemode"));
-                            Main.getInstance().getServer().getPluginManager().registerEvents((Listener)new GamemodeFormat(p, this.flagOBJ, rg), (Plugin)Main.getInstance());
+                            Main.getInstance().getServer().getPluginManager().registerEvents(new GamemodeFormat(p, this.flagOBJ, rg), Main.getInstance());
                         }
                     } else {
                         p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("Owner"));
@@ -102,7 +96,7 @@ public class GamemodeFlag {
     public boolean loadgui(Inventory menu, Player p) {
         if (p.hasPermission(this.flagOBJ.getPermission())) {
             ItemStack ITEM = new ItemStack(this.flagOBJ.getItem());
-            ArrayList<String> lore = new ArrayList<String>();
+            ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Set").replace("[PH]", this.flagOBJ.getName()));
             lore.add(ChatColor.YELLOW + Objects.requireNonNull(FlagUtil.loadPricefromConfig(this.flagOBJ.getName())).toString() + " " + FlagUtil.loadCurrencyfromConfig());
             if (!FlagUtil.isSet(p, this.flagOBJ.getFlag()).equals("null")) {
@@ -121,7 +115,7 @@ public class GamemodeFlag {
         } else {
             ItemStack ITEM = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
             if (ITEM.getItemMeta().getLore() == null) {
-                ArrayList<String> lore = new ArrayList<String>();
+                ArrayList<String> lore = new ArrayList<>();
                 lore.add(ChatColor.RED + Main.getInstance().lang.getText("Permission"));
                 ItemMeta imeta = ITEM.getItemMeta();
                 imeta.setDisplayName(ChatColor.RED + "[OFF] " + Main.getInstance().lang.getText("s") + this.flagOBJ.getName());

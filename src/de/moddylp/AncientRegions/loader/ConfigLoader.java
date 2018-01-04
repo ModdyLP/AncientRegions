@@ -1,9 +1,6 @@
 package de.moddylp.AncientRegions.loader;
 
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.AncientRegions.loader.FileDriver;
-import java.io.File;
-import java.util.logging.Logger;
 
 public class ConfigLoader {
     public static void saveDefaultconfig() {

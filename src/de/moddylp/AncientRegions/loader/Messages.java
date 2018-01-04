@@ -60,6 +60,7 @@ public class Messages {
         lang.setTextOnce("RemoveRegionLore1", "Sell your Region to the Server.");
         lang.setTextOnce("RemoveRegionLore2", "You get [PH] back by selling the Region.");
         lang.setTextOnce("Removed", "Your Region ([PH]) was selled.");
+        lang.setTextOnce("RemovedError","Your Region ([PH]) was selled but cant be restored to nature." );
         lang.setTextOnce("Payback", " You get [PH] for selling this region.");
         lang.setTextOnce("Playername", "Please type in the Chat a Playername!");
         lang.setTextOnce("Restore", "Restore in Progress... Please wait");

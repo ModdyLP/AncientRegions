@@ -1,6 +1,5 @@
 package de.moddylp.AncientRegions.gui.Events;
 
-import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.gui.Editflags;
 import de.moddylp.AncientRegions.gui.Events.GUIEvents;
 import de.moddylp.AncientRegions.gui.Startgui;
@@ -16,13 +15,13 @@ public class GUIOpener {
     }
 
     public void openstartgui(CommandSender sender) {
-        Startgui gui1 = new Startgui(Bukkit.getPlayer((String)sender.getName()), this.loader.plugin);
+        Startgui gui1 = new Startgui(Bukkit.getPlayer(sender.getName()), this.loader.plugin);
         gui1.open();
     }
 
     public void openeditflagsgui(Player sender) {
         sender.closeInventory();
-        Editflags gui2 = new Editflags(Bukkit.getPlayer((String)sender.getName()), this.loader.plugin);
+        Editflags gui2 = new Editflags(Bukkit.getPlayer(sender.getName()), this.loader.plugin);
         gui2.open();
     }
 }

@@ -5,54 +5,32 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.domains.DefaultDomain;
-import com.sk89q.worldguard.protection.flags.BooleanFlag;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.flags.DoubleFlag;
-import com.sk89q.worldguard.protection.flags.EnumFlag;
-import com.sk89q.worldguard.protection.flags.Flag;
-import com.sk89q.worldguard.protection.flags.IntegerFlag;
-import com.sk89q.worldguard.protection.flags.LocationFlag;
-import com.sk89q.worldguard.protection.flags.SetFlag;
-import com.sk89q.worldguard.protection.flags.StringFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import de.moddylp.AncientRegions.Language;
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.AncientRegions.flags.EntitySetFlag;
-import de.moddylp.AncientRegions.flags.FlagOBJ;
-import de.moddylp.AncientRegions.flags.GamemodeFlag;
-import de.moddylp.AncientRegions.flags.LocationFlagimpl;
-import de.moddylp.AncientRegions.flags.StateFlag;
-import de.moddylp.AncientRegions.flags.WeatherFlag;
+import de.moddylp.AncientRegions.flags.*;
 import de.moddylp.AncientRegions.gui.Editflags;
 import de.moddylp.AncientRegions.gui.EditflagsPage2;
-import de.moddylp.AncientRegions.gui.Events.GUIEvents;
-import de.moddylp.AncientRegions.gui.Events.GUIOpener;
 import de.moddylp.AncientRegions.gui.Startgui;
-import de.moddylp.AncientRegions.loader.FileDriver;
 import de.moddylp.AncientRegions.particle.ParticleShower;
 import de.moddylp.AncientRegions.region.BuyRegionGUI;
 import de.moddylp.AncientRegions.region.MembersGUI;
 import de.moddylp.AncientRegions.region.Region;
 import de.moddylp.AncientRegions.region.RegionManageGUI;
-
-import java.util.*;
-import java.util.logging.Logger;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.Server;
 import org.bukkit.Sound;
-import org.bukkit.World;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 public class Menu_Click
 implements Listener {
@@ -61,7 +39,7 @@ implements Listener {
     private Main plugin;
     private WorldEditPlugin worldedit;
 
-    public Menu_Click(GUIEvents loaderClass, WorldGuardPlugin worldguard, Main plugin, WorldEditPlugin worldedit) {
+    Menu_Click(GUIEvents loaderClass, WorldGuardPlugin worldguard, Main plugin, WorldEditPlugin worldedit) {
         this.worldguard = worldguard;
         this.loader = loaderClass;
         this.plugin = plugin;
@@ -103,7 +81,7 @@ implements Listener {
                         RegionManager regions = container.get(p.getWorld());
                         Vector pt = new Vector(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ());
                         LocalPlayer ply = this.worldguard.wrapPlayer(p);
-                        List<String> region = regions.getApplicableRegionsIDs(pt);
+                        List<String> region = Objects.requireNonNull(regions).getApplicableRegionsIDs(pt);
                         if (region.isEmpty()) {
                             p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("GobalError"));
                         } else {
@@ -111,7 +89,7 @@ implements Listener {
                                 ProtectedRegion rg = regions.getRegion(regionid);
                                 if (rg != null && rg.getOwners().contains(ply) || p.hasPermission("ancient.flags.admin.bypass")) {
                                     p.sendMessage(ChatColor.BLUE + "============Region Info============");
-                                    p.sendMessage(ChatColor.GOLD + "Regionname:       " + ChatColor.GREEN + rg.getId().trim());
+                                    p.sendMessage(ChatColor.GOLD + "Regionname:       " + ChatColor.GREEN + Objects.requireNonNull(rg).getId().trim());
                                     p.sendMessage(ChatColor.GOLD + "Owner:            \n" + ChatColor.GREEN + this.playername(rg, "owner"));
                                     p.sendMessage(ChatColor.GOLD + "Member:           \n" + ChatColor.GREEN + this.playername(rg, "member"));
                                     p.sendMessage(ChatColor.GOLD + "Dimensions:       \n" + ChatColor.GREEN + rg.getPoints().toString().trim().replace("[", "").replace("]", ""));
@@ -552,7 +530,7 @@ implements Listener {
                     String name = e.getCurrentItem().getItemMeta().getDisplayName();
                     if (!name.contains(this.plugin.lang.getText("Back")) && !name.contains(this.plugin.lang.getText("Mainmenu"))) {
                         MembersGUI gui = new MembersGUI(p, this.plugin, this.worldguard);
-                        gui.removeMember(this.uuid(ChatColor.stripColor((String)e.getCurrentItem().getItemMeta().getDisplayName())), e, ChatColor.stripColor((String)e.getCurrentItem().getItemMeta().getDisplayName()));
+                        gui.removeMember(this.uuid(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName())), e, ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
                         e.setCancelled(true);
                         break block140;
                     }
@@ -625,7 +603,7 @@ implements Listener {
         } else if (mode.equals("owner")) {
             uuids = rg.getOwners().getUniqueIds();
         }
-        for (UUID uuid : uuids) {
+        for (UUID uuid : Objects.requireNonNull(uuids)) {
             OfflinePlayer[] allplayers = this.plugin.getServer().getOfflinePlayers();
             for (int i = 0; allplayers.length >= i; ++i) {
                 UUID uuidname = allplayers[i].getUniqueId();

@@ -4,36 +4,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 import javax.net.ssl.HttpsURLConnection;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.configuration.file.YamlConfigurationOptions;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -43,7 +33,7 @@ public class Metrics {
     private static boolean logFailedRequests;
     private static String serverUUID;
     private final JavaPlugin plugin;
-    private final List<CustomChart> charts = new ArrayList<CustomChart>();
+    private final List<CustomChart> charts = new ArrayList<>();
 
     public Metrics(JavaPlugin plugin) {
         if (plugin == null) {
@@ -52,7 +42,7 @@ public class Metrics {
         this.plugin = plugin;
         File bStatsFolder = new File(plugin.getDataFolder().getParentFile(), "bStats");
         File configFile = new File(bStatsFolder, "config.yml");
-        YamlConfiguration config = YamlConfiguration.loadConfiguration((File)configFile);
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
         if (!config.isSet("serverUuid")) {
             config.addDefault("enabled", true);
             config.addDefault("serverUuid", UUID.randomUUID().toString());
@@ -171,18 +161,14 @@ public class Metrics {
             }
         }
         data.put("plugins", pluginData);
-        new Thread(new Runnable(){
-
-            @Override
-            public void run() {
-                block2 : {
-                    try {
-                        Metrics.sendData(data);
-                    }
-                    catch (Exception e) {
-                        if (!logFailedRequests) break block2;
-                        Metrics.this.plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + Metrics.this.plugin.getName(), e);
-                    }
+        new Thread(() -> {
+            block2 : {
+                try {
+                    Metrics.sendData(data);
+                }
+                catch (Exception e) {
+                    if (!logFailedRequests) break block2;
+                    Metrics.this.plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + Metrics.this.plugin.getName(), e);
                 }
             }
         }).start();

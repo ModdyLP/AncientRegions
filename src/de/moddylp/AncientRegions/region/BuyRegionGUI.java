@@ -1,7 +1,6 @@
 package de.moddylp.AncientRegions.region;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import de.moddylp.AncientRegions.Language;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.region.Navigation;
 import de.moddylp.AncientRegions.region.Region;
@@ -9,8 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.InventoryView;
 
 public class BuyRegionGUI {
     private Main plugin;
@@ -22,7 +19,7 @@ public class BuyRegionGUI {
         this.p = p;
         this.plugin = plugin;
         this.worldguard = worldguard;
-        this.menu = Bukkit.createInventory((InventoryHolder)null, (int)27, (String)(ChatColor.GOLD + plugin.lang.getText("RegionBuy")));
+        this.menu = Bukkit.createInventory(null, 27, ChatColor.GOLD + plugin.lang.getText("RegionBuy"));
     }
 
     private void loadMenuItems() {

@@ -1,22 +1,13 @@
 package de.moddylp.AncientRegions.loader;
 
-import com.sk89q.worldguard.protection.flags.BooleanFlag;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.flags.DoubleFlag;
-import com.sk89q.worldguard.protection.flags.EnumFlag;
 import com.sk89q.worldguard.protection.flags.Flag;
-import com.sk89q.worldguard.protection.flags.IntegerFlag;
-import com.sk89q.worldguard.protection.flags.LocationFlag;
-import com.sk89q.worldguard.protection.flags.SetFlag;
-import com.sk89q.worldguard.protection.flags.StateFlag;
-import com.sk89q.worldguard.protection.flags.StringFlag;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagOBJ;
 import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.loader.FileDriver;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.logging.Logger;
+
 import org.bukkit.Material;
 
 public class FlagLoader {
@@ -101,7 +92,7 @@ public class FlagLoader {
         new FlagOBJ("", 30, Material.COMPASS, DefaultFlag.EXIT_VIA_TELEPORT);
         new FlagOBJ("", 31, Material.COMPASS, DefaultFlag.EXIT_OVERRIDE);
         new FlagOBJ("", 32, Material.COMPASS, DefaultFlag.FALL_DAMAGE);
-        ArrayList<Object> deprecated = new ArrayList<Object>();
+        ArrayList<Object> deprecated = new ArrayList<>();
         deprecated.add(DefaultFlag.BUYABLE);
         deprecated.add(DefaultFlag.PRICE);
         deprecated.add(DefaultFlag.ENABLE_SHOP);

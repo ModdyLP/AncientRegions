@@ -1,6 +1,5 @@
 package de.moddylp.AncientRegions.flags;
 
-import de.moddylp.AncientRegions.Language;
 import de.moddylp.AncientRegions.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,7 +16,7 @@ public class EditFlagsNavigation2 {
         ItemStack Backarrow = new ItemStack(Material.TIPPED_ARROW);
         PotionMeta pmeta = (PotionMeta)Backarrow.getItemMeta();
         pmeta.setBasePotionData(new PotionData(PotionType.INSTANT_HEAL));
-        Backarrow.setItemMeta((ItemMeta)pmeta);
+        Backarrow.setItemMeta(pmeta);
         ItemMeta imeta = Backarrow.getItemMeta();
         imeta.setDisplayName(ChatColor.RED + plugin.lang.getText("Back"));
         imeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -27,7 +26,7 @@ public class EditFlagsNavigation2 {
         ItemStack Mainmenu = new ItemStack(Material.TIPPED_ARROW);
         PotionMeta pmeta2 = (PotionMeta)Mainmenu.getItemMeta();
         pmeta2.setBasePotionData(new PotionData(PotionType.NIGHT_VISION));
-        Mainmenu.setItemMeta((ItemMeta)pmeta2);
+        Mainmenu.setItemMeta(pmeta2);
         ItemMeta imeta2 = Mainmenu.getItemMeta();
         imeta2.setDisplayName(ChatColor.DARK_BLUE + plugin.lang.getText("Mainmenu"));
         imeta2.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);

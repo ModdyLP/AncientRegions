@@ -7,35 +7,21 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import de.moddylp.AncientRegions.Language;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagUtil;
-import de.moddylp.AncientRegions.region.Navigation2;
-import de.moddylp.AncientRegions.region.RegionManageGUI;
-import de.moddylp.AncientRegions.region.SetValueFromChatEvent;
-
-import java.util.*;
-import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.Server;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
+
+import java.util.*;
 
 public class MembersGUI {
     private Main plugin;
@@ -49,25 +35,25 @@ public class MembersGUI {
         this.worldguard = worldguard;
     }
 
-    public void loadregionskulls(WorldGuardPlugin worldguard) {
+    private void loadregionskulls(WorldGuardPlugin worldguard) {
         try {
             RegionContainer container = worldguard.getRegionContainer();
             RegionManager regions = container.get(this.p.getWorld());
             Vector pt = new Vector(this.p.getLocation().getX(), this.p.getLocation().getY(), this.p.getLocation().getZ());
             LocalPlayer ply = worldguard.wrapPlayer(this.p);
-            List region = regions.getApplicableRegionsIDs(pt);
+            List region = Objects.requireNonNull(regions).getApplicableRegionsIDs(pt);
             if (region.isEmpty()) {
                 this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("GobalError"));
             } else {
                 ProtectedRegion rg = regions.getRegion((String)region.get(0));
-                if (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass")) {
+                if (Objects.requireNonNull(rg).isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass")) {
                     Set<UUID> players = rg.getMembers().getUniqueIds();
                     for (UUID p : players) {
                         ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
                         SkullMeta meta = (SkullMeta)skull.getItemMeta();
                         meta.setOwningPlayer(this.playername(p));
-                        meta.setDisplayName(ChatColor.GREEN + this.playername(p).getName());
-                        skull.setItemMeta((ItemMeta)meta);
+                        meta.setDisplayName(ChatColor.GREEN + Objects.requireNonNull(this.playername(p)).getName());
+                        skull.setItemMeta(meta);
                         this.menu.addItem(skull);
                     }
                 } else {
@@ -88,7 +74,7 @@ public class MembersGUI {
         }
     }
 
-    public void loadserverskulls() {
+    private void loadserverskulls() {
         try {
             Collection<? extends Player> players = this.plugin.getServer().getOnlinePlayers();
             for (Player p : players) {
@@ -96,7 +82,7 @@ public class MembersGUI {
                 SkullMeta meta = (SkullMeta)skull.getItemMeta();
                 meta.setOwningPlayer(this.playername(p.getUniqueId()));
                 meta.setDisplayName(ChatColor.GREEN + p.getName());
-                skull.setItemMeta((ItemMeta)meta);
+                skull.setItemMeta(meta);
                 this.menu.addItem(skull);
             }
             Navigation2 navi = new Navigation2();
@@ -111,7 +97,7 @@ public class MembersGUI {
     public void addMember(InventoryClickEvent e) {
         this.p.closeInventory();
         this.p.sendMessage(ChatColor.GOLD + this.plugin.lang.getText("Playername"));
-        this.plugin.getServer().getPluginManager().registerEvents((Listener)new SetValueFromChatEvent(this.p, this.plugin.lang.getText("AddMember"), this.plugin, this.worldguard), (Plugin)this.plugin);
+        this.plugin.getServer().getPluginManager().registerEvents(new SetValueFromChatEvent(this.p, this.plugin.lang.getText("AddMember"), this.plugin, this.worldguard), this.plugin);
     }
 
     public void removeMember(UUID uuid, InventoryClickEvent e, String name) {
@@ -121,13 +107,13 @@ public class MembersGUI {
                 RegionManager regions = container.get(this.p.getWorld());
                 Vector pt = new Vector(this.p.getLocation().getX(), this.p.getLocation().getY(), this.p.getLocation().getZ());
                 LocalPlayer ply = this.worldguard.wrapPlayer(this.p);
-                List region = regions.getApplicableRegionsIDs(pt);
+                List<String> region = Objects.requireNonNull(regions).getApplicableRegionsIDs(pt);
                 if (region.isEmpty()) {
                     this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("GobalError"));
                 } else {
                     ProtectedRegion rg = regions.getRegion((String)region.get(0));
-                    if (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass")) {
-                        if (FlagUtil.payment(this.p, (Cancellable)e, "_removemember") || this.p.hasPermission("ancient.regions.admin.bypass")) {
+                    if (Objects.requireNonNull(rg).isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass")) {
+                        if (FlagUtil.payment(this.p, e, "_removemember") || this.p.hasPermission("ancient.regions.admin.bypass")) {
                             DefaultDomain member = rg.getMembers();
                             member.removePlayer(uuid);
                             rg.setMembers(member);
@@ -158,7 +144,7 @@ public class MembersGUI {
         }
     }
 
-    public OfflinePlayer playername(UUID p) {
+    private OfflinePlayer playername(UUID p) {
         OfflinePlayer[] allplayers = this.plugin.getServer().getOfflinePlayers();
         for (int i = 0; allplayers.length >= i; ++i) {
             UUID uuidname = allplayers[i].getUniqueId();
@@ -171,23 +157,23 @@ public class MembersGUI {
     public void changeowner(InventoryClickEvent e) {
         this.p.closeInventory();
         this.p.sendMessage(ChatColor.GOLD + this.plugin.lang.getText("Playername"));
-        this.plugin.getServer().getPluginManager().registerEvents((Listener)new SetValueFromChatEvent(this.p, this.plugin.lang.getText("ChangeOwner"), this.plugin, this.worldguard), (Plugin)this.plugin);
+        this.plugin.getServer().getPluginManager().registerEvents(new SetValueFromChatEvent(this.p, this.plugin.lang.getText("ChangeOwner"), this.plugin, this.worldguard), this.plugin);
     }
 
     public void openregion() {
-        this.menu = Bukkit.createInventory((InventoryHolder)null, (int)54, (String)(ChatColor.GOLD + this.plugin.lang.getText("RemoveMember")));
+        this.menu = Bukkit.createInventory(null, 54, ChatColor.GOLD + this.plugin.lang.getText("RemoveMember"));
         this.loadregionskulls(this.worldguard);
         this.p.openInventory(this.menu);
     }
 
     public void openserver() {
-        this.menu = Bukkit.createInventory((InventoryHolder)null, (int)54, (String)(ChatColor.GOLD + this.plugin.lang.getText("AddMember")));
+        this.menu = Bukkit.createInventory(null, 54, ChatColor.GOLD + this.plugin.lang.getText("AddMember"));
         this.loadserverskulls();
         this.p.openInventory(this.menu);
     }
 
     public void openserver2() {
-        this.menu = Bukkit.createInventory((InventoryHolder)null, (int)54, (String)(ChatColor.GOLD + this.plugin.lang.getText("SetOwner")));
+        this.menu = Bukkit.createInventory(null, 54, ChatColor.GOLD + this.plugin.lang.getText("SetOwner"));
         this.loadserverskulls();
         this.p.openInventory(this.menu);
     }

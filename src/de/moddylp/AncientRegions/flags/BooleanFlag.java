@@ -3,38 +3,33 @@ package de.moddylp.AncientRegions.flags;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import de.moddylp.AncientRegions.Language;
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.AncientRegions.flags.FlagOBJ;
-import de.moddylp.AncientRegions.flags.FlagUtil;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 public class BooleanFlag {
     private FlagOBJ flagOBJ;
 
-    public BooleanFlag(FlagOBJ flagOBJ) {
+    private BooleanFlag(FlagOBJ flagOBJ) {
         this.flagOBJ = flagOBJ;
     }
 
     public static void createandload(FlagOBJ flagOBJ, Player p, Inventory menu) {
+        if (flagOBJ.getMenuposition() == 999) {
+            return;
+        }
         BooleanFlag flag;
         if (FlagUtil.booleanFlagHashMap.containsKey(flagOBJ.getName())) {
             flag = FlagUtil.booleanFlagHashMap.get(flagOBJ.getName());
@@ -46,6 +41,9 @@ public class BooleanFlag {
     }
 
     public static void createandtoggle(FlagOBJ flagOBJ, Player p, Inventory menu, InventoryClickEvent event) {
+        if (flagOBJ.getMenuposition() == 999) {
+            return;
+        }
         BooleanFlag flag;
         event.setCancelled(true);
         if (FlagUtil.booleanFlagHashMap.containsKey(flagOBJ.getName())) {
@@ -104,7 +102,7 @@ public class BooleanFlag {
     public boolean loadgui(Inventory menu, Player p) {
         if (p.hasPermission(this.flagOBJ.getPermission())) {
             ItemStack ITEM = new ItemStack(this.flagOBJ.getItem());
-            ArrayList<String> lore = new ArrayList<String>();
+            ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Set").replace("[PH]", this.flagOBJ.getName()));
             lore.add(ChatColor.YELLOW + Objects.requireNonNull(FlagUtil.loadPricefromConfig(this.flagOBJ.getName())).toString() + " " + FlagUtil.loadCurrencyfromConfig());
             if (!FlagUtil.isSet(p, this.flagOBJ.getFlag()).equals("null")) {

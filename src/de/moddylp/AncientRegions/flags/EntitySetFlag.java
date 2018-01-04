@@ -3,43 +3,34 @@ package de.moddylp.AncientRegions.flags;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import de.moddylp.AncientRegions.Language;
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.AncientRegions.flags.FlagOBJ;
-import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.gui.Events.SpezialFormatEntity;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Server;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class EntitySetFlag {
     private FlagOBJ flagobj;
 
-    public EntitySetFlag(FlagOBJ flagOBJ) {
+    private EntitySetFlag(FlagOBJ flagOBJ) {
         this.flagobj = flagOBJ;
     }
 
     public static void createandload(FlagOBJ flagOBJ, Player p, Inventory menu) {
+        if (flagOBJ.getMenuposition() == 999) {
+            return;
+        }
         EntitySetFlag flag;
         if (FlagUtil.setFlagEntityHashmap.containsKey(flagOBJ.getName())) {
             flag = FlagUtil.setFlagEntityHashmap.get(flagOBJ.getName());
@@ -51,6 +42,9 @@ public class EntitySetFlag {
     }
 
     public static void createandtoggle(FlagOBJ flagOBJ, Player p, Inventory menu, InventoryClickEvent event) {
+        if (flagOBJ.getMenuposition() == 999) {
+            return;
+        }
         EntitySetFlag flag;
         event.setCancelled(true);
         if (FlagUtil.setFlagEntityHashmap.containsKey(flagOBJ.getName())) {
@@ -81,7 +75,7 @@ public class EntitySetFlag {
                         } else {
                             p.closeInventory();
                             p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("Message2").replace("[PH]", this.flagobj.getName()));
-                            Main.getInstance().getServer().getPluginManager().registerEvents((Listener)new SpezialFormatEntity(p, this.flagobj), (Plugin)Main.getInstance());
+                            Main.getInstance().getServer().getPluginManager().registerEvents(new SpezialFormatEntity(p, this.flagobj), Main.getInstance());
                         }
                     } else {
                         p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("Owner"));
@@ -101,7 +95,7 @@ public class EntitySetFlag {
     public boolean loadgui(Inventory menu, Player p) {
         if (p.hasPermission(this.flagobj.getPermission())) {
             ItemStack ITEM = new ItemStack(this.flagobj.getItem());
-            ArrayList<String> lore = new ArrayList<String>();
+            ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Set").replace("[PH]", this.flagobj.getName()));
             lore.add(ChatColor.YELLOW + Objects.requireNonNull(FlagUtil.loadPricefromConfig(this.flagobj.getConfigname())).toString() + " " + FlagUtil.loadCurrencyfromConfig());
             if (!FlagUtil.isSet(p, this.flagobj.getFlag()).equals("null")) {
@@ -120,7 +114,7 @@ public class EntitySetFlag {
         } else {
             ItemStack ITEM = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
             if (ITEM.getItemMeta().getLore() == null) {
-                ArrayList<String> lore = new ArrayList<String>();
+                ArrayList<String> lore = new ArrayList<>();
                 lore.add(ChatColor.RED + Main.getInstance().lang.getText("Permission"));
                 ItemMeta imeta = ITEM.getItemMeta();
                 imeta.setDisplayName(ChatColor.RED + "[OFF] " + Main.getInstance().lang.getText("s") + this.flagobj.getName());

@@ -12,7 +12,7 @@ public class Language {
 
     public Language(File config) {
         this.langFile = config;
-        this.lang = YamlConfiguration.loadConfiguration((File)this.langFile);
+        this.lang = YamlConfiguration.loadConfiguration(this.langFile);
     }
 
     public void reload() {

@@ -3,43 +3,23 @@ package de.moddylp.AncientRegions;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import de.moddylp.AncientRegions.Language;
-import de.moddylp.AncientRegions.Metrics;
 import de.moddylp.AncientRegions.gui.Events.GUIEvents;
 import de.moddylp.AncientRegions.gui.Events.GUIOpener;
-import de.moddylp.AncientRegions.loader.ConfigLoader;
-import de.moddylp.AncientRegions.loader.FileDriver;
-import de.moddylp.AncientRegions.loader.FlagLoader;
-import de.moddylp.AncientRegions.loader.Messages;
-import de.moddylp.AncientRegions.loader.VaultLoader;
+import de.moddylp.AncientRegions.loader.*;
 import de.moddylp.AncientRegions.particle.LogFile;
-import java.io.File;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Stream;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Server;
 import org.bukkit.Sound;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.JSONArray;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.logging.Level;
 
 public class Main
 extends JavaPlugin {
@@ -74,7 +54,7 @@ extends JavaPlugin {
         if (DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_metrics").equals("true")) {
             try {
                 de.moddylp.AncientRegions.bukkit.Metrics metrics = new de.moddylp.AncientRegions.bukkit.Metrics(this);
-                Metrics metrics1 = new Metrics((Plugin)this);
+                Metrics metrics1 = new Metrics(this);
                 metrics1.start();
             }
             catch (Exception ex) {
@@ -97,14 +77,14 @@ extends JavaPlugin {
                             Player p = ((Player)sender).getPlayer();
                             if (DRIVER.hasKey(Main.DRIVER.CONFIG, "_worlds")) {
                                 JSONArray worldconfig = FileDriver.objectToJSONArray(DRIVER.getProperty(Main.DRIVER.CONFIG, "_worlds", "[]"));
-                                ArrayList<String> worlds = new ArrayList<String>();
+                                ArrayList<String> worlds = new ArrayList<>();
                                 for (Object object : worldconfig) {
                                     worlds.add(object.toString());
                                 }
                                 if (worlds.contains(p.getWorld().getName())) {
                                     if (p.hasPermission("ancient.regions.flag.command")) {
                                         GUIOpener opener = new GUIOpener(this.loader);
-                                        opener.openstartgui((CommandSender)p);
+                                        opener.openstartgui(p);
                                         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_SNARE, 100.0f, 100.0f);
                                         return true;
                                     }
@@ -135,19 +115,15 @@ extends JavaPlugin {
                             if (sender.hasPermission("ancient.regions.admin.cancelall")) {
                                 LogFile file = new LogFile();
                                 RegionContainer container = worldguard.getRegionContainer();
-                                this.getServer().getWorlds().stream().map(world -> container.get(world)).map(regions -> regions.getRegions()).forEach(rgids -> {
-                                    rgids.values().stream().filter(rg -> file.getString(rg.getId()) != null).forEach(rg -> {
-                                        file.setString(rg.getId(), null);
-                                    }
-                                    );
-                                }
+                                this.getServer().getWorlds().stream().map(container::get).map(regions -> Objects.requireNonNull(regions).getRegions()).forEach(rgids -> rgids.values().stream().filter(rg -> file.getString(rg.getId()) != null).forEach(rg -> file.setString(rg.getId(), null)
+                                )
                                 );
                                 sender.sendMessage(ChatColor.GREEN + "[AR][ERROR] " + this.lang.getText("Canceled"));
                                 return true;
                             }
                             sender.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.lang.getText("Permission"));
                         }
-                        catch (Exception file) {}
+                        catch (Exception ignored) {}
                         break;
                     }
                     case "info": 

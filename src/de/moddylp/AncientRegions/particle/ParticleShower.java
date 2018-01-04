@@ -6,25 +6,21 @@ import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import de.moddylp.AncientRegions.Language;
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.AncientRegions.loader.FileDriver;
 import de.moddylp.AncientRegions.particle.LogFile;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.Objects;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.inventivetalent.particle.ParticleEffect;
@@ -39,7 +35,7 @@ public class ParticleShower {
     private static List<Player> players;
     private BukkitTask locations;
     private BukkitTask timertask;
-    private List<Vector> vectoren = new ArrayList<Vector>();
+    private List<Vector> vectoren = new ArrayList<>();
 
     public ParticleShower(Main plugin, Inventory menu) {
         this.plugin = plugin;
@@ -52,7 +48,7 @@ public class ParticleShower {
             RegionContainer container = worldguard.getRegionContainer();
             RegionManager regions = container.get(p.getWorld());
             Vector pt = new Vector(p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ());
-            List<String> region = regions.getApplicableRegionsIDs(pt);
+            List<String> region = Objects.requireNonNull(regions).getApplicableRegionsIDs(pt);
             if (region.isEmpty()) {
                 p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("GobalError"));
             } else {
@@ -60,7 +56,7 @@ public class ParticleShower {
                     ProtectedRegion rg = regions.getRegion(regionid);
                     if (this.data.getString(regionid) == null || this.data.getString(regionid).equals("false")) {
                         World world = p.getWorld();
-                        players = new ArrayList<Player>();
+                        players = new ArrayList<>();
                         players.addAll(this.plugin.getServer().getOnlinePlayers());
                         this.timer(rg, p);
                         this.show(world, p, rg);
@@ -100,11 +96,11 @@ public class ParticleShower {
                     ParticleShower.this.timertask.cancel();
                 }
             }
-        }.runTaskTimer((Plugin)this.plugin, 0, 10);
+        }.runTaskTimer(this.plugin, 0, 10);
     }
 
     private List<Vector> calcallwallvectors(ProtectedRegion rg, Player p) {
-        ArrayList<Vector> vectoren = new ArrayList<Vector>();
+        ArrayList<Vector> vectoren = new ArrayList<>();
         try {
             double j;
             double j2;
@@ -168,7 +164,7 @@ public class ParticleShower {
     }
 
     private List<Vector> calcVisibleVectors(List<Vector> vectoren, Vector playerlocation) {
-        ArrayList<Vector> visbleVectors = new ArrayList<Vector>();
+        ArrayList<Vector> visbleVectors = new ArrayList<>();
         double range = Double.valueOf(Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_particleshowrange", 16));
         for (Vector pt : vectoren) {
             if ((double)playerlocation.getBlockX() + range < (double)pt.getBlockX() && (double)playerlocation.getBlockX() - range > (double)pt.getBlockX() && (double)playerlocation.getBlockY() + range < (double)pt.getBlockY() && (double)playerlocation.getBlockY() - range > (double)pt.getBlockY() && (double)playerlocation.getBlockZ() + range < (double)pt.getBlockZ() && (double)playerlocation.getBlockZ() - range > (double)pt.getBlockZ()) continue;
@@ -189,7 +185,7 @@ public class ParticleShower {
                             for (Vector vector : ParticleShower.this.calcVisibleVectors(ParticleShower.this.vectoren, new Vector(p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ()))) {
                                 Location loc = new Location(world, (double)vector.getBlockX(), (double)vector.getBlockY(), (double)vector.getBlockZ());
                                 if (Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showfor", 20).equals("player")) {
-                                    ArrayList<Player> player = new ArrayList<Player>();
+                                    ArrayList<Player> player = new ArrayList<>();
                                     player.add(p);
                                     ParticleEffect.FIREWORKS_SPARK.send(player, loc, 0.0, 0.0, 0.0, 0.0, 1);
                                     continue;
@@ -207,17 +203,17 @@ public class ParticleShower {
                             ex.printStackTrace();
                         }
                     }
-                }.runTaskTimerAsynchronously((Plugin)ParticleShower.this.plugin, 0, 25);
+                }.runTaskTimerAsynchronously(ParticleShower.this.plugin, 0, 25);
             }
 
-        }.runTaskAsynchronously((Plugin)this.plugin);
+        }.runTaskAsynchronously(this.plugin);
     }
 
     public void loadgui(Player p) {
         String flagname = "Particle";
         if (p.hasPermission("ancient.regions.region.particle")) {
             ItemStack ITEM = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 5);
-            ArrayList<String> lore = new ArrayList<String>();
+            ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.GOLD + this.plugin.lang.getText("Set").replace("[PH]", flagname));
             ItemMeta imeta = ITEM.getItemMeta();
             imeta.setDisplayName(this.plugin.lang.getText("Toggle") + flagname);
@@ -228,7 +224,7 @@ public class ParticleShower {
         } else {
             ItemStack ITEM = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
             if (ITEM.getItemMeta().getLore() == null) {
-                ArrayList<String> lore = new ArrayList<String>();
+                ArrayList<String> lore = new ArrayList<>();
                 lore.add(ChatColor.RED + this.plugin.lang.getText("Permission"));
                 ItemMeta imeta = ITEM.getItemMeta();
                 imeta.setDisplayName(ChatColor.RED + "[OFF] " + this.plugin.lang.getText("Toggle") + flagname);

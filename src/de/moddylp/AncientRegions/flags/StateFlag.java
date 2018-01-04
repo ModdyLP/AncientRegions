@@ -3,14 +3,12 @@ package de.moddylp.AncientRegions.flags;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -24,11 +22,14 @@ import java.util.Objects;
 public class StateFlag {
     private final FlagOBJ flagOBJ;
 
-    public StateFlag(FlagOBJ flagOBJ) {
+    private StateFlag(FlagOBJ flagOBJ) {
         this.flagOBJ = flagOBJ;
     }
 
     public static void createandload(FlagOBJ flagOBJ, Player p, Inventory menu) {
+        if (flagOBJ.getMenuposition() == 999) {
+            return;
+        }
         StateFlag flag;
         if (FlagUtil.stateFlagHashMap.containsKey(flagOBJ.getName())) {
             flag = FlagUtil.stateFlagHashMap.get(flagOBJ.getName());
@@ -40,6 +41,9 @@ public class StateFlag {
     }
 
     public static void createandtoggle(FlagOBJ flagOBJ, Player p, Inventory menu, InventoryClickEvent event) {
+        if (flagOBJ.getMenuposition() == 999) {
+            return;
+        }
         StateFlag flag;
         event.setCancelled(true);
         if (FlagUtil.stateFlagHashMap.containsKey(flagOBJ.getName())) {
@@ -98,7 +102,7 @@ public class StateFlag {
     public boolean loadgui(Inventory menu, Player p) {
         if (p.hasPermission(this.flagOBJ.getPermission())) {
             ItemStack ITEM = new ItemStack(this.flagOBJ.getItem());
-            ArrayList<String> lore = new ArrayList<String>();
+            ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Set").replace("[PH]", this.flagOBJ.getName()));
             lore.add(ChatColor.YELLOW + Objects.requireNonNull(FlagUtil.loadPricefromConfig(this.flagOBJ.getName())).toString() + " " + FlagUtil.loadCurrencyfromConfig());
             if (!FlagUtil.isSet(p, this.flagOBJ.getFlag()).equals("null")) {

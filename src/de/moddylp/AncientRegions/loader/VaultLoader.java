@@ -1,16 +1,11 @@
 package de.moddylp.AncientRegions.loader;
 
 import de.moddylp.AncientRegions.Main;
-import java.util.logging.Logger;
 import net.milkbowl.vault.Vault;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
-import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicesManager;
 
 public class VaultLoader {
     private final Main plugin;
@@ -21,7 +16,7 @@ public class VaultLoader {
 
     public boolean load() {
         Plugin vault = this.plugin.getServer().getPluginManager().getPlugin("Vault");
-        if (vault == null || !(vault instanceof Vault) || !this.setupEconomy().booleanValue()) {
+        if (vault == null || !(vault instanceof Vault) || !this.setupEconomy()) {
             Main.getInstance().getLogger().warning("Vault was not found or some Economy Plugin is missing! Disabling plugin.");
             Main.getInstance().getLogger().warning("!!!!!!!!!!!!!!!!!!!! MAKE SURE YOU HAVE INSTALLED A ECONOMY PLUGIN AND VAULT !!!!!!!!!!!!!!!!!!!!!!!!");
             return false;

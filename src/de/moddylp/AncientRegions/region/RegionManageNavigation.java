@@ -1,6 +1,5 @@
 package de.moddylp.AncientRegions.region;
 
-import de.moddylp.AncientRegions.Language;
 import de.moddylp.AncientRegions.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,11 +16,11 @@ public class RegionManageNavigation {
         ItemStack Mainmenu = new ItemStack(Material.TIPPED_ARROW);
         PotionMeta pmeta2 = (PotionMeta)Mainmenu.getItemMeta();
         pmeta2.setBasePotionData(new PotionData(PotionType.NIGHT_VISION));
-        Mainmenu.setItemMeta((ItemMeta)pmeta2);
+        Mainmenu.setItemMeta(pmeta2);
         ItemMeta imeta2 = Mainmenu.getItemMeta();
         imeta2.setDisplayName(ChatColor.DARK_BLUE + plugin.lang.getText("Mainmenu"));
-        imeta2.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ATTRIBUTES});
-        imeta2.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_POTION_EFFECTS});
+        imeta2.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        imeta2.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
         Mainmenu.setItemMeta(imeta2);
         menu.setItem(9, Mainmenu);
         return true;

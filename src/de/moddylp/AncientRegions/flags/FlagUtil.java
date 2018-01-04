@@ -2,34 +2,13 @@ package de.moddylp.AncientRegions.flags;
 
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import de.moddylp.AncientRegions.Language;
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.AncientRegions.flags.BooleanFlag;
-import de.moddylp.AncientRegions.flags.DoubleFlag;
-import de.moddylp.AncientRegions.flags.EntitySetFlag;
-import de.moddylp.AncientRegions.flags.FlagOBJ;
-import de.moddylp.AncientRegions.flags.GamemodeFlag;
-import de.moddylp.AncientRegions.flags.IntegerFlag;
-import de.moddylp.AncientRegions.flags.LocationFlagimpl;
-import de.moddylp.AncientRegions.flags.StateFlag;
-import de.moddylp.AncientRegions.flags.StringFlag;
-import de.moddylp.AncientRegions.flags.WeatherFlag;
-import de.moddylp.AncientRegions.loader.FileDriver;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Logger;
 import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.inventory.ItemFlag;
@@ -37,17 +16,21 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class FlagUtil {
-    public static HashMap<String, FlagOBJ> flagOBJHashMap = new HashMap();
-    static HashMap<String, StateFlag> stateFlagHashMap = new HashMap();
-    static HashMap<String, BooleanFlag> booleanFlagHashMap = new HashMap();
-    static HashMap<String, StringFlag> stringFlagHashMap = new HashMap();
-    static HashMap<String, EntitySetFlag> setFlagEntityHashmap = new HashMap();
-    static HashMap<String, DoubleFlag> doubleflag = new HashMap();
-    static HashMap<String, IntegerFlag> integerFlagHashMap = new HashMap();
-    static HashMap<String, GamemodeFlag> gamemodeFlagHashMap = new HashMap();
-    static HashMap<String, LocationFlagimpl> locationFlagHashMap = new HashMap();
-    static HashMap<String, WeatherFlag> weatherFlagHashMap = new HashMap();
+    public static HashMap<String, FlagOBJ> flagOBJHashMap = new HashMap<>();
+    static HashMap<String, StateFlag> stateFlagHashMap = new HashMap<>();
+    static HashMap<String, BooleanFlag> booleanFlagHashMap = new HashMap<>();
+    static HashMap<String, StringFlag> stringFlagHashMap = new HashMap<>();
+    static HashMap<String, EntitySetFlag> setFlagEntityHashmap = new HashMap<>();
+    static HashMap<String, DoubleFlag> doubleflag = new HashMap<>();
+    static HashMap<String, IntegerFlag> integerFlagHashMap = new HashMap<>();
+    static HashMap<String, GamemodeFlag> gamemodeFlagHashMap = new HashMap<>();
+    static HashMap<String, LocationFlagimpl> locationFlagHashMap = new HashMap<>();
+    static HashMap<String, WeatherFlag> weatherFlagHashMap = new HashMap<>();
 
     public static <T> T convertInstanceOfObject(Object o, Class<T> clazz) {
         try {
@@ -60,7 +43,7 @@ public class FlagUtil {
 
     public static void checkPermInv(ItemStack ITEM, String regionname) {
         if (ITEM.getItemMeta().getLore() == null) {
-            ArrayList<String> lore = new ArrayList<String>();
+            ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.RED + Main.getInstance().lang.getText("Permission"));
             ItemMeta imeta = ITEM.getItemMeta();
             imeta.setDisplayName(ChatColor.RED + "[OFF] " + Main.getInstance().lang.getText("Toggle") + regionname);
@@ -138,7 +121,7 @@ public class FlagUtil {
 
     public static void checkPerm(ItemStack ITEM, String flagname) {
         if (ITEM.getItemMeta().getLore() == null) {
-            ArrayList<String> lore = new ArrayList<String>();
+            ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.RED + Main.getInstance().lang.getText("Permission"));
             ItemMeta imeta = ITEM.getItemMeta();
             imeta.setDisplayName(ChatColor.RED + "[OFF] " + Main.getInstance().lang.getText("s") + flagname);
