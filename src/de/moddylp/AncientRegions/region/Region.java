@@ -201,7 +201,7 @@ public class Region {
                         }
                     }
                 }
-            }.runTaskAsynchronously(this.plugin);
+            }.runTask(this.plugin);
         } else {
             p.sendMessage( ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("Permission"));
             e.setCancelled(true);
@@ -281,7 +281,7 @@ public class Region {
         if (vaultEcon != null) {
             if (vaultEcon.getBalance(p) != 0.0 && vaultEcon.getBalance(p) >= this.regionprice) {
                 vaultEcon.withdrawPlayer(p, this.regionprice);
-                p.sendMessage( ChatColor.BLUE + "[AR][INFO]" + this.plugin.lang.getText("PayNote2").replace("[PH]", String.valueOf(this.regionprice) + " " + FlagUtil.loadCurrencyfromConfig()));
+                p.sendMessage( ChatColor.BLUE + "[AR][INFO]" + this.plugin.lang.getText("PayNote2").replace("[PH]", String.valueOf(regionprice) + " " + FlagUtil.loadCurrencyfromConfig()));
                 e.setCancelled(true);
                 return true;
             }
@@ -301,8 +301,8 @@ public class Region {
             e.setCancelled(true);
         }
         if (vaultEcon != null) {
-            vaultEcon.depositPlayer(p, Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "region" + this.getregionnumber(regionname, p) + "price")) * Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_payback")) / 100.0);
-            p.sendMessage( ChatColor.BLUE + "[AR][INFO]" + this.plugin.lang.getText("Payback").replace("[PH]", String.valueOf(Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "region" + this.getregionnumber(regionname, p) + "price")) * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_payback")) / 100.0)) + " " + FlagUtil.loadCurrencyfromConfig()));
+            vaultEcon.depositPlayer(p, Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_region" + this.getregionnumber(regionname, p) + "price")) * Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_payback")) / 100.0);
+            p.sendMessage( ChatColor.BLUE + "[AR][INFO]" + this.plugin.lang.getText("Payback").replace("[PH]", String.valueOf(Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_region" + this.getregionnumber(regionname, p) + "price")) * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_payback")) / 100.0)) + " " + FlagUtil.loadCurrencyfromConfig()));
             e.setCancelled(true);
         } else {
             p.sendMessage( ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("VaultError"));
@@ -363,7 +363,7 @@ public class Region {
         String numbername = regioname.replaceAll("-", "").replaceAll("_", "").replaceAll(p.getName().toLowerCase(), "");
         String option = Main.DRIVER.getPropertyByValue(Main.DRIVER.CONFIG, numbername.substring(0, numbername.length() - 1));
         if (option != null) {
-            return Integer.valueOf(option.replaceAll("region", "").replaceAll("name", ""));
+            return Integer.valueOf(option.replaceAll("region", "").replaceAll("name", "").replaceAll("_", ""));
         }
         return 0;
     }

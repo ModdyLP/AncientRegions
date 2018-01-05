@@ -190,13 +190,15 @@ public class FileDriver {
     }
 
     public String getPropertyByValue(String filename, String search) {
-        Set<String> keys = this.getAllKeysWithValues(filename).keySet();
+        HashMap<String, Object> map = this.getAllKeysWithValues(filename);
+        Set<String> keys = map.keySet();
         for (String key : keys) {
-            String value = this.getAllKeysWithValues(filename).get(key).toString();
-            if (!value.toLowerCase().contains(search)) continue;
-            return key;
+            if (map.get(key).toString().toLowerCase().equals(search)) {
+                return key;
+            }
         }
-        return null;
+        Main.getInstance().getLogger().info("Nothing found for search: "+search);
+        return "Nothing";
     }
 
     public boolean hasKey(String filename, String option) {

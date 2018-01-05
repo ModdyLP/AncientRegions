@@ -37,7 +37,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.milkbowl.vault:Vault:1.6.6" level="project" />
-    <orderEntry type="library" name="Maven: org.inventivetalent:particleapi:2.1.2" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.3" level="project" />
     <orderEntry type="library" name="Maven: org.json:json:20170516" level="project" />
     <orderEntry type="library" name="Maven: org.bstats:bstats-bukkit:1.2" level="project" />

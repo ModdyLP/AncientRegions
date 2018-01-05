@@ -101,27 +101,29 @@ public class RegionManageGUI {
     }
 
     private int getregionnumber() {
-        RegionContainer container = this.worldguard.getRegionContainer();
-        RegionManager regions = container.get(this.p.getWorld());
-        Vector pt = new Vector(this.p.getLocation().getX(), this.p.getLocation().getY(), this.p.getLocation().getZ());
-        LocalPlayer ply = this.worldguard.wrapPlayer(this.p);
-        List<String> region = Objects.requireNonNull(regions).getApplicableRegionsIDs(pt);
-        if (!region.isEmpty()) {
-            ProtectedRegion rg = regions.getRegion(region.get(0));
-            if (Objects.requireNonNull(rg).isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass")) {
-                String numbername = rg.getId().replaceAll("-", "").replaceAll("_", "").replaceAll(this.p.getName().toLowerCase(), "");
-                for (int count = regions.getRegionCountOfPlayer(ply); count > 0; --count) {
-                    numbername = numbername.replaceAll(String.valueOf(count), "");
-                }
-                String option = Main.DRIVER.getPropertyByValue(Main.DRIVER.CONFIG, "_" + numbername + "name");
-                if (option != null) {
-                    return Integer.valueOf(option.replaceAll("region", "").replaceAll("name", ""));
+        try {
+            RegionContainer container = this.worldguard.getRegionContainer();
+            RegionManager regions = container.get(this.p.getWorld());
+            Vector pt = new Vector(this.p.getLocation().getX(), this.p.getLocation().getY(), this.p.getLocation().getZ());
+            LocalPlayer ply = this.worldguard.wrapPlayer(this.p);
+            List<String> region = Objects.requireNonNull(regions).getApplicableRegionsIDs(pt);
+            if (!region.isEmpty()) {
+                ProtectedRegion rg = regions.getRegion(region.get(0));
+                if (Objects.requireNonNull(rg).isOwner(ply)) {
+                    String numbername = rg.getId().replaceAll("-", "").replaceAll("_", "").replaceAll(p.getName().toLowerCase(), "");
+                    String option = Main.DRIVER.getPropertyByValue(Main.DRIVER.CONFIG, numbername.substring(0, numbername.length() - 1));
+                    if (option != null) {
+                        return Integer.valueOf(option.replaceAll("region", "").replaceAll("name", "").replaceAll("_", ""));
+                    }
+                    return 0;
                 }
                 return 0;
             }
             return 0;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return 0;
         }
-        return 0;
     }
 }
 

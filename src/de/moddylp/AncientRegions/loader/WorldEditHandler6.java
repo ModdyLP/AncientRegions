@@ -66,7 +66,7 @@ public class WorldEditHandler6 {
             file.delete();
         }
         catch (Exception e) {
-            Main.getInstance().getLogger().warning(e.getMessage());
+            e.printStackTrace();
             return false;
         }
         return true;

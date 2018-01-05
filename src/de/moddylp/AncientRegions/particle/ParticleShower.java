@@ -7,15 +7,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.AncientRegions.particle.LogFile;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -23,7 +15,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.inventivetalent.particle.ParticleEffect;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class ParticleShower {
     private Main plugin;
@@ -33,7 +28,6 @@ public class ParticleShower {
     private int timernum;
     private LogFile data;
     private static List<Player> players;
-    private BukkitTask locations;
     private BukkitTask timertask;
     private List<Vector> vectoren = new ArrayList<>();
 
@@ -54,28 +48,27 @@ public class ParticleShower {
             } else {
                 for (String regionid : region) {
                     ProtectedRegion rg = regions.getRegion(regionid);
-                    if (this.data.getString(regionid) == null || this.data.getString(regionid).equals("false")) {
+                    if (data.getString(regionid) == null || data.getString(regionid).equals("false")) {
                         World world = p.getWorld();
                         players = new ArrayList<>();
                         players.addAll(this.plugin.getServer().getOnlinePlayers());
                         timer(rg, p);
                         show(world, p, rg);
-                        this.data.setString(regionid, "true");
+                        data.setString(regionid, "true");
                         p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("Particles").replace("[PH]", Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "showtimeofparticle", 20)));
                         continue;
                     }
                     this.data.setString(regionid, null);
                 }
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     public void timer(final ProtectedRegion rg, final Player p) {
         this.timernum = 0;
-        this.timertask = new BukkitRunnable(){
+        this.timertask = new BukkitRunnable() {
 
             public void run() {
                 if (data.getString(rg.getId()) == null) {
@@ -99,13 +92,9 @@ public class ParticleShower {
         }.runTaskTimer(this.plugin, 0, 10);
     }
 
-    private List<Vector> calcallwallvectors(ProtectedRegion rg, Player p) {
+    private List<Vector> calcallwallvectors(ProtectedRegion rg) {
         ArrayList<Vector> vectoren = new ArrayList<>();
         try {
-            double j;
-            double j2;
-            double i;
-            double i2;
             BlockVector maxXYZpt = rg.getMaximumPoint();
             BlockVector minXYZpt = rg.getMinimumPoint();
             Vector maxXZpt = new Vector(maxXYZpt.getBlockX(), minXYZpt.getBlockY(), maxXYZpt.getBlockZ());
@@ -115,46 +104,69 @@ public class ParticleShower {
             Vector maxYpt = new Vector(minXYZpt.getBlockX(), maxXYZpt.getBlockY(), minXYZpt.getBlockZ());
             Vector maxZpt = new Vector(minXYZpt.getBlockX(), minXYZpt.getBlockY(), maxXYZpt.getBlockZ());
             Vector copyMinXYZpt = new Vector(minXYZpt.getBlockX(), minXYZpt.getBlockY(), minXYZpt.getBlockZ());
-            for (i = (double)copyMinXYZpt.getBlockZ(); i < (double)maxYZpt.getBlockZ(); i += 2.0) {
-                for (j = (double)copyMinXYZpt.getBlockY(); j < (double)maxYZpt.getBlockY(); j += 2.0) {
+
+
+            while (copyMinXYZpt.getBlockZ() <= maxYZpt.getBlockZ()) {
+                while (copyMinXYZpt.getBlockY() <= maxYZpt.getBlockY()) {
                     vectoren.add(new Vector(copyMinXYZpt.getBlockX(), copyMinXYZpt.getBlockY(), copyMinXYZpt.getBlockZ()));
+                    copyMinXYZpt = new Vector(copyMinXYZpt.getBlockX(), copyMinXYZpt.getBlockY()+2, copyMinXYZpt.getBlockZ());
                 }
-                copyMinXYZpt = new Vector(copyMinXYZpt.getBlockX(), minXYZpt.getBlockY(), copyMinXYZpt.getBlockZ());
+                copyMinXYZpt = new Vector(copyMinXYZpt.getBlockX(), minXYZpt.getBlockY(), copyMinXYZpt.getBlockZ()+2);
             }
+
             copyMinXYZpt = new Vector(minXYZpt.getBlockX(), minXYZpt.getBlockY(), minXYZpt.getBlockZ());
-            for (i = (double)copyMinXYZpt.getBlockX(); i < (double)maxXYpt.getBlockX(); i += 2.0) {
-                for (j = (double)copyMinXYZpt.getBlockY(); j < (double)maxXYpt.getBlockY(); j += 2.0) {
+
+
+            while (copyMinXYZpt.getBlockX() <= maxXYpt.getBlockX()) {
+                while (copyMinXYZpt.getBlockY() <= maxXYpt.getBlockY()) {
                     vectoren.add(new Vector(copyMinXYZpt.getBlockX(), copyMinXYZpt.getBlockY(), copyMinXYZpt.getBlockZ()));
+                    copyMinXYZpt = new Vector(copyMinXYZpt.getBlockX(), copyMinXYZpt.getBlockY()+2, copyMinXYZpt.getBlockZ());
                 }
-                copyMinXYZpt = new Vector(copyMinXYZpt.getBlockX(), minXYZpt.getBlockY(), copyMinXYZpt.getBlockZ());
+                copyMinXYZpt = new Vector(copyMinXYZpt.getBlockX()+2, minXYZpt.getBlockY(), copyMinXYZpt.getBlockZ());
             }
+
             Vector copymaxXpt = new Vector(maxXpt.getBlockX(), maxXpt.getBlockY(), maxXpt.getBlockZ());
-            for (double i3 = (double)copymaxXpt.getBlockZ(); i3 < (double)maxXYZpt.getBlockZ(); i3 += 2.0) {
-                for (double j3 = (double)copymaxXpt.getBlockY(); j3 < (double)maxXYZpt.getBlockY(); j3 += 2.0) {
+
+
+            while (copymaxXpt.getBlockZ() <= maxXYZpt.getBlockZ()) {
+                while (copymaxXpt.getBlockY() <= maxXYZpt.getBlockY()) {
                     vectoren.add(new Vector(copymaxXpt.getBlockX(), copymaxXpt.getBlockY(), copymaxXpt.getBlockZ()));
+                    copymaxXpt = new Vector(copymaxXpt.getBlockX(), copymaxXpt.getBlockY()+2, copymaxXpt.getBlockZ());
                 }
-                copymaxXpt = new Vector(copymaxXpt.getBlockX(), maxXpt.getBlockY(), copymaxXpt.getBlockZ());
+                copymaxXpt = new Vector(copymaxXpt.getBlockX(), maxXpt.getBlockY(), copymaxXpt.getBlockZ()+2);
             }
+
             Vector copymaxZpt = new Vector(maxZpt.getBlockX(), maxZpt.getBlockY(), maxZpt.getBlockZ());
-            for (i2 = (double)copymaxZpt.getBlockZ(); i2 < (double)maxXYZpt.getBlockZ(); i2 += 2.0) {
-                for (j2 = (double)copymaxZpt.getBlockY(); j2 < (double)maxXYZpt.getBlockY(); j2 += 2.0) {
+
+
+            while (copymaxZpt.getBlockX() <= maxXYZpt.getBlockX()) {
+                while (copymaxZpt.getBlockY() <= maxXYZpt.getBlockY()) {
                     vectoren.add(new Vector(copymaxZpt.getBlockX(), copymaxZpt.getBlockY(), copymaxZpt.getBlockZ()));
+                    copymaxZpt = new Vector(copymaxZpt.getBlockX(), copymaxZpt.getBlockY()+2, copymaxZpt.getBlockZ());
                 }
-                copymaxZpt = new Vector(copymaxZpt.getBlockX(), maxZpt.getBlockY(), copymaxZpt.getBlockZ());
+                copymaxZpt = new Vector(copymaxZpt.getBlockX()+2, maxZpt.getBlockY(), copymaxZpt.getBlockZ());
             }
+
             copyMinXYZpt = new Vector(minXYZpt.getBlockX(), minXYZpt.getBlockY(), minXYZpt.getBlockZ());
-            for (i2 = (double)copyMinXYZpt.getBlockZ(); i2 < (double)maxXZpt.getBlockZ(); i2 += 2.0) {
-                for (j2 = (double)copyMinXYZpt.getBlockX(); j2 < (double)maxXZpt.getBlockX(); j2 += 2.0) {
+
+
+            while (copyMinXYZpt.getBlockZ() <= maxXZpt.getBlockZ()) {
+                while (copyMinXYZpt.getBlockX() <= maxXZpt.getBlockX())  {
                     vectoren.add(new Vector(copyMinXYZpt.getBlockX(), copyMinXYZpt.getBlockY(), copyMinXYZpt.getBlockZ()));
+                    copyMinXYZpt = new Vector(copyMinXYZpt.getBlockX()+2, copyMinXYZpt.getBlockY(), copyMinXYZpt.getBlockZ());
                 }
-                copyMinXYZpt = new Vector(minXYZpt.getBlockX(), copyMinXYZpt.getBlockY(), copyMinXYZpt.getBlockZ());
+                copyMinXYZpt = new Vector(minXYZpt.getBlockX(), copyMinXYZpt.getBlockY(), copyMinXYZpt.getBlockZ()+2);
             }
+
             Vector copymaxYpt = new Vector(maxYpt.getBlockX(), maxYpt.getBlockY(), maxYpt.getBlockZ());
-            for (double i4 = (double)copymaxYpt.getBlockZ(); i4 < (double)maxXYZpt.getBlockZ(); i4 += 2.0) {
-                for (double j4 = (double)copymaxYpt.getBlockX(); j4 < (double)maxXYZpt.getBlockX(); j4 += 2.0) {
+
+
+            while (copymaxYpt.getBlockZ() <= maxXYZpt.getBlockZ()) {
+                while (copymaxYpt.getBlockX() <= maxXYZpt.getBlockX()) {
                     vectoren.add(new Vector(copymaxYpt.getBlockX(), copymaxYpt.getBlockY(), copymaxYpt.getBlockZ()));
+                    copymaxYpt = new Vector(copymaxYpt.getBlockX()+2, copymaxYpt.getBlockY(), copymaxYpt.getBlockZ());
                 }
-                copymaxYpt = new Vector(maxYpt.getBlockX(), copymaxYpt.getBlockY(), copymaxYpt.getBlockZ());
+                copymaxYpt = new Vector(maxYpt.getBlockX(), copymaxYpt.getBlockY(), copymaxYpt.getBlockZ()+2);
             }
         }
         catch (Exception ex) {
@@ -163,48 +175,45 @@ public class ParticleShower {
         return vectoren;
     }
 
-    private List<Vector> calcVisibleVectors(List<Vector> vectoren, Vector playerlocation) {
+    private List<Vector> calcVisibleVectors(List<Vector> vectoren, Player p) {
+        Vector playerlocation = new Vector(p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ());
         ArrayList<Vector> visbleVectors = new ArrayList<>();
         double range = Double.valueOf(Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_particleshowrange", 16));
         for (Vector pt : vectoren) {
-            if ((double)playerlocation.getBlockX() + range < (double)pt.getBlockX() && (double)playerlocation.getBlockX() - range > (double)pt.getBlockX() && (double)playerlocation.getBlockY() + range < (double)pt.getBlockY() && (double)playerlocation.getBlockY() - range > (double)pt.getBlockY() && (double)playerlocation.getBlockZ() + range < (double)pt.getBlockZ() && (double)playerlocation.getBlockZ() - range > (double)pt.getBlockZ()) {
+            double distance = pt.distance(playerlocation);
+            if (distance < range) {
                 visbleVectors.add(pt);
             }
+
         }
         return visbleVectors;
     }
 
     private void show(final World world, final Player p, final ProtectedRegion rg) {
-        new BukkitRunnable(){
+        new BukkitRunnable() {
 
             public void run() {
-                vectoren = calcallwallvectors(rg, p);
-                particles = new BukkitRunnable(){
+                vectoren = calcallwallvectors(rg);
+                particles = new BukkitRunnable() {
 
                     public void run() {
                         try {
-                            for (Vector vector : calcVisibleVectors(vectoren, new Vector(p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ()))) {
-                                Location loc = new Location(world, (double)vector.getBlockX(), (double)vector.getBlockY(), (double)vector.getBlockZ());
+                            for (Vector vector : calcVisibleVectors(vectoren, p)) {
+                                Location loc = new Location(world, (double) vector.getBlockX(), (double) vector.getBlockY(), (double) vector.getBlockZ());
                                 if (Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showfor", "player").equals("player")) {
-                                    ArrayList<Player> player = new ArrayList<>();
-                                    player.add(p);
-                                    ParticleEffect.FIREWORKS_SPARK.send(player, loc, 0.0, 0.0, 0.0, 0.0, 1);
-                                    continue;
+                                    p.spawnParticle(Particle.FIREWORKS_SPARK, loc, 1,0,0,0, 0);
                                 }
                                 if (Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showfor", "player").equals("all")) {
-                                    if (players.size() <= 0) continue;
-                                    ParticleEffect.FIREWORKS_SPARK.send(players, loc, 0.0, 0.0, 0.0, 0.0, 1);
-                                    continue;
+                                    if (players.size() <= 0) {
+                                        loc.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc, 1,0,0,0, 0);
+                                    }
                                 }
-                                //p.sendMessage(ChatColor.RED + "[AR][ERROR] " + ChatColor.BOLD + plugin.lang.getText("ConfigError").replace("[PH]", "showfor"));
-                                //particles.cancel();
                             }
-                        }
-                        catch (Exception ex) {
+                        } catch (Exception ex) {
                             ex.printStackTrace();
                         }
                     }
-                }.runTaskTimerAsynchronously(plugin, 0, 50);
+                }.runTaskTimerAsynchronously(plugin, 0, 5);
             }
 
         }.runTaskAsynchronously(this.plugin);
