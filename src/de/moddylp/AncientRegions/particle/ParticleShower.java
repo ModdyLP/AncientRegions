@@ -78,22 +78,22 @@ public class ParticleShower {
         this.timertask = new BukkitRunnable(){
 
             public void run() {
-                if (ParticleShower.this.data.getString(rg.getId()) == null) {
+                if (data.getString(rg.getId()) == null) {
                     p.sendMessage(ChatColor.RED + "[AR][INFO] " + plugin.lang.getText("ParticlesOff"));
-                    ParticleShower.this.particles.cancel();
-                    ParticleShower.this.timertask.cancel();
+                    particles.cancel();
+                    timertask.cancel();
                 }
                 if (Integer.valueOf(Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showtimeofparticle", 20)) != -1) {
-                    ParticleShower.this.timernum++;
-                    if (ParticleShower.this.timernum >= Integer.valueOf(Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showtimeofparticle", 20)) * 2) {
-                        ParticleShower.this.data.setString(rg.getId(), null);
+                    timernum++;
+                    if (timernum >= Integer.valueOf(Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showtimeofparticle", 20)) * 2) {
+                        data.setString(rg.getId(), null);
                     }
                 }
                 if (p == null || !p.isOnline()) {
-                    ParticleShower.this.data.setString(rg.getId(), null);
+                    data.setString(rg.getId(), null);
                     Main.getInstance().getLogger().info("Partciles cancled by Console");
-                    ParticleShower.this.particles.cancel();
-                    ParticleShower.this.timertask.cancel();
+                    particles.cancel();
+                    timertask.cancel();
                 }
             }
         }.runTaskTimer(this.plugin, 0, 10);
@@ -167,8 +167,9 @@ public class ParticleShower {
         ArrayList<Vector> visbleVectors = new ArrayList<>();
         double range = Double.valueOf(Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_particleshowrange", 16));
         for (Vector pt : vectoren) {
-            if ((double)playerlocation.getBlockX() + range < (double)pt.getBlockX() && (double)playerlocation.getBlockX() - range > (double)pt.getBlockX() && (double)playerlocation.getBlockY() + range < (double)pt.getBlockY() && (double)playerlocation.getBlockY() - range > (double)pt.getBlockY() && (double)playerlocation.getBlockZ() + range < (double)pt.getBlockZ() && (double)playerlocation.getBlockZ() - range > (double)pt.getBlockZ()) continue;
-            visbleVectors.add(pt);
+            if ((double)playerlocation.getBlockX() + range < (double)pt.getBlockX() && (double)playerlocation.getBlockX() - range > (double)pt.getBlockX() && (double)playerlocation.getBlockY() + range < (double)pt.getBlockY() && (double)playerlocation.getBlockY() - range > (double)pt.getBlockY() && (double)playerlocation.getBlockZ() + range < (double)pt.getBlockZ() && (double)playerlocation.getBlockZ() - range > (double)pt.getBlockZ()) {
+                visbleVectors.add(pt);
+            }
         }
         return visbleVectors;
     }
@@ -177,12 +178,12 @@ public class ParticleShower {
         new BukkitRunnable(){
 
             public void run() {
-                ParticleShower.this.vectoren = ParticleShower.this.calcallwallvectors(rg, p);
-                ParticleShower.this.particles = new BukkitRunnable(){
+                vectoren = calcallwallvectors(rg, p);
+                particles = new BukkitRunnable(){
 
                     public void run() {
                         try {
-                            for (Vector vector : ParticleShower.this.calcVisibleVectors(ParticleShower.this.vectoren, new Vector(p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ()))) {
+                            for (Vector vector : calcVisibleVectors(vectoren, new Vector(p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ()))) {
                                 Location loc = new Location(world, (double)vector.getBlockX(), (double)vector.getBlockY(), (double)vector.getBlockZ());
                                 if (Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showfor", "player").equals("player")) {
                                     ArrayList<Player> player = new ArrayList<>();
@@ -196,14 +197,14 @@ public class ParticleShower {
                                     continue;
                                 }
                                 //p.sendMessage(ChatColor.RED + "[AR][ERROR] " + ChatColor.BOLD + plugin.lang.getText("ConfigError").replace("[PH]", "showfor"));
-                                //ParticleShower.this.particles.cancel();
+                                //particles.cancel();
                             }
                         }
                         catch (Exception ex) {
                             ex.printStackTrace();
                         }
                     }
-                }.runTaskTimerAsynchronously(ParticleShower.this.plugin, 0, 50);
+                }.runTaskTimerAsynchronously(plugin, 0, 50);
             }
 
         }.runTaskAsynchronously(this.plugin);
