@@ -58,8 +58,8 @@ public class ParticleShower {
                         World world = p.getWorld();
                         players = new ArrayList<>();
                         players.addAll(this.plugin.getServer().getOnlinePlayers());
-                        this.timer(rg, p);
-                        this.show(world, p, rg);
+                        timer(rg, p);
+                        show(world, p, rg);
                         this.data.setString(regionid, "true");
                         p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("Particles").replace("[PH]", Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "showtimeofparticle", 20)));
                         continue;
@@ -184,26 +184,26 @@ public class ParticleShower {
                         try {
                             for (Vector vector : ParticleShower.this.calcVisibleVectors(ParticleShower.this.vectoren, new Vector(p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ()))) {
                                 Location loc = new Location(world, (double)vector.getBlockX(), (double)vector.getBlockY(), (double)vector.getBlockZ());
-                                if (Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showfor", 20).equals("player")) {
+                                if (Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showfor", "player").equals("player")) {
                                     ArrayList<Player> player = new ArrayList<>();
                                     player.add(p);
                                     ParticleEffect.FIREWORKS_SPARK.send(player, loc, 0.0, 0.0, 0.0, 0.0, 1);
                                     continue;
                                 }
-                                if (Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showfor", 20).equals("all")) {
+                                if (Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showfor", "player").equals("all")) {
                                     if (players.size() <= 0) continue;
                                     ParticleEffect.FIREWORKS_SPARK.send(players, loc, 0.0, 0.0, 0.0, 0.0, 1);
                                     continue;
                                 }
-                                p.sendMessage(ChatColor.RED + "[AR][ERROR] " + ChatColor.BOLD + plugin.lang.getText("ConfigError").replace("[PH]", "showfor"));
-                                ParticleShower.this.particles.cancel();
+                                //p.sendMessage(ChatColor.RED + "[AR][ERROR] " + ChatColor.BOLD + plugin.lang.getText("ConfigError").replace("[PH]", "showfor"));
+                                //ParticleShower.this.particles.cancel();
                             }
                         }
                         catch (Exception ex) {
                             ex.printStackTrace();
                         }
                     }
-                }.runTaskTimerAsynchronously(ParticleShower.this.plugin, 0, 25);
+                }.runTaskTimerAsynchronously(ParticleShower.this.plugin, 0, 50);
             }
 
         }.runTaskAsynchronously(this.plugin);
