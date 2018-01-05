@@ -363,7 +363,7 @@ public class Region {
         String numbername = regioname.replaceAll("-", "").replaceAll("_", "").replaceAll(p.getName().toLowerCase(), "");
         String option = Main.DRIVER.getPropertyByValue(Main.DRIVER.CONFIG, numbername.substring(0, numbername.length() - 1));
         if (option != null) {
-            return Integer.valueOf(option.replace("region", "").replace("name", ""));
+            return Integer.valueOf(option.replaceAll("region", "").replaceAll("name", ""));
         }
         return 0;
     }

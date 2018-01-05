@@ -72,7 +72,7 @@ public class RegionManageGUI {
             meta5.setDisplayName(ChatColor.RED + this.plugin.lang.getText("RemoveRegion"));
             ArrayList<String> desc = new ArrayList<>();
             desc.add(ChatColor.AQUA + this.plugin.lang.getText("RemoveRegionLore1"));
-            if (this.getregionnumber() == 0) {
+            if (getregionnumber() == 0) {
                 desc.add(ChatColor.AQUA + this.plugin.lang.getText("RemoveRegionLore2").replace("[PH]", "XX"));
             } else {
                 desc.add(ChatColor.AQUA + this.plugin.lang.getText("RemoveRegionLore2").replace("[PH]", String.valueOf(Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_region" + this.getregionnumber() + "price")) * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_payback")) / 100.0)) + " " + FlagUtil.loadCurrencyfromConfig()));
@@ -109,13 +109,13 @@ public class RegionManageGUI {
         if (!region.isEmpty()) {
             ProtectedRegion rg = regions.getRegion(region.get(0));
             if (Objects.requireNonNull(rg).isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass")) {
-                String numbername = rg.getId().replace("-", "").replace("_", "").replace(this.p.getName().toLowerCase(), "");
+                String numbername = rg.getId().replaceAll("-", "").replaceAll("_", "").replaceAll(this.p.getName().toLowerCase(), "");
                 for (int count = regions.getRegionCountOfPlayer(ply); count > 0; --count) {
-                    numbername = numbername.replace(String.valueOf(count), "");
+                    numbername = numbername.replaceAll(String.valueOf(count), "");
                 }
                 String option = Main.DRIVER.getPropertyByValue(Main.DRIVER.CONFIG, "_" + numbername + "name");
                 if (option != null) {
-                    return Integer.valueOf(option.replace("region", "").replace("name", ""));
+                    return Integer.valueOf(option.replaceAll("region", "").replaceAll("name", ""));
                 }
                 return 0;
             }
