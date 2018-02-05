@@ -152,7 +152,7 @@ public class Region {
                     RegionManager regions = container.get(p.getWorld());
                     Vector pt = new Vector(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ());
                     LocalPlayer ply = worldguard.wrapPlayer(p);
-                    List region = null;
+                    List<String> region = null;
                     if (regions != null) {
                         region = regions.getApplicableRegionsIDs(pt);
                     }
@@ -160,7 +160,7 @@ public class Region {
                         if (region.isEmpty()) {
                             p.sendMessage( ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("GobalError"));
                         } else {
-                            ProtectedRegion rg = regions.getRegion((String) region.get(0));
+                            ProtectedRegion rg = regions.getRegion(region.get(0));
                             if (rg != null) {
                                 if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
                                     if (Boolean.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_backuprg"))) {
@@ -185,12 +185,17 @@ public class Region {
                                             RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
                                             gui.open();
                                         }
+                                    } else {
+                                        regions.removeRegion(rg.getId());
+                                        p.sendMessage( ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Removed").replace("[PH]", rg.getId()));
+                                        give(p, e, rg.getId());
+                                        RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
+                                        gui.open();
                                     }
                                 } else {
-                                    String regionname = rg.getId();
-                                    regions.removeRegion(regionname);
+                                    regions.removeRegion(rg.getId());
                                     p.sendMessage( ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Removed").replace("[PH]", rg.getId()));
-                                    give(p, e, regionname);
+                                    give(p, e, rg.getId());
                                     RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
                                     gui.open();
                                 }
