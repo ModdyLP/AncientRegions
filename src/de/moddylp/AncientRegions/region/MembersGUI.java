@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Skull;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -50,8 +51,18 @@ public class MembersGUI {
                     Set<UUID> players = rg.getMembers().getUniqueIds();
                     for (UUID p : players) {
                         ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-                        SkullMeta meta = (SkullMeta)skull.getItemMeta();
-                        meta.setOwningPlayer(this.playername(p));
+                        ItemMeta meta = skull.getItemMeta();
+                        try {
+                            if (meta instanceof SkullMeta && (((SkullMeta) meta).hasOwner() || !((SkullMeta) meta).hasOwner())) {
+                                ((SkullMeta) meta).setOwningPlayer(this.playername(p));
+                            }
+                        } catch (Throwable ex) {
+                            if ((((SkullMeta) meta).hasOwner() || !((SkullMeta) meta).hasOwner())) {
+                                if (this.playername(p) != null) {
+                                    ((SkullMeta) meta).setOwner(this.playername(p).getName());
+                                }
+                            }
+                        }
                         meta.setDisplayName(ChatColor.GREEN + Objects.requireNonNull(this.playername(p)).getName());
                         skull.setItemMeta(meta);
                         this.menu.addItem(skull);
@@ -68,7 +79,7 @@ public class MembersGUI {
             Navigation2 navi = new Navigation2();
             navi.loadguiitems(this.menu, this.plugin);
         }
-        catch (Exception ex) {
+        catch (Throwable ex) {
             Main.getInstance().getLogger().warning("Minecraft Version incompatible: " + ex.getMessage());
             ex.printStackTrace();
         }
@@ -79,8 +90,18 @@ public class MembersGUI {
             Collection<? extends Player> players = this.plugin.getServer().getOnlinePlayers();
             for (Player p : players) {
                 ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-                SkullMeta meta = (SkullMeta)skull.getItemMeta();
-                meta.setOwningPlayer(this.playername(p.getUniqueId()));
+                ItemMeta meta = skull.getItemMeta();
+                try {
+                    if (meta instanceof SkullMeta && (((SkullMeta) meta).hasOwner() || !((SkullMeta) meta).hasOwner())) {
+                        ((SkullMeta) meta).setOwningPlayer(this.playername(p.getUniqueId()));
+                    }
+                } catch (Throwable ex) {
+                    if ((((SkullMeta) meta).hasOwner() || !((SkullMeta) meta).hasOwner())) {
+                        if (this.playername(p.getUniqueId()) != null) {
+                            ((SkullMeta) meta).setOwner(this.playername(p.getUniqueId()).getName());
+                        }
+                    }
+                }
                 meta.setDisplayName(ChatColor.GREEN + p.getName());
                 skull.setItemMeta(meta);
                 this.menu.addItem(skull);
@@ -88,7 +109,7 @@ public class MembersGUI {
             Navigation2 navi = new Navigation2();
             navi.loadguiitems(this.menu, this.plugin);
         }
-        catch (Exception ex) {
+        catch (Throwable ex) {
             Main.getInstance().getLogger().warning("Minecraft Version incompatible: " + ex.getMessage());
             ex.printStackTrace();
         }

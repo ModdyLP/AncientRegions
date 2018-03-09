@@ -366,7 +366,8 @@ public class Region {
 
     private int getregionnumber(String regioname, Player p) {
         String numbername = regioname.replaceAll("-", "").replaceAll("_", "").replaceAll(p.getName().toLowerCase(), "");
-        String option = Main.DRIVER.getPropertyByValue(Main.DRIVER.CONFIG, numbername.substring(0, numbername.length() - 1));
+        String number = numbername.replaceAll("\\D+","");
+        String option = Main.DRIVER.getPropertyByValue(Main.DRIVER.CONFIG, numbername.replaceAll(number, ""));
         if (option != null) {
             return Integer.valueOf(option.replaceAll("region", "").replaceAll("name", "").replaceAll("_", ""));
         }

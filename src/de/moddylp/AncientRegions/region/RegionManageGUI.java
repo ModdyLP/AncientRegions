@@ -111,7 +111,8 @@ public class RegionManageGUI {
                 ProtectedRegion rg = regions.getRegion(region.get(0));
                 if (Objects.requireNonNull(rg).isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
                     String numbername = rg.getId().replaceAll("-", "").replaceAll("_", "").replaceAll(p.getName().toLowerCase(), "");
-                    String option = Main.DRIVER.getPropertyByValue(Main.DRIVER.CONFIG, numbername.substring(0, numbername.length() - 1));
+                    String number = numbername.replaceAll("\\D+","");
+                    String option = Main.DRIVER.getPropertyByValue(Main.DRIVER.CONFIG, numbername.replaceAll(number, ""));
                     if (option != null) {
                         return Integer.valueOf(option.replaceAll("region", "").replaceAll("name", "").replaceAll("_", ""));
                     }
