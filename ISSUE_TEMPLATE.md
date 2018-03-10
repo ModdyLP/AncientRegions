@@ -5,11 +5,13 @@
 ### Which Version of the Plugin and Server
 - **Plugin Version**    =
 - **Minecraft Version** =
+
 -----
 
 ### Steps to reproduce
 1. Some Step
 2. Some other Step
+
 -----
 
 ### Please attach your Config and your Server Log
