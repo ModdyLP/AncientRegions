@@ -18,7 +18,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -71,12 +70,14 @@ public class LocationFlagimpl {
                 if (region.isEmpty()) {
                     p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("GobalError"));
                 } else {
-                    ProtectedRegion rg = regions.getRegion((String)region.get(0));
+                    ProtectedRegion rg = regions.getRegion((String) region.get(0));
                     if (rg != null && (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass"))) {
-                        if (mode.equals(ActivateMode.REMOVE)) {
-                            rg.setFlag(this.flagobj.getFlag(), null);
-                            p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagobj.getName() + Main.getInstance().lang.getText("FlagRemoved"));
-                        } else if (mode.equals(ActivateMode.ACTIVATE) && FlagUtil.payment(p, e, flagobj.getName())) {
+                        if (!FlagUtil.isSet(p, flagobj.getFlag()).equalsIgnoreCase("null") && mode.equals(ActivateMode.REMOVE)) {
+                            if (FlagUtil.payment(p, e, this.flagobj.getName(), mode)) {
+                                rg.setFlag(this.flagobj.getFlag(), null);
+                                p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagobj.getName() + " "+Main.getInstance().lang.getText("FlagRemoved"));
+                            }
+                        } else if (mode.equals(ActivateMode.ACTIVATE) && FlagUtil.payment(p, e, flagobj.getName(), mode)) {
                             rg.setFlag((LocationFlag) flagobj.getFlag(), BukkitUtil.toLocation(p.getLocation()));
                             p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.flagobj.getName() + Main.getInstance().lang.getText("fEnabled"));
                         }
@@ -100,8 +101,12 @@ public class LocationFlagimpl {
             ItemStack ITEM = new ItemStack(this.flagobj.getItem());
             ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Set").replace("[PH]", this.flagobj.getName()));
-            lore.add(ChatColor.YELLOW + Objects.requireNonNull(FlagUtil.loadPricefromConfig(this.flagobj.getName())).toString() + " " + FlagUtil.loadCurrencyfromConfig());
-            if (!FlagUtil.isSet(p, this.flagobj.getFlag()).equals("null")) {
+            lore.add(ChatColor.GREEN +
+                    Objects.requireNonNull(FlagUtil.loadPricefromConfig(this.flagobj.getName(), ActivateMode.ACTIVATE)).toString() + " " + FlagUtil.loadCurrencyfromConfig() + "    " +
+                    ChatColor.LIGHT_PURPLE +
+                    Objects.requireNonNull(FlagUtil.loadPricefromConfig(this.flagobj.getName(), ActivateMode.REMOVE)).toString() + " " + FlagUtil.loadCurrencyfromConfig()
+            );
+            if (!FlagUtil.isSet(p, this.flagobj.getFlag()).equalsIgnoreCase("null")) {
                 lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Current") + ":");
                 Main.getInstance().getLogger().info(FlagUtil.isSet(p, this.flagobj.getFlag()));
                 String[] location = FlagUtil.isSet(p, this.flagobj.getFlag()).split(",");
@@ -113,12 +118,12 @@ public class LocationFlagimpl {
                 }
             }
             ItemMeta imeta = ITEM.getItemMeta();
-            if (!FlagUtil.isSet(p, this.flagobj.getFlag()).equals("null")) {
+            if (!FlagUtil.isSet(p, this.flagobj.getFlag()).equalsIgnoreCase("null")) {
                 imeta.setDisplayName(ChatColor.GREEN + "[ON] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + this.flagobj.getName());
-                lore.add(Color.CYAN+Main.getInstance().lang.getText("removemode"));
+                lore.add(ChatColor.LIGHT_PURPLE + Main.getInstance().lang.getText("removemode"));
             } else {
                 imeta.setDisplayName(ChatColor.BLUE + "[/] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + this.flagobj.getName());
-                lore.add(Color.CYAN+Main.getInstance().lang.getText("activatemode"));
+                lore.add(ChatColor.GREEN + Main.getInstance().lang.getText("activatemode"));
             }
             imeta.setLore(lore);
             imeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);

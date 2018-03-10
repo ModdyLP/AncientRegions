@@ -62,15 +62,17 @@ public class IntegerFlag {
                 if (region.isEmpty()) {
                     p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("GobalError"));
                 } else {
-                    ProtectedRegion rg = regions.getRegion((String)region.get(0));
+                    ProtectedRegion rg = regions.getRegion((String) region.get(0));
                     if (rg != null && (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass"))) {
-                        if (mode.equals(ActivateMode.REMOVE)) {
-                            rg.setFlag(this.flagobj.getFlag(), null);
-                            p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagobj.getName() + Main.getInstance().lang.getText("FlagRemoved"));
-                        } else if (mode.equals(ActivateMode.ACTIVATE)){
+                        if (!FlagUtil.isSet(p, flagobj.getFlag()).equalsIgnoreCase("null") && mode.equals(ActivateMode.REMOVE)) {
+                            if (FlagUtil.payment(p, e, this.flagobj.getName(), mode)) {
+                                rg.setFlag(this.flagobj.getFlag(), null);
+                                p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagobj.getName() + " "+Main.getInstance().lang.getText("FlagRemoved"));
+                            }
+                        } else if (mode.equals(ActivateMode.ACTIVATE)) {
                             p.closeInventory();
                             p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("Message3").replace("[PH]", this.flagobj.getName()));
-                            Main.getInstance().getServer().getPluginManager().registerEvents(new SpezialFormatIntegar(p, this.flagobj), Main.getInstance());
+                            Main.getInstance().getServer().getPluginManager().registerEvents(new SpezialFormatIntegar(p, this.flagobj, mode), Main.getInstance());
                         }
                     } else {
                         p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("Owner"));

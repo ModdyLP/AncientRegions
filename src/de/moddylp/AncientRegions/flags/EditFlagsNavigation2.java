@@ -14,7 +14,7 @@ import org.bukkit.potion.PotionType;
 public class EditFlagsNavigation2 {
     public boolean loadguiitems(Inventory menu, Main plugin) {
         ItemStack Backarrow = new ItemStack(Material.TIPPED_ARROW);
-        PotionMeta pmeta = (PotionMeta)Backarrow.getItemMeta();
+        PotionMeta pmeta = (PotionMeta) Backarrow.getItemMeta();
         pmeta.setBasePotionData(new PotionData(PotionType.INSTANT_HEAL));
         Backarrow.setItemMeta(pmeta);
         ItemMeta imeta = Backarrow.getItemMeta();
@@ -24,7 +24,7 @@ public class EditFlagsNavigation2 {
         Backarrow.setItemMeta(imeta);
         menu.setItem(45, Backarrow);
         ItemStack Mainmenu = new ItemStack(Material.TIPPED_ARROW);
-        PotionMeta pmeta2 = (PotionMeta)Mainmenu.getItemMeta();
+        PotionMeta pmeta2 = (PotionMeta) Mainmenu.getItemMeta();
         pmeta2.setBasePotionData(new PotionData(PotionType.NIGHT_VISION));
         Mainmenu.setItemMeta(pmeta2);
         ItemMeta imeta2 = Mainmenu.getItemMeta();

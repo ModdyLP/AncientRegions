@@ -8,11 +8,6 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagUtil;
-import de.moddylp.AncientRegions.region.RegionManageNavigation;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -20,6 +15,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class RegionManageGUI {
     private Main plugin;

@@ -63,15 +63,17 @@ public class GamemodeFlag {
                 if (region.isEmpty()) {
                     p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("GobalError"));
                 } else {
-                    ProtectedRegion rg = regions.getRegion((String)region.get(0));
+                    ProtectedRegion rg = regions.getRegion((String) region.get(0));
                     if (rg != null && (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass"))) {
-                        if (mode.equals(ActivateMode.REMOVE)) {
-                            rg.setFlag(this.flagOBJ.getFlag(), null);
-                            p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagOBJ.getName() + Main.getInstance().lang.getText("FlagRemoved"));
-                        } else if (mode.equals(ActivateMode.ACTIVATE)){
+                        if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("null") && mode.equals(ActivateMode.REMOVE)) {
+                            if (FlagUtil.payment(p, e, this.flagOBJ.getName(), mode)) {
+                                rg.setFlag(this.flagOBJ.getFlag(), null);
+                                p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagOBJ.getName() + " "+Main.getInstance().lang.getText("FlagRemoved"));
+                            }
+                        } else if (mode.equals(ActivateMode.ACTIVATE)) {
                             p.closeInventory();
                             p.sendMessage(ChatColor.GOLD + Main.getInstance().lang.getText("Gamemode"));
-                            Main.getInstance().getServer().getPluginManager().registerEvents(new GamemodeFormat(p, this.flagOBJ, rg), Main.getInstance());
+                            Main.getInstance().getServer().getPluginManager().registerEvents(new GamemodeFormat(p, this.flagOBJ, rg, mode), Main.getInstance());
                         }
                     } else {
                         p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("Owner"));

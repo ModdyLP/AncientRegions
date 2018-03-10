@@ -51,6 +51,98 @@ public class Metrics {
         this.debug = this.configuration.getBoolean("debug", false);
     }
 
+    /*
+     * WARNING - Removed try catching itself - possible behaviour change.
+     */
+    public static byte[] gzip(String input) {
+        ByteArrayOutputStream baos;
+        baos = new ByteArrayOutputStream();
+        GZIPOutputStream gzos = null;
+        try {
+            gzos = new GZIPOutputStream(baos);
+            gzos.write(input.getBytes("UTF-8"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (gzos != null) {
+                try {
+                    gzos.close();
+                } catch (IOException ignored) {
+                }
+            }
+        }
+        return baos.toByteArray();
+    }
+
+    private static void appendJSONPair(StringBuilder json, String key, String value) {
+        boolean isValueNumeric = false;
+        try {
+            if (value.equalsIgnoreCase("0") || !value.endsWith("0")) {
+                Double.parseDouble(value);
+                isValueNumeric = true;
+            }
+        } catch (NumberFormatException e) {
+            isValueNumeric = false;
+        }
+        if (json.charAt(json.length() - 1) != '{') {
+            json.append(',');
+        }
+        json.append(Metrics.escapeJSON(key));
+        json.append(':');
+        if (isValueNumeric) {
+            json.append(value);
+        } else {
+            json.append(Metrics.escapeJSON(value));
+        }
+    }
+
+    private static String escapeJSON(String text) {
+        StringBuilder builder = new StringBuilder();
+        builder.append('\"');
+        block7:
+        for (int index = 0; index < text.length(); ++index) {
+            char chr = text.charAt(index);
+            switch (chr) {
+                case '\"':
+                case '\\': {
+                    builder.append('\\');
+                    builder.append(chr);
+                    continue block7;
+                }
+                case '\b': {
+                    builder.append("\\b");
+                    continue block7;
+                }
+                case '\t': {
+                    builder.append("\\t");
+                    continue block7;
+                }
+                case '\n': {
+                    builder.append("\\n");
+                    continue block7;
+                }
+                case '\r': {
+                    builder.append("\\r");
+                    continue block7;
+                }
+                default: {
+                    if (chr < ' ') {
+                        String t = "000" + Integer.toHexString(chr);
+                        builder.append("\\u").append(t.substring(t.length() - 4));
+                        continue block7;
+                    }
+                    builder.append(chr);
+                }
+            }
+        }
+        builder.append('\"');
+        return builder.toString();
+    }
+
+    private static String urlEncode(String text) throws UnsupportedEncodingException {
+        return URLEncoder.encode(text, "UTF-8");
+    }
+
     public Graph createGraph(String name) {
         if (name == null) {
             throw new IllegalArgumentException("Graph name cannot be null");
@@ -78,8 +170,9 @@ public class Metrics {
             if (this.task != null) {
                 return true;
             }
-            this.task = this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(this.plugin, new Runnable(){
+            this.task = this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(this.plugin, new Runnable() {
                 private boolean firstPost;
+
                 {
                     this.firstPost = true;
                 }
@@ -88,7 +181,8 @@ public class Metrics {
                  * WARNING - Removed try catching itself - possible behaviour change.
                  */
                 public void run() {
-                    block7 : {
+                    block7:
+                    {
                         try {
                             synchronized (optOutLock) {
                                 if (Metrics.this.isOptOut() && Metrics.this.task != null) {
@@ -101,8 +195,7 @@ public class Metrics {
                             }
                             Metrics.this.postPlugin(!this.firstPost);
                             this.firstPost = false;
-                        }
-                        catch (IOException e) {
+                        } catch (IOException e) {
                             if (!Metrics.this.debug) break block7;
                             Bukkit.getLogger().log(Level.INFO, "[Metrics] " + e.getMessage());
                         }
@@ -120,8 +213,7 @@ public class Metrics {
         synchronized (optOutLock) {
             try {
                 this.configuration.load(this.getConfigFile());
-            }
-            catch (IOException | InvalidConfigurationException ex) {
+            } catch (IOException | InvalidConfigurationException ex) {
                 if (this.debug) {
                     Bukkit.getLogger().log(Level.INFO, "[Metrics] " + ex.getMessage());
                 }
@@ -135,7 +227,7 @@ public class Metrics {
      * WARNING - Removed try catching itself - possible behaviour change.
      */
     public void enable() throws IOException {
-        synchronized  (optOutLock){
+        synchronized (optOutLock) {
             if (this.isOptOut()) {
                 this.configuration.set("opt-out", false);
                 this.configuration.save(this.configurationFile);
@@ -171,11 +263,10 @@ public class Metrics {
         try {
             Method onlinePlayerMethod = Server.class.getMethod("getOnlinePlayers");
             if (onlinePlayerMethod.getReturnType().equals(Collection.class)) {
-                return ((Collection)onlinePlayerMethod.invoke(Bukkit.getServer(), new Object[0])).size();
+                return ((Collection) onlinePlayerMethod.invoke(Bukkit.getServer(), new Object[0])).size();
             }
-            return ((Player[])onlinePlayerMethod.invoke(Bukkit.getServer(), new Object[0])).length;
-        }
-        catch (Exception ex) {
+            return ((Player[]) onlinePlayerMethod.invoke(Bukkit.getServer(), new Object[0])).length;
+        } catch (Exception ex) {
             if (this.debug) {
                 Bukkit.getLogger().log(Level.INFO, "[Metrics] " + ex.getMessage());
             }
@@ -204,7 +295,7 @@ public class Metrics {
         String osversion = System.getProperty("os.version");
         String java_version = System.getProperty("java.version");
         int coreCount = Runtime.getRuntime().availableProcessors();
-        if (osarch.equals("amd64")) {
+        if (osarch.equalsIgnoreCase("amd64")) {
             osarch = "x86_64";
         }
         Metrics.appendJSONPair(json, "osname", osname);
@@ -273,7 +364,7 @@ public class Metrics {
             }
             throw new IOException(response);
         }
-        if (response.equals("1") || response.contains("This is your first update this hour")) {
+        if (response.equalsIgnoreCase("1") || response.contains("This is your first update this hour")) {
             synchronized (this.graphs) {
                 for (Graph graph : this.graphs) {
                     for (Plotter plotter : graph.getPlotters()) {
@@ -284,108 +375,13 @@ public class Metrics {
         }
     }
 
-    /*
-     * WARNING - Removed try catching itself - possible behaviour change.
-     */
-    public static byte[] gzip(String input) {
-        ByteArrayOutputStream baos;
-        baos = new ByteArrayOutputStream();
-        GZIPOutputStream gzos = null;
-        try {
-            gzos = new GZIPOutputStream(baos);
-            gzos.write(input.getBytes("UTF-8"));
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        finally {
-            if (gzos != null) {
-                try {
-                    gzos.close();
-                }
-                catch (IOException ignored) {}
-            }
-        }
-        return baos.toByteArray();
-    }
-
     private boolean isMineshafterPresent() {
         try {
             Class.forName("mineshafter.MineServer");
             return true;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
-    }
-
-    private static void appendJSONPair(StringBuilder json, String key, String value) {
-        boolean isValueNumeric = false;
-        try {
-            if (value.equals("0") || !value.endsWith("0")) {
-                Double.parseDouble(value);
-                isValueNumeric = true;
-            }
-        }
-        catch (NumberFormatException e) {
-            isValueNumeric = false;
-        }
-        if (json.charAt(json.length() - 1) != '{') {
-            json.append(',');
-        }
-        json.append(Metrics.escapeJSON(key));
-        json.append(':');
-        if (isValueNumeric) {
-            json.append(value);
-        } else {
-            json.append(Metrics.escapeJSON(value));
-        }
-    }
-
-    private static String escapeJSON(String text) {
-        StringBuilder builder = new StringBuilder();
-        builder.append('\"');
-        block7 : for (int index = 0; index < text.length(); ++index) {
-            char chr = text.charAt(index);
-            switch (chr) {
-                case '\"': 
-                case '\\': {
-                    builder.append('\\');
-                    builder.append(chr);
-                    continue block7;
-                }
-                case '\b': {
-                    builder.append("\\b");
-                    continue block7;
-                }
-                case '\t': {
-                    builder.append("\\t");
-                    continue block7;
-                }
-                case '\n': {
-                    builder.append("\\n");
-                    continue block7;
-                }
-                case '\r': {
-                    builder.append("\\r");
-                    continue block7;
-                }
-                default: {
-                    if (chr < ' ') {
-                        String t = "000" + Integer.toHexString(chr);
-                        builder.append("\\u").append(t.substring(t.length() - 4));
-                        continue block7;
-                    }
-                    builder.append(chr);
-                }
-            }
-        }
-        builder.append('\"');
-        return builder.toString();
-    }
-
-    private static String urlEncode(String text) throws UnsupportedEncodingException {
-        return URLEncoder.encode(text, "UTF-8");
     }
 
     public static abstract class Plotter {
@@ -410,14 +406,16 @@ public class Metrics {
             return this.getColumnName().hashCode();
         }
 
-        public boolean equals(Object object) {
+        public boolean equalsIgnoreCase(Object object) {
             if (!(object instanceof Plotter)) {
                 return false;
             }
-            Plotter plotter = (Plotter)object;
-            return plotter.name.equals(this.name) && plotter.getValue() == this.getValue();
+            Plotter plotter = (Plotter) object;
+            return plotter.name.equalsIgnoreCase(this.name) && plotter.getValue() == this.getValue();
         }
-        public void reset() {}
+
+        public void reset() {
+        }
     }
 
     /*
@@ -451,14 +449,16 @@ public class Metrics {
             return this.name.hashCode();
         }
 
-        public boolean equals(Object object) {
+        public boolean equalsIgnoreCase(Object object) {
             if (!(object instanceof Graph)) {
                 return false;
             }
-            Graph graph = (Graph)object;
-            return graph.name.equals(this.name);
+            Graph graph = (Graph) object;
+            return graph.name.equalsIgnoreCase(this.name);
         }
-        public void onOptOut() {}
+
+        public void onOptOut() {
+        }
     }
 
 }

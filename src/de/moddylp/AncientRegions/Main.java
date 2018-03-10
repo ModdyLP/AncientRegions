@@ -22,13 +22,18 @@ import java.util.Objects;
 import java.util.logging.Level;
 
 public class Main
-extends JavaPlugin {
-    protected GUIEvents loader;
+        extends JavaPlugin {
     public static WorldGuardPlugin worldguard;
-    public Language lang;
     public static WorldEditPlugin worldedit;
-    private static Main instance;
     public static FileDriver DRIVER;
+    private static Main instance;
+
+    static {
+        DRIVER = FileDriver.getInstance();
+    }
+
+    public Language lang;
+    protected GUIEvents loader;
 
     public static Main getInstance() {
         return instance;
@@ -51,13 +56,12 @@ extends JavaPlugin {
         file.setup();
         this.loader = new GUIEvents(this, worldguard, worldedit);
         FlagLoader.load();
-        if (DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_metrics").equals("true")) {
+        if (DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_metrics").equalsIgnoreCase("true")) {
             try {
                 de.moddylp.AncientRegions.bukkit.Metrics metrics = new de.moddylp.AncientRegions.bukkit.Metrics(this);
                 Metrics metrics1 = new Metrics(this);
                 metrics1.start();
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 this.getLogger().warning("Metrics cant be enabled because there was an error: " + ex.getLocalizedMessage());
             }
         }
@@ -74,7 +78,7 @@ extends JavaPlugin {
                 switch (args[0]) {
                     case "gui": {
                         if (sender instanceof Player) {
-                            Player p = ((Player)sender).getPlayer();
+                            Player p = ((Player) sender).getPlayer();
                             if (DRIVER.hasKey(Main.DRIVER.CONFIG, "_worlds")) {
                                 JSONArray worldconfig = FileDriver.objectToJSONArray(DRIVER.getProperty(Main.DRIVER.CONFIG, "_worlds", "[]"));
                                 ArrayList<String> worlds = new ArrayList<>();
@@ -116,17 +120,17 @@ extends JavaPlugin {
                                 LogFile file = new LogFile();
                                 RegionContainer container = worldguard.getRegionContainer();
                                 this.getServer().getWorlds().stream().map(container::get).map(regions -> Objects.requireNonNull(regions).getRegions()).forEach(rgids -> rgids.values().stream().filter(rg -> file.getString(rg.getId()) != null).forEach(rg -> file.setString(rg.getId(), null)
-                                )
+                                        )
                                 );
                                 sender.sendMessage(ChatColor.GREEN + "[AR][ERROR] " + this.lang.getText("Canceled"));
                                 return true;
                             }
                             sender.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.lang.getText("Permission"));
+                        } catch (Exception ignored) {
                         }
-                        catch (Exception ignored) {}
                         break;
                     }
-                    case "info": 
+                    case "info":
                     case "help": {
                         sender.sendMessage(ChatColor.BLUE + "============AncientFlags About============");
                         sender.sendMessage(ChatColor.GOLD + "AncientRegions " + this.getDescription().getVersion());
@@ -146,7 +150,7 @@ extends JavaPlugin {
                 return true;
             }
             if (sender instanceof Player) {
-                Player p = ((Player)sender).getPlayer();
+                Player p = ((Player) sender).getPlayer();
                 p.performCommand("ancr gui");
                 return true;
             }
@@ -161,7 +165,7 @@ extends JavaPlugin {
         if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
             System.out.println(ChatColor.RED + "[AR][ERROR] " + this.lang.getText("Worldguard"));
         }
-        return (WorldGuardPlugin)plugin;
+        return (WorldGuardPlugin) plugin;
     }
 
     public WorldEditPlugin setupWorldEdit() {
@@ -169,15 +173,11 @@ extends JavaPlugin {
         if (plugin == null || !(plugin instanceof WorldEditPlugin)) {
             return null;
         }
-        return (WorldEditPlugin)plugin;
+        return (WorldEditPlugin) plugin;
     }
 
     private void loadMessages() {
         Messages messages = new Messages(this);
-    }
-
-    static {
-        DRIVER = FileDriver.getInstance();
     }
 }
 

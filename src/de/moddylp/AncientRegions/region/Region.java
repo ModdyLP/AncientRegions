@@ -62,7 +62,7 @@ public class Region {
             if (p.hasPermission("ancient.regions.region." + this.permission)) {
                 RegionContainer container = worldguard.getRegionContainer();
                 final RegionManager regions = container.get(p.getWorld());
-                p.sendMessage( ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("RegionCreation"));
+                p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("RegionCreation"));
                 LocalPlayer ply = worldguard.wrapPlayer(p);
                 if (regions != null) {
                     if (regions.getRegionCountOfPlayer(ply) < Integer.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_limit")) || p.hasPermission("ancient.regions.admin.bypassregion")) {
@@ -95,7 +95,7 @@ public class Region {
                                             }
                                             for (String flag : flags) {
                                                 if (!Main.DRIVER.hasKey(Main.DRIVER.CONFIG, flag)) continue;
-                                                region.setFlag(new StateFlag(flag, false),  StateFlag.State.DENY);
+                                                region.setFlag(new StateFlag(flag, false), StateFlag.State.DENY);
                                             }
                                         }
                                         if (Boolean.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_backuprg"))) {
@@ -107,31 +107,31 @@ public class Region {
                                             if (new WorldEditHandler6(plugin).saveRegionBlocks(schematic, p.getName() + seperator + regionname + seperator + id, p, region)) {
                                                 Main.getInstance().getLogger().info("BACKUP SUCCESS");
                                                 regions.addRegion(region);
-                                                p.sendMessage( ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Created") + "[ " + edges.get(0) + " | " + edges.get(2) + " ]");
+                                                p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Created") + "[ " + edges.get(0) + " | " + edges.get(2) + " ]");
                                                 RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
                                                 gui.open();
                                             } else {
                                                 Main.getInstance().getLogger().info("BACKUP ERROR");
-                                                p.sendMessage( ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("ErrorCreate"));
+                                                p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("ErrorCreate"));
                                             }
                                         } else {
                                             regions.addRegion(region);
-                                            p.sendMessage( ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Created") + "[ " + edges.get(0) + " | " + edges.get(2) + " ]");
+                                            p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Created") + "[ " + edges.get(0) + " | " + edges.get(2) + " ]");
                                             RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
                                             gui.open();
                                         }
                                     }
                                 } else {
-                                    p.sendMessage( ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("RegionExists"));
+                                    p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("RegionExists"));
                                 }
                             }
                         }.runTaskAsynchronously(this.plugin);
                     } else {
-                        p.sendMessage( ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("ToMany"));
+                        p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("ToMany"));
                     }
                 }
             } else {
-                p.sendMessage( ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("Permission"));
+                p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("Permission"));
                 e.setCancelled(true);
             }
         } catch (Exception ex) {
@@ -144,7 +144,7 @@ public class Region {
         e.setCancelled(true);
         p.closeInventory();
         if (p.hasPermission("ancient.regions.region.removeregion")) {
-            p.sendMessage( ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("Selling"));
+            p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("Selling"));
             new BukkitRunnable() {
 
                 public void run() {
@@ -158,13 +158,13 @@ public class Region {
                     }
                     if (region != null) {
                         if (region.isEmpty()) {
-                            p.sendMessage( ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("GobalError"));
+                            p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("GobalError"));
                         } else {
                             ProtectedRegion rg = regions.getRegion(region.get(0));
                             if (rg != null) {
                                 if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
                                     if (Boolean.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_backuprg"))) {
-                                        p.sendMessage( ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Restore"));
+                                        p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Restore"));
                                         File file = new File(plugin.getDataFolder(), "/schematics/" + rg.getId() + ".schematic");
                                         BlockVector max = rg.getMaximumPoint();
                                         BlockVector min = rg.getMinimumPoint();
@@ -173,34 +173,34 @@ public class Region {
                                         if (handler.restoreRegionBlocks(file, rg.getId(), p, rg, dimension)) {
                                             Main.getInstance().getLogger().info("RESTORE SUCCESS");
                                             regions.removeRegion(rg.getId());
-                                            p.sendMessage( ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Removed").replace("[PH]", rg.getId()));
+                                            p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Removed").replace("[PH]", rg.getId()));
                                             give(p, e, rg.getId());
                                             RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
                                             gui.open();
                                         } else {
                                             regions.removeRegion(rg.getId());
-                                            Main.getInstance().getLogger().warning("RESTORE ERROR on "+rg.getId()+" money was payed back to customer.");
-                                            p.sendMessage( ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("RemovedError").replace("[PH]", rg.getId()));
+                                            Main.getInstance().getLogger().warning("RESTORE ERROR on " + rg.getId() + " money was payed back to customer.");
+                                            p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("RemovedError").replace("[PH]", rg.getId()));
                                             give(p, e, rg.getId());
                                             RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
                                             gui.open();
                                         }
                                     } else {
                                         regions.removeRegion(rg.getId());
-                                        p.sendMessage( ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Removed").replace("[PH]", rg.getId()));
+                                        p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Removed").replace("[PH]", rg.getId()));
                                         give(p, e, rg.getId());
                                         RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
                                         gui.open();
                                     }
                                 } else {
                                     regions.removeRegion(rg.getId());
-                                    p.sendMessage( ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Removed").replace("[PH]", rg.getId()));
+                                    p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Removed").replace("[PH]", rg.getId()));
                                     give(p, e, rg.getId());
                                     RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
                                     gui.open();
                                 }
                             } else {
-                                p.sendMessage( ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("Owner"));
+                                p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("Owner"));
                                 e.setCancelled(true);
                             }
                         }
@@ -208,7 +208,7 @@ public class Region {
                 }
             }.runTask(this.plugin);
         } else {
-            p.sendMessage( ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("Permission"));
+            p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("Permission"));
             e.setCancelled(true);
         }
     }
@@ -245,7 +245,7 @@ public class Region {
             Vector GKK = edges.get(3);
             Vector KKK = new Vector(KGK.getX(), GKK.getY(), KGK.getZ());
             Vector GGG = new Vector(GGK.getX() + 1.0, GGK.getY(), GKG.getZ() + 1.0);
-            Main.getInstance().getLogger().info( GGG + " " +  KKK);
+            Main.getInstance().getLogger().info(GGG + " " + KKK);
             RegionContainer container = worldGuard.getRegionContainer();
             RegionManager regions = container.get(p.getWorld());
             Main.getInstance().getLogger().info("parameter set");
@@ -253,13 +253,13 @@ public class Region {
                 while (KKK.getX() < GGG.getX()) {
                     List<String> region = Objects.requireNonNull(regions).getApplicableRegionsIDs(KKK);
                     if (!region.isEmpty()) {
-                        Main.getInstance().getLogger().info("!!! Check complete collision by" +  KKK);
+                        Main.getInstance().getLogger().info("!!! Check complete collision by" + KKK);
                         return false;
                     }
                     while (KKK.getZ() < GGG.getZ()) {
                         region = regions.getApplicableRegionsIDs(KKK);
                         if (!region.isEmpty()) {
-                            Main.getInstance().getLogger().info("!!! Check complete collision by" +  KKK);
+                            Main.getInstance().getLogger().info("!!! Check complete collision by" + KKK);
                             return false;
                         }
                         KKK = new Vector(KKK.getX(), KKK.getY(), KKK.getZ() + 1.0);
@@ -286,15 +286,15 @@ public class Region {
         if (vaultEcon != null) {
             if (vaultEcon.getBalance(p) != 0.0 && vaultEcon.getBalance(p) >= this.regionprice) {
                 vaultEcon.withdrawPlayer(p, this.regionprice);
-                p.sendMessage( ChatColor.BLUE + "[AR][INFO]" + this.plugin.lang.getText("PayNote2").replace("[PH]", String.valueOf(regionprice) + " " + FlagUtil.loadCurrencyfromConfig()));
+                p.sendMessage(ChatColor.BLUE + "[AR][INFO]" + this.plugin.lang.getText("PayNote2").replace("[PH]", String.valueOf(regionprice) + " " + FlagUtil.loadCurrencyfromConfig()));
                 e.setCancelled(true);
                 return true;
             }
-            p.sendMessage( ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("NoMoney"));
+            p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("NoMoney"));
             e.setCancelled(true);
             return false;
         }
-        p.sendMessage( ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("VaultError"));
+        p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("VaultError"));
         e.setCancelled(true);
         return false;
     }
@@ -307,10 +307,10 @@ public class Region {
         }
         if (vaultEcon != null) {
             vaultEcon.depositPlayer(p, Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_region" + this.getregionnumber(regionname, p) + "price")) * Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_payback")) / 100.0);
-            p.sendMessage( ChatColor.BLUE + "[AR][INFO]" + this.plugin.lang.getText("Payback").replace("[PH]", String.valueOf(Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_region" + this.getregionnumber(regionname, p) + "price")) * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_payback")) / 100.0)) + " " + FlagUtil.loadCurrencyfromConfig()));
+            p.sendMessage(ChatColor.BLUE + "[AR][INFO]" + this.plugin.lang.getText("Payback").replace("[PH]", String.valueOf(Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_region" + this.getregionnumber(regionname, p) + "price")) * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_payback")) / 100.0)) + " " + FlagUtil.loadCurrencyfromConfig()));
             e.setCancelled(true);
         } else {
-            p.sendMessage( ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("VaultError"));
+            p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("VaultError"));
             e.setCancelled(true);
         }
     }
@@ -334,11 +334,11 @@ public class Region {
             }
             int realregionsize = this.regionsize % 2 == 1 ? this.regionsize + 2 : this.regionsize + 1;
             ArrayList<String> lore = new ArrayList<>();
-            lore.add( ChatColor.GOLD + this.plugin.lang.getText("RegionName") + ": " +  ChatColor.YELLOW + this.regionname);
-            lore.add( ChatColor.GOLD + this.plugin.lang.getText("RegionSize") + ": " +  ChatColor.YELLOW + realregionsize + " x " + realregionsize + " x H:" + this.intregionheight + " x D:" + this.intregiondepth);
-            lore.add( ChatColor.GOLD + this.plugin.lang.getText("RegionPrice") + ": " +  ChatColor.YELLOW + String.valueOf(this.regionprice) + " " + FlagUtil.loadCurrencyfromConfig());
+            lore.add(ChatColor.GOLD + this.plugin.lang.getText("RegionName") + ": " + ChatColor.YELLOW + this.regionname);
+            lore.add(ChatColor.GOLD + this.plugin.lang.getText("RegionSize") + ": " + ChatColor.YELLOW + realregionsize + " x " + realregionsize + " x H:" + this.intregionheight + " x D:" + this.intregiondepth);
+            lore.add(ChatColor.GOLD + this.plugin.lang.getText("RegionPrice") + ": " + ChatColor.YELLOW + String.valueOf(this.regionprice) + " " + FlagUtil.loadCurrencyfromConfig());
             ItemMeta imeta = ITEM.getItemMeta();
-            imeta.setDisplayName( ChatColor.GOLD + this.plugin.lang.getText("Buy") + "'" + this.regionname + "' Region");
+            imeta.setDisplayName(ChatColor.GOLD + this.plugin.lang.getText("Buy") + "'" + this.regionname + "' Region");
             imeta.setLore(lore);
             imeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
             ITEM.setItemMeta(imeta);
@@ -366,7 +366,7 @@ public class Region {
 
     private int getregionnumber(String regioname, Player p) {
         String numbername = regioname.replaceAll("-", "").replaceAll("_", "").replaceAll(p.getName().toLowerCase(), "");
-        String number = numbername.replaceAll("\\D+","");
+        String number = numbername.replaceAll("\\D+", "");
         String option = Main.DRIVER.getPropertyByValue(Main.DRIVER.CONFIG, numbername.replaceAll(number, ""));
         if (option != null) {
             return Integer.valueOf(option.replaceAll("region", "").replaceAll("name", "").replaceAll("_", ""));

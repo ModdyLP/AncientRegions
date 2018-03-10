@@ -9,11 +9,11 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagUtil;
+import de.moddylp.AncientRegions.gui.Events.ActivateMode;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Skull;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -46,7 +46,7 @@ public class MembersGUI {
             if (region.isEmpty()) {
                 this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("GobalError"));
             } else {
-                ProtectedRegion rg = regions.getRegion((String)region.get(0));
+                ProtectedRegion rg = regions.getRegion((String) region.get(0));
                 if (Objects.requireNonNull(rg).isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass")) {
                     Set<UUID> players = rg.getMembers().getUniqueIds();
                     for (UUID p : players) {
@@ -78,8 +78,7 @@ public class MembersGUI {
             }
             Navigation2 navi = new Navigation2();
             navi.loadguiitems(this.menu, this.plugin);
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             Main.getInstance().getLogger().warning("Minecraft Version incompatible: " + ex.getMessage());
             ex.printStackTrace();
         }
@@ -108,8 +107,7 @@ public class MembersGUI {
             }
             Navigation2 navi = new Navigation2();
             navi.loadguiitems(this.menu, this.plugin);
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             Main.getInstance().getLogger().warning("Minecraft Version incompatible: " + ex.getMessage());
             ex.printStackTrace();
         }
@@ -132,9 +130,9 @@ public class MembersGUI {
                 if (region.isEmpty()) {
                     this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("GobalError"));
                 } else {
-                    ProtectedRegion rg = regions.getRegion((String)region.get(0));
+                    ProtectedRegion rg = regions.getRegion(region.get(0));
                     if (Objects.requireNonNull(rg).isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass")) {
-                        if (FlagUtil.payment(this.p, e, "_removemember") || this.p.hasPermission("ancient.regions.admin.bypass")) {
+                        if (FlagUtil.payment(this.p, e, "_removemember", ActivateMode.ACTIVATE) || this.p.hasPermission("ancient.regions.admin.bypass")) {
                             DefaultDomain member = rg.getMembers();
                             member.removePlayer(uuid);
                             rg.setMembers(member);
@@ -158,8 +156,7 @@ public class MembersGUI {
                 e.setCancelled(true);
             }
             this.loadregionskulls(this.worldguard);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Main.getInstance().getLogger().warning("Minecraft Version incompatible: " + ex.getMessage());
             ex.printStackTrace();
         }

@@ -34,6 +34,9 @@ public class ConfigLoader {
         Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_regiondesc", "Set the value to 9999 to use the maximum. The height and depth are absolute cordinates like 64 for floor");
         Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_regionheight", 125);
         Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_regiondepth", 54);
+        Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_removecostpercent", 50);
+        Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_deactivatecostpercent", 100);
+        Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_activatecostpercent", 100);
         Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_payback", 10);
         Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_regionpriority", 10);
         Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_standartdenyflags", new String[0]);

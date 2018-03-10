@@ -1,5 +1,5 @@
 name: AncientRegions
-version: 20180309
+version: 20180310
 author: ModdyLP
 description: To edit Worldguard Regions
 website: https://moddylp.de
@@ -19,9 +19,9 @@ permissions:
        ancient.regions.flag.greeting: true
        ancient.regions.flag.farewell: true
        ancient.regions.flag.pvp: true
-       ancient.regions.flag.togglemobspawn: true
+       ancient.regions.flag.togglemobspawning: true
        ancient.regions.flag.togglecreeperexplosion: true
-       ancient.regions.flag.toggletntexplosion: true
+       ancient.regions.flag.toggletnt: true
        ancient.regions.flag.denyspawn: true
        ancient.regions.flag.toggleotherexplosion: true
        ancient.regions.flag.command: true
@@ -43,15 +43,15 @@ permissions:
        ancient.regions.flag.toggleexit: true
        ancient.regions.flag.togglemobdamage: true
        ancient.regions.flag.toggleenderpearl: true
-       ancient.regions.flag.teleportlocation: true
+       ancient.regions.flag.teleport: true
        ancient.regions.flag.toggleitempickup: true
        ancient.regions.flag.toggleitemdrop: true
-       ancient.regions.flag.toggleexpdrop: true
-       ancient.regions.flag.togglemobspawn: true
+       ancient.regions.flag.toggleexpdrops: true
+       ancient.regions.flag.togglemobspawning: true
        ancient.regions.flag.togglecreeperexplosion: true
-       ancient.regions.flag.toggletntexplosion: true
-       ancient.regions.flag.toggleinvisible: true
-       ancient.regions.flag.toggleenderdragondamage: true
+       ancient.regions.flag.toggletnt: true
+       ancient.regions.flag.toggleinvincible: true
+       ancient.regions.flag.toggleenderdragonblockdamage: true
        ancient.regions.flag.denyspawn: true
        ancient.regions.flag.togglesnowfall: true
        ancient.regions.flag.togglesnowmelt: true
@@ -71,7 +71,7 @@ permissions:
        ancient.regions.flag.allowedcmds: true
        ancient.regions.flag.timelock: true
        ancient.regions.flag.weatherlock: true
-       ancient.regions.flag.spawnlocation: true
+       ancient.regions.flag.spawn: true
        ancient.regions.flag.togglelavaflow: true
        ancient.regions.flag.togglewaterflow: true
        ancient.regions.flag.togglelightning: true
@@ -79,7 +79,7 @@ permissions:
        ancient.regions.flag.togglemushroomgrowth: true
        ancient.regions.flag.togglepistons: true
        ancient.regions.flag.togglesendchat: true
-       ancient.regions.flag.togglerecievechat: true
+       ancient.regions.flag.togglereceivechat: true
        ancient.regions.flag.togglepotionsplash: true
        ancient.regions.flag.toggleleafdecay: true
        ancient.regions.flag.togglepassthrough: true
@@ -110,6 +110,14 @@ permissions:
        ancient.regions.flag.togglebuyable: true
        ancient.regions.flag.price: true
        ancient.regions.flag.togglechorusfruitteleport: true
+       ancient.regions.flag.denymessage: true
+       ancient.regions.flag.togglefireworkdamage: true
+       ancient.regions.flag.togglewitherdamage: true
+       ancient.regions.flag.exitdenymessage: true
+       ancient.regions.flag.entrydenymessage: true
+       ancient.regions.flag.toggleexitviateleport: true
+       ancient.regions.flag.toggleexitoverride: true
+       ancient.regions.flag.togglefalldamage: true
   ancient.regions.region.*:
      description: Access to all Regions
      children:
@@ -132,6 +140,8 @@ permissions:
        ancient.regions.region.*: true
   ancient.regions.flag.command:
      description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.denymessage:
+      description: Allow to edit Worldguard Attributs
   ancient.regions.flag.togglepvp:
      description: Allow to edit Worldguard Attributs
   ancient.regions.flag.togglebuild:
@@ -140,31 +150,43 @@ permissions:
      description: Allow to edit Worldguard Attributs
   ancient.regions.flag.greeting:
      description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglewitherdamage:
+     description: Allow to edit Worldguard Attributs
   ancient.regions.flag.farewell:
      description: Allow to edit Worldguard Attributs
   ancient.regions.flag.toggleentry:
      description: Allow to edit Worldguard Attributs
   ancient.regions.flag.toggleexit:
      description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.exitdenymessage:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleexitoverride:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglefalldamage:
+     description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.entrydenymessage:
+     description: Allow to edit Worldguard Attributs
   ancient.regions.flag.toggleenderpearl:
      description: Allow to edit Worldguard Attributs
-  ancient.regions.flag.teleportlocation:
+  ancient.regions.flag.teleport:
      description: Allow to edit Worldguard Attributs
   ancient.regions.flag.toggleitempickup:
      description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.toggleexitviateleport:
+     description: Allow to edit Worldguard Attributs
   ancient.regions.flag.toggleitemdrop:
      description: Allow to edit Worldguard Attributs
-  ancient.regions.flag.toggleexpdrop:
+  ancient.regions.flag.toggleexpdrops:
      description: Allow to edit Worldguard Attributs
-  ancient.regions.flag.togglemobspawn:
+  ancient.regions.flag.togglemobspawning:
      description: Allow to edit Worldguard Attributs
   ancient.regions.flag.togglecreeperexplosion:
      description: Allow to edit Worldguard Attributs
-  ancient.regions.flag.toggletntexplosion:
+  ancient.regions.flag.toggletnt:
      description: Allow to edit Worldguard Attributs
-  ancient.regions.flag.toggleinvisible:
+  ancient.regions.flag.toggleinvincible:
      description: Allow to edit Worldguard Attributs
-  ancient.regions.flag.toggleenderdragondamage:
+  ancient.regions.flag.toggleenderdragonblockdamage:
      description: Allow to edit Worldguard Attributs
   ancient.regions.flag.denyspawn:
      description: Allow to edit Worldguard Attributs
@@ -196,7 +218,7 @@ permissions:
      description: Allow to edit Worldguard Attributs
   ancient.regions.flag.weatherlock:
      description: Allow to edit Worldguard Attributs
-  ancient.regions.flag.spawnlocation:
+  ancient.regions.flag.spawn:
      description: Allow to edit Worldguard Attributs
   ancient.regions.flag.feeddelay:
      description: Allow to edit Worldguard Attributs
@@ -220,7 +242,7 @@ permissions:
      description: Allow to edit Worldguard Attributs
   ancient.regions.flag.togglesendchat:
      description: Allow to edit Worldguard Attributs
-  ancient.regions.flag.togglerecievechat:
+  ancient.regions.flag.togglereceivechat:
      description: Allow to edit Worldguard Attributs
   ancient.regions.flag.togglepotionsplash:
      description: Allow to edit Worldguard Attributs
@@ -260,6 +282,8 @@ permissions:
      description: Allow to edit Worldguard Attributs
   ancient.regions.flag.toggleentitypaintingdestroy:
      description: Allow to edit Worldguard Attributs
+  ancient.regions.flag.togglefireworkdamage:
+      description: Allow to edit Worldguard Attributs
   ancient.regions.flag.toggleentityitemframedestroy:
      description: Allow to edit Worldguard Attributs
   ancient.regions.flag.togglemyceliumspread:

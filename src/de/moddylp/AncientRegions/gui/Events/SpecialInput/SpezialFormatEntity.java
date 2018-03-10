@@ -10,8 +10,7 @@ import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagOBJ;
 import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.gui.Editflags;
-import java.util.HashSet;
-import java.util.List;
+import de.moddylp.AncientRegions.gui.Events.ActivateMode;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -20,14 +19,19 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.HashSet;
+import java.util.List;
+
 public class SpezialFormatEntity
-implements Listener {
+        implements Listener {
+    private final ActivateMode mode;
     private FlagOBJ flagobj;
     private Player p;
 
-    public SpezialFormatEntity(Player p, FlagOBJ flagOBJ) {
+    public SpezialFormatEntity(Player p, FlagOBJ flagOBJ, ActivateMode mode) {
         this.p = p;
         this.flagobj = flagOBJ;
+        this.mode = mode;
     }
 
     @EventHandler
@@ -46,10 +50,10 @@ implements Listener {
                 } else {
                     ProtectedRegion rg = regions.getRegion(region.get(0));
                     if (rg != null && (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass"))) {
-                        if (FlagUtil.payment(this.p, e, this.flagobj.getName())) {
+                        if (FlagUtil.payment(this.p, e, this.flagobj.getName(), mode)) {
                             HashSet<EntityType> set = new HashSet<>();
                             set.add(EntityType.valueOf(msg));
-                            rg.setFlag((SetFlag)this.flagobj.getFlag(), set);
+                            rg.setFlag((SetFlag) this.flagobj.getFlag(), set);
                             this.p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flagobj.getName()));
                             Editflags gui = new Editflags(this.p, Main.getInstance());
                             gui.open();

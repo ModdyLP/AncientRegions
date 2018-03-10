@@ -21,15 +21,9 @@ import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.registry.WorldData;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import org.bukkit.entity.Player;
+
+import java.io.*;
 
 public class WorldEditHandler6 {
     private final Main plugin;
@@ -42,11 +36,11 @@ public class WorldEditHandler6 {
         Main.getInstance().getLogger().info("Restore in progress...");
         try {
             LocalWorldAdapter world = LocalWorldAdapter.adapt(new BukkitWorld(p.getWorld()));
-            EditSession editSession = this.plugin.setupWorldEdit().getWorldEdit().getEditSessionFactory().getEditSession((World)world, 999999999);
+            EditSession editSession = this.plugin.setupWorldEdit().getWorldEdit().getEditSessionFactory().getEditSession((World) world, 999999999);
             Vector origin = new Vector(region.getMinimumPoint().getBlockX(), region.getMinimumPoint().getBlockY(), region.getMinimumPoint().getBlockZ());
             Closer closer = Closer.create();
-            FileInputStream fis = (FileInputStream)closer.register((Closeable)new FileInputStream(file));
-            BufferedInputStream bis = (BufferedInputStream)closer.register((Closeable)new BufferedInputStream(fis));
+            FileInputStream fis = (FileInputStream) closer.register((Closeable) new FileInputStream(file));
+            BufferedInputStream bis = (BufferedInputStream) closer.register((Closeable) new BufferedInputStream(fis));
             ClipboardReader reader = ClipboardFormat.SCHEMATIC.getReader(bis);
             WorldData worldData = world.getWorldData();
             LocalSession session = new LocalSession(this.plugin.setupWorldEdit().getLocalConfiguration());
@@ -59,13 +53,11 @@ public class WorldEditHandler6 {
             Operations.completeLegacy(operation);
             try {
                 closer.close();
-            }
-            catch (IOException iOException) {
+            } catch (IOException iOException) {
                 // empty catch block
             }
             file.delete();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -84,35 +76,32 @@ public class WorldEditHandler6 {
             Main.getInstance().getLogger().warning("Did not save region " + regionname + ", world not found: " + p.getWorld().getName());
             return false;
         }
-        EditSession editSession = this.plugin.setupWorldEdit().getWorldEdit().getEditSessionFactory().getEditSession((World)world, 9999999);
-        CuboidRegion selection = new CuboidRegion((World)world, region.getMinimumPoint(), region.getMaximumPoint());
+        EditSession editSession = this.plugin.setupWorldEdit().getWorldEdit().getEditSessionFactory().getEditSession((World) world, 9999999);
+        CuboidRegion selection = new CuboidRegion((World) world, region.getMinimumPoint(), region.getMaximumPoint());
         BlockArrayClipboard clipboard = new BlockArrayClipboard(selection);
         clipboard.setOrigin(region.getMinimumPoint());
-        ForwardExtentCopy copy = new ForwardExtentCopy(editSession, new CuboidRegion((World)world, region.getMinimumPoint(), region.getMaximumPoint()), clipboard, region.getMinimumPoint());
+        ForwardExtentCopy copy = new ForwardExtentCopy(editSession, new CuboidRegion((World) world, region.getMinimumPoint(), region.getMaximumPoint()), clipboard, region.getMinimumPoint());
         try {
             Operations.completeLegacy(copy);
-        }
-        catch (MaxChangedBlocksException e1) {
+        } catch (MaxChangedBlocksException e1) {
             Main.getInstance().getLogger().warning("Exeeded the block limit while saving schematic of " + regionname);
             return false;
         }
         Closer closer = Closer.create();
         try {
-            FileOutputStream fos = (FileOutputStream)closer.register((Closeable)new FileOutputStream(file));
-            BufferedOutputStream bos = (BufferedOutputStream)closer.register((Closeable)new BufferedOutputStream(fos));
-            ClipboardWriter writer = (ClipboardWriter)closer.register((Closeable)ClipboardFormat.SCHEMATIC.getWriter(bos));
+            FileOutputStream fos = (FileOutputStream) closer.register((Closeable) new FileOutputStream(file));
+            BufferedOutputStream bos = (BufferedOutputStream) closer.register((Closeable) new BufferedOutputStream(fos));
+            ClipboardWriter writer = (ClipboardWriter) closer.register((Closeable) ClipboardFormat.SCHEMATIC.getWriter(bos));
             writer.write(clipboard, world.getWorldData());
             return true;
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             Main.getInstance().getLogger().warning("An error occured while saving schematic of " + regionname + ", " + e.getMessage());
             return false;
-        }
-        finally {
+        } finally {
             try {
                 closer.close();
+            } catch (IOException ignored) {
             }
-            catch (IOException ignored) {}
         }
     }
 }

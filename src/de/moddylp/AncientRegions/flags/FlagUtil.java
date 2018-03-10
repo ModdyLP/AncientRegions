@@ -6,6 +6,7 @@ import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.gui.Events.ActivateMode;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,7 +19,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,8 +39,7 @@ public class FlagUtil {
     public static <T> T convertInstanceOfObject(Object o, Class<T> clazz) {
         try {
             return clazz.cast(o);
-        }
-        catch (ClassCastException e) {
+        } catch (ClassCastException e) {
             return null;
         }
     }
@@ -57,14 +56,23 @@ public class FlagUtil {
         }
     }
 
-    public static Double loadPricefromConfig(String flagname) {
+    public static Double loadPricefromConfig(String flagname, ActivateMode mode) {
         try {
+            double price = 0.0;
             if (Main.DRIVER.hasKey(Main.DRIVER.CONFIG, flagname.toLowerCase())) {
-                return Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, flagname.toLowerCase()));
+                price = Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, flagname.toLowerCase()));
             }
-            return 0.0;
-        }
-        catch (Exception ex) {
+            if (mode.equals(ActivateMode.ACTIVATE)) {
+                price = price * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_activatecostpercent")) / 100.0);
+            }
+            if (mode.equals(ActivateMode.REMOVE)) {
+                price = price * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_removecostpercent")) / 100.0);
+            }
+            if (mode.equals(ActivateMode.DEACTIVATE)) {
+                price = price * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_deactivatecostpercent")) / 100.0);
+            }
+            return price;
+        } catch (Exception ex) {
             Main.getInstance().getLogger().info(ex.toString());
             return null;
         }
@@ -73,25 +81,24 @@ public class FlagUtil {
     public static String loadCurrencyfromConfig() {
         try {
             return Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_currency");
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Main.getInstance().getLogger().info(ex.toString());
             return null;
         }
     }
 
-    public static boolean payment(Player p, Cancellable e, String flagname) {
+    public static boolean payment(Player p, Cancellable e, String flagname, ActivateMode mode) {
         RegisteredServiceProvider service = Bukkit.getServicesManager().getRegistration(Economy.class);
-        Economy vaultEcon = (Economy)service.getProvider();
+        Economy vaultEcon = (Economy) service.getProvider();
         if (p.hasPermission("ancient.regions.admin.bypass")) {
             e.setCancelled(true);
             return true;
         }
         if (vaultEcon != null) {
-            Double price = FlagUtil.loadPricefromConfig(flagname);
+            Double price = FlagUtil.loadPricefromConfig(flagname, mode);
             if (price != null && vaultEcon.getBalance(p) != 0.0 && vaultEcon.getBalance(p) >= price) {
                 vaultEcon.withdrawPlayer(p, price);
-                p.sendMessage(ChatColor.BLUE + "[AR][INFO]" + Main.getInstance().lang.getText("PayNote").replace("[PH]", String.valueOf(FlagUtil.loadPricefromConfig(flagname)) + " " + FlagUtil.loadCurrencyfromConfig()));
+                p.sendMessage(ChatColor.BLUE + "[AR][INFO]" + Main.getInstance().lang.getText("PayNote").replace("[PH]", String.valueOf(FlagUtil.loadPricefromConfig(flagname, mode)) + " " + FlagUtil.loadCurrencyfromConfig()));
                 e.setCancelled(true);
                 return true;
             }
@@ -110,7 +117,7 @@ public class FlagUtil {
         RegionManager regions = container.get(p.getWorld());
         Vector pt = new Vector(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ());
         if (regions != null && !(region = regions.getApplicableRegionsIDs(pt)).isEmpty()) {
-            ProtectedRegion rg = regions.getRegion((String)region.get(0));
+            ProtectedRegion rg = regions.getRegion((String) region.get(0));
             if (rg == null || rg.getFlag(flag) == null) {
                 return "null";
             }
@@ -140,17 +147,22 @@ public class FlagUtil {
             ItemStack ITEM = new ItemStack(flagOBJ.getItem());
             ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Set").replace("[PH]", flagOBJ.getName()));
-            lore.add(ChatColor.YELLOW + Objects.requireNonNull(FlagUtil.loadPricefromConfig(flagOBJ.getName())).toString() + " " + FlagUtil.loadCurrencyfromConfig());
-            if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equals("null")) {
+            lore.add(ChatColor.GREEN +
+                    Objects.requireNonNull(FlagUtil.loadPricefromConfig(flagOBJ.getName(), ActivateMode.ACTIVATE)).toString() + " " + FlagUtil.loadCurrencyfromConfig() + "    " +
+                    ChatColor.LIGHT_PURPLE +
+                    Objects.requireNonNull(FlagUtil.loadPricefromConfig(flagOBJ.getName(), ActivateMode.REMOVE)).toString() + " " + FlagUtil.loadCurrencyfromConfig()
+            );
+            if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("null")) {
                 lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Current") + ": " + ChatColor.AQUA + FlagUtil.isSet(p, flagOBJ.getFlag()));
             }
             ItemMeta imeta = ITEM.getItemMeta();
-            if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equals("null")) {
+            if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("null")) {
                 imeta.setDisplayName(ChatColor.GREEN + "[ON] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + flagOBJ.getName());
-                lore.add(Color.CYAN+Main.getInstance().lang.getText("removemode"));
+                lore.add(ChatColor.GREEN + "- "+Main.getInstance().lang.getText("changemode"));
+                lore.add(ChatColor.LIGHT_PURPLE + "- "+Main.getInstance().lang.getText("removemode"));
             } else {
                 imeta.setDisplayName(ChatColor.BLUE + "[/] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + flagOBJ.getName());
-                lore.add(Color.CYAN+Main.getInstance().lang.getText("activatemode"));
+                lore.add(ChatColor.GREEN + "- "+Main.getInstance().lang.getText("activatemode"));
             }
             imeta.setLore(lore);
             imeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -162,28 +174,37 @@ public class FlagUtil {
             menu.setItem(flagOBJ.getMenuposition(), ITEM);
         }
     }
+
     public static void loadBooleanGUI(Inventory menu, Player p, FlagOBJ flagOBJ) {
         if (p.hasPermission(flagOBJ.getPermission())) {
             ItemStack ITEM = new ItemStack(flagOBJ.getItem());
             ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Set").replace("[PH]", flagOBJ.getName()));
-            lore.add(ChatColor.YELLOW + Objects.requireNonNull(FlagUtil.loadPricefromConfig(flagOBJ.getName())).toString() + " " + FlagUtil.loadCurrencyfromConfig());
-            if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equals("null")) {
+            lore.add(ChatColor.GREEN +
+                    Objects.requireNonNull(FlagUtil.loadPricefromConfig(flagOBJ.getName(), ActivateMode.ACTIVATE)).toString() + " " + FlagUtil.loadCurrencyfromConfig() + "    " +
+                    ChatColor.RED +
+                    Objects.requireNonNull(FlagUtil.loadPricefromConfig(flagOBJ.getName(), ActivateMode.DEACTIVATE)).toString() + " " + FlagUtil.loadCurrencyfromConfig() + "    " +
+                    ChatColor.LIGHT_PURPLE +
+                    Objects.requireNonNull(FlagUtil.loadPricefromConfig(flagOBJ.getName(), ActivateMode.REMOVE)).toString() + " " + FlagUtil.loadCurrencyfromConfig()
+            );
+            if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("null")) {
                 lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Current") + ": " + ChatColor.AQUA + FlagUtil.isSet(p, flagOBJ.getFlag()));
             }
             ItemMeta imeta = ITEM.getItemMeta();
-            if (FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("true")) {
+            if (FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("true")
+                    || FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("allow")) {
                 imeta.setDisplayName(ChatColor.GREEN + "[ON] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + flagOBJ.getName());
-                lore.add(Color.CYAN+Main.getInstance().lang.getText("deactivatemode"));
-                lore.add(Color.CYAN+Main.getInstance().lang.getText("removemode"));
-            } else if (FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("false")) {
+                lore.add(ChatColor.RED + "- "+Main.getInstance().lang.getText("deactivatemode"));
+                lore.add(ChatColor.LIGHT_PURPLE + "- "+Main.getInstance().lang.getText("removemode"));
+            } else if (FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("false")
+                    || FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("deny")) {
                 imeta.setDisplayName(ChatColor.RED + "[OFF] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + flagOBJ.getName());
-                lore.add(Color.CYAN+Main.getInstance().lang.getText("activatemode"));
-                lore.add(Color.CYAN+Main.getInstance().lang.getText("removemode"));
+                lore.add(ChatColor.GREEN + "- "+Main.getInstance().lang.getText("activatemode"));
+                lore.add(ChatColor.LIGHT_PURPLE + "- "+Main.getInstance().lang.getText("removemode"));
             } else {
                 imeta.setDisplayName(ChatColor.BLUE + "[/] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + flagOBJ.getName());
-                lore.add(Color.CYAN+Main.getInstance().lang.getText("activatemode"));
-                lore.add(Color.CYAN+Main.getInstance().lang.getText("deactivatemode"));
+                lore.add(ChatColor.GREEN + "- "+Main.getInstance().lang.getText("activatemode"));
+                lore.add(ChatColor.RED + "- "+Main.getInstance().lang.getText("deactivatemode"));
             }
             imeta.setLore(lore);
             imeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);

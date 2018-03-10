@@ -33,7 +33,7 @@ public class VaultLoader {
         RegisteredServiceProvider economyProvider = this.plugin.getServer().getServicesManager().getRegistration(Economy.class);
         Economy economy = null;
         if (economyProvider != null) {
-            economy = (Economy)economyProvider.getProvider();
+            economy = (Economy) economyProvider.getProvider();
         }
         return economy != null;
     }
@@ -42,7 +42,7 @@ public class VaultLoader {
         RegisteredServiceProvider permissionProvider = this.plugin.getServer().getServicesManager().getRegistration(Permission.class);
         Permission permissionHandler = null;
         if (permissionProvider != null) {
-            permissionHandler = (Permission)permissionProvider.getProvider();
+            permissionHandler = (Permission) permissionProvider.getProvider();
         }
         return permissionHandler != null;
     }

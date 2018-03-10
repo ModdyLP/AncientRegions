@@ -30,14 +30,14 @@ public class Startgui {
 
     private void loadMenuItems() {
         ItemStack flagedit = new ItemStack(Material.BANNER, 1, (short) 0);
-        BannerMeta bannerMeta = (BannerMeta)flagedit.getItemMeta();
+        BannerMeta bannerMeta = (BannerMeta) flagedit.getItemMeta();
         bannerMeta.addPattern(new Pattern(DyeColor.WHITE, PatternType.STRIPE_MIDDLE));
         bannerMeta.addPattern(new Pattern(DyeColor.BLACK, PatternType.STRIPE_RIGHT));
         bannerMeta.addPattern(new Pattern(DyeColor.WHITE, PatternType.STRIPE_LEFT));
         bannerMeta.addPattern(new Pattern(DyeColor.WHITE, PatternType.STRIPE_TOP));
         bannerMeta.addPattern(new Pattern(DyeColor.BLACK, PatternType.BORDER));
         ItemStack regionmanage = new ItemStack(Material.BANNER, 1, (short) 0);
-        BannerMeta bannerMeta1 = (BannerMeta)flagedit.getItemMeta();
+        BannerMeta bannerMeta1 = (BannerMeta) flagedit.getItemMeta();
         bannerMeta1.addPattern(new Pattern(DyeColor.WHITE, PatternType.STRIPE_RIGHT));
         bannerMeta1.addPattern(new Pattern(DyeColor.WHITE, PatternType.STRIPE_TOP));
         bannerMeta1.addPattern(new Pattern(DyeColor.BLACK, PatternType.HALF_HORIZONTAL_MIRROR));

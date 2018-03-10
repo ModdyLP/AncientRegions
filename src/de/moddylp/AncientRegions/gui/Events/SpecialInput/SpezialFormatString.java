@@ -10,8 +10,7 @@ import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagOBJ;
 import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.gui.Editflags;
-import java.util.HashSet;
-import java.util.List;
+import de.moddylp.AncientRegions.gui.Events.ActivateMode;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,14 +18,19 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.HashSet;
+import java.util.List;
+
 public class SpezialFormatString
-implements Listener {
+        implements Listener {
+    private final ActivateMode mode;
     private Player p;
     private FlagOBJ flag;
 
-    public SpezialFormatString(Player p, FlagOBJ flag) {
+    public SpezialFormatString(Player p, FlagOBJ flag, ActivateMode mode) {
         this.p = p;
         this.flag = flag;
+        this.mode = mode;
     }
 
     @EventHandler
@@ -42,12 +46,12 @@ implements Listener {
                 if (region.isEmpty()) {
                     this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("GobalError"));
                 } else {
-                    ProtectedRegion rg = regions.getRegion((String)region.get(0));
+                    ProtectedRegion rg = regions.getRegion((String) region.get(0));
                     if (rg != null && (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass"))) {
-                        if (FlagUtil.payment(this.p, e, this.flag.getName())) {
+                        if (FlagUtil.payment(this.p, e, this.flag.getName(), mode)) {
                             HashSet<String> set = new HashSet<>();
                             set.add(msg);
-                            rg.setFlag((SetFlag)this.flag.getFlag(), set);
+                            rg.setFlag((SetFlag) this.flag.getFlag(), set);
                             this.p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
                             Editflags gui = new Editflags(this.p, Main.getInstance());
                             gui.open();

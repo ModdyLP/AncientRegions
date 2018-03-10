@@ -9,10 +9,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagUtil;
-import de.moddylp.AncientRegions.region.RegionManageGUI;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import de.moddylp.AncientRegions.gui.Events.ActivateMode;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -21,8 +18,12 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+
 public class SetValueFromChatEvent
-implements Listener {
+        implements Listener {
     private Player p;
     private Main plugin;
     private WorldGuardPlugin worldguard;
@@ -42,7 +43,7 @@ implements Listener {
             UUID uuid = this.uuid(msg);
             if (uuid != null) {
                 RegionContainer container;
-                if (this.mode.equals(this.plugin.lang.getText("AddMember"))) {
+                if (this.mode.equalsIgnoreCase(this.plugin.lang.getText("AddMember"))) {
                     if (this.p.hasPermission("ancient.regions.region.addmember")) {
                         container = this.worldguard.getRegionContainer();
                         RegionManager regions = container.get(this.p.getWorld());
@@ -54,9 +55,9 @@ implements Listener {
                             if (region.isEmpty()) {
                                 this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("GobalError"));
                             } else {
-                                ProtectedRegion rg = regions.getRegion((String)region.get(0));
+                                ProtectedRegion rg = regions.getRegion((String) region.get(0));
                                 if (rg != null && (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass"))) {
-                                    if (FlagUtil.payment(this.p, e, "_addmember") || this.p.hasPermission("ancient.regions.admin.bypass")) {
+                                    if (FlagUtil.payment(this.p, e, "_addmember", ActivateMode.ACTIVATE) || this.p.hasPermission("ancient.regions.admin.bypass")) {
                                         DefaultDomain member = new DefaultDomain();
                                         member.addPlayer(uuid);
                                         rg.setMembers(member);
@@ -78,7 +79,7 @@ implements Listener {
                         this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("Permission"));
                         e.setCancelled(true);
                     }
-                } else if (this.mode.equals(this.plugin.lang.getText("ChangeOwner"))) {
+                } else if (this.mode.equalsIgnoreCase(this.plugin.lang.getText("ChangeOwner"))) {
                     if (this.p.hasPermission("ancient.regions.region.changeowner")) {
                         container = this.worldguard.getRegionContainer();
                         RegionManager regions = container.get(this.p.getWorld());
@@ -90,7 +91,7 @@ implements Listener {
                         } else {
                             ProtectedRegion rg = regions.getRegion(region.get(0));
                             if (Objects.requireNonNull(rg).isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass")) {
-                                if (FlagUtil.payment(this.p, e, "_changeowner") || this.p.hasPermission("ancient.regions.admin.bypass")) {
+                                if (FlagUtil.payment(this.p, e, "_changeowner", ActivateMode.ACTIVATE) || this.p.hasPermission("ancient.regions.admin.bypass")) {
                                     DefaultDomain owner = rg.getOwners();
                                     owner.removePlayer(this.p.getUniqueId());
                                     owner.addPlayer(uuid);
@@ -132,7 +133,7 @@ implements Listener {
         OfflinePlayer[] allplayers = this.plugin.getServer().getOfflinePlayers();
         if (allplayers.length > 0) {
             String uuidname = allplayers[0].getName();
-            if (playername.trim().equals(uuidname)) {
+            if (playername.trim().equalsIgnoreCase(uuidname)) {
                 return allplayers[0].getUniqueId();
             }
             return null;

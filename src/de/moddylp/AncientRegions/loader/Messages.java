@@ -19,11 +19,11 @@ public class Messages {
         lang.setTextOnce("Disabled", "AncientRegions has been disabled!");
         lang.setTextOnce("ConfigReload", "Config and LanguageFile have been reloaded!");
         lang.setTextOnce("Cancel", "Canceled all Particle Activities!");
-        lang.setTextOnce("ValueChat", " Value for FlagOBJ([PH]) was set!");
+        lang.setTextOnce("ValueChat", " Value for Flag([PH]) was set!");
         lang.setTextOnce("PayNote", "You have payed [PH] for changing this flag!");
         lang.setTextOnce("PayNote2", "You have payed [PH] for this region!");
         lang.setTextOnce("PayNote3", "You have payed [PH] for this region change!");
-        lang.setTextOnce("FlagRemoved", "FlagOBJ removed!");
+        lang.setTextOnce("FlagRemoved", "Flag removed!");
         lang.setTextOnce("SimpleTypeChatMSG", "Please type in the Chat your [PH] Message!");
         lang.setTextOnce("Message2", "Please type in the Chat your EntityTypes. Seperate it with a comma! e.g. Creeper, Zombie");
         lang.setTextOnce("Message3", "Please type in the Chat only numeric Values.");
@@ -60,7 +60,7 @@ public class Messages {
         lang.setTextOnce("RemoveRegionLore1", "Sell your Region to the Server.");
         lang.setTextOnce("RemoveRegionLore2", "You get [PH] back by selling the Region.");
         lang.setTextOnce("Removed", "Your Region ([PH]) was selled.");
-        lang.setTextOnce("RemovedError","Your Region ([PH]) was selled but cant be restored to nature." );
+        lang.setTextOnce("RemovedError", "Your Region ([PH]) was selled but cant be restored to nature.");
         lang.setTextOnce("Payback", " You get [PH] for selling this region.");
         lang.setTextOnce("Playername", "Please type in the Chat a Playername!");
         lang.setTextOnce("Restore", "Restore in Progress... Please wait");
@@ -95,9 +95,10 @@ public class Messages {
         lang.setTextOnce("ErrorCreate", "Failed to create Region");
         lang.setTextOnce("build", "Build");
         lang.setTextOnce("Player", "That Player ([PH]) doesn't exist, or is not online. Please choose another one!");
-        lang.setTextOnce("deactivatemode", "To Deactivate press LeftClick");
+        lang.setTextOnce("deactivatemode", "To Deactivate press RightClick");
         lang.setTextOnce("activatemode", "To Activate press LeftClick");
-        lang.setTextOnce("removemode", "To Remove press ShiftLeftClick");
+        lang.setTextOnce("removemode", "To Remove press MiddleClick");
+        lang.setTextOnce("changemode", "To Change press LeftClick");
     }
 }
 

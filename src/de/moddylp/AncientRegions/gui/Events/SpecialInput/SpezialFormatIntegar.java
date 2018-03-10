@@ -10,7 +10,7 @@ import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagOBJ;
 import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.gui.Editflags;
-import java.util.List;
+import de.moddylp.AncientRegions.gui.Events.ActivateMode;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,14 +18,18 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.List;
+
 public class SpezialFormatIntegar
-implements Listener {
+        implements Listener {
+    private final ActivateMode mode;
     private FlagOBJ flagobj;
     private Player p;
 
-    public SpezialFormatIntegar(Player p, FlagOBJ flagOBJ) {
+    public SpezialFormatIntegar(Player p, FlagOBJ flagOBJ, ActivateMode mode) {
         this.p = p;
         this.flagobj = flagOBJ;
+        this.mode = mode;
     }
 
     @EventHandler
@@ -42,9 +46,9 @@ implements Listener {
                 if (region.isEmpty()) {
                     this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("GobalError"));
                 } else {
-                    ProtectedRegion rg = regions.getRegion((String)region.get(0));
+                    ProtectedRegion rg = regions.getRegion((String) region.get(0));
                     if (rg != null && (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass"))) {
-                        if (FlagUtil.payment(this.p, e, this.flagobj.getName())) {
+                        if (FlagUtil.payment(this.p, e, this.flagobj.getName(), mode)) {
                             rg.setFlag((IntegerFlag) this.flagobj.getFlag(), Integer.valueOf(msg));
                             this.p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flagobj.getName()));
                             Editflags gui = new Editflags(this.p, Main.getInstance());

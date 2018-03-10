@@ -5,10 +5,9 @@ import com.sk89q.worldguard.protection.flags.Flag;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagOBJ;
 import de.moddylp.AncientRegions.flags.FlagUtil;
-import de.moddylp.AncientRegions.loader.FileDriver;
-import java.util.ArrayList;
-
 import org.bukkit.Material;
+
+import java.util.ArrayList;
 
 public class FlagLoader {
     public static void load() {

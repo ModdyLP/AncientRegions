@@ -8,17 +8,11 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.gui.Events.ActivateMode;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class StateFlag {
     private final FlagOBJ flagOBJ;
@@ -38,7 +32,7 @@ public class StateFlag {
             flag = new StateFlag(flagOBJ);
             FlagUtil.stateFlagHashMap.put(flagOBJ.getName(), flag);
         }
-        FlagUtil.loadBooleanGUI(menu,p, flagOBJ);
+        FlagUtil.loadBooleanGUI(menu, p, flagOBJ);
     }
 
     public static void createandtoggle(FlagOBJ flagOBJ, Player p, Inventory menu, InventoryClickEvent event, ActivateMode mode) {
@@ -69,17 +63,21 @@ public class StateFlag {
                 } else {
                     ProtectedRegion rg = regions.getRegion((String) region.get(0));
                     if (rg != null && (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass"))) {
-                        if (mode.equals(ActivateMode.REMOVE)) {
-                            rg.setFlag(this.flagOBJ.getFlag(), null);
-                            p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagOBJ.getName() + Main.getInstance().lang.getText("FlagRemoved"));
-                        } else if (mode.equals(ActivateMode.DEACTIVATE)) {
-                            if (FlagUtil.payment(p, e, this.flagOBJ.getName())) {
+                        if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("null") && mode.equals(ActivateMode.REMOVE)) {
+                            if (FlagUtil.payment(p, e, this.flagOBJ.getName(), mode)) {
+                                rg.setFlag(this.flagOBJ.getFlag(), null);
+                                p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagOBJ.getName() + " "+Main.getInstance().lang.getText("FlagRemoved"));
+                            }
+                        } else if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("deny") && mode.equals(ActivateMode.DEACTIVATE)) {
+                            if (FlagUtil.payment(p, e, this.flagOBJ.getName(), mode)) {
                                 rg.setFlag((com.sk89q.worldguard.protection.flags.StateFlag) flagOBJ.getFlag(), com.sk89q.worldguard.protection.flags.StateFlag.State.DENY);
                                 p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.RED + " " + this.flagOBJ.getName() + Main.getInstance().lang.getText("fDisabled"));
                             }
-                        } else if (mode.equals(ActivateMode.ACTIVATE)) {
-                            rg.setFlag((com.sk89q.worldguard.protection.flags.StateFlag) flagOBJ.getFlag(), com.sk89q.worldguard.protection.flags.StateFlag.State.ALLOW);
-                            p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.flagOBJ.getName() + Main.getInstance().lang.getText("fEnabled"));
+                        } else if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("allow") && mode.equals(ActivateMode.ACTIVATE)) {
+                            if (FlagUtil.payment(p, e, this.flagOBJ.getName(), mode)) {
+                                rg.setFlag((com.sk89q.worldguard.protection.flags.StateFlag) flagOBJ.getFlag(), com.sk89q.worldguard.protection.flags.StateFlag.State.ALLOW);
+                                p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.flagOBJ.getName() + Main.getInstance().lang.getText("fEnabled"));
+                            }
                         }
                     } else {
                         p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("Owner"));
@@ -92,7 +90,7 @@ public class StateFlag {
                 e.setCancelled(true);
             }
         }
-        FlagUtil.loadBooleanGUI(menu,p, flagOBJ);
+        FlagUtil.loadBooleanGUI(menu, p, flagOBJ);
         return false;
     }
 }

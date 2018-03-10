@@ -6,7 +6,6 @@ import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.loader.FileDriver;
 import org.bukkit.Material;
 

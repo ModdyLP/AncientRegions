@@ -1,10 +1,10 @@
 package de.moddylp.AncientRegions.particle;
 
 import de.moddylp.AncientRegions.Main;
-import java.io.File;
-
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.io.File;
 
 public class LogFile {
     private File f = new File(Main.getInstance().getDataFolder(), "data.yml");
@@ -26,8 +26,7 @@ public class LogFile {
             } else {
                 this.Data = this.getfile();
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -37,8 +36,7 @@ public class LogFile {
             this.Data = this.getfile();
             this.Data.set("regions." + option, value);
             this.Data.save(this.f);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }

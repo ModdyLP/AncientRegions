@@ -64,20 +64,22 @@ public class StringFlag {
                 if (region.isEmpty()) {
                     p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("GobalError"));
                 } else {
-                    ProtectedRegion rg = regions.getRegion((String)region.get(0));
+                    ProtectedRegion rg = regions.getRegion((String) region.get(0));
                     if (rg != null && (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass"))) {
-                        if (mode.equals(ActivateMode.REMOVE)) {
-                            rg.setFlag(this.flagOBJ.getFlag(), null);
-                            p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagOBJ.getName() + Main.getInstance().lang.getText("FlagRemoved"));
+                        if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("null") && mode.equals(ActivateMode.REMOVE)) {
+                            if (FlagUtil.payment(p, e, this.flagOBJ.getName(), mode)) {
+                                rg.setFlag(this.flagOBJ.getFlag(), null);
+                                p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagOBJ.getName() + " "+Main.getInstance().lang.getText("FlagRemoved"));
+                            }
                         } else if (mode.equals(ActivateMode.ACTIVATE)) {
                             if (this.flagOBJ.getFlag() instanceof SetFlag) {
                                 p.closeInventory();
                                 p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("Message4").replace("[PH]", this.flagOBJ.getName()));
-                                Main.getInstance().getServer().getPluginManager().registerEvents(new SpezialFormatString(p, this.flagOBJ), Main.getInstance());
+                                Main.getInstance().getServer().getPluginManager().registerEvents(new SpezialFormatString(p, this.flagOBJ, mode), Main.getInstance());
                             } else if (this.flagOBJ.getFlag() instanceof com.sk89q.worldguard.protection.flags.StringFlag) {
                                 p.closeInventory();
                                 p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("SimpleTypeChatMSG").replace("[PH]", this.flagOBJ.getName()));
-                                Main.getInstance().getServer().getPluginManager().registerEvents(new SetValueFromChatEvent(p, this.flagOBJ), Main.getInstance());
+                                Main.getInstance().getServer().getPluginManager().registerEvents(new SetValueFromChatEvent(p, this.flagOBJ, mode), Main.getInstance());
                             }
                         }
                     } else {

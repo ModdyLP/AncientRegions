@@ -1,26 +1,14 @@
 package de.moddylp.AncientRegions.loader;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import de.moddylp.AncientRegions.Main;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
+import java.io.*;
+import java.util.*;
 
 public class FileDriver {
     public String CONFIG = "";
@@ -67,7 +55,7 @@ public class FileDriver {
     private JSONObject parseJson(String string) {
         JSONObject json = new JSONObject();
         try {
-            if (!string.equals("")) {
+            if (!string.equalsIgnoreCase("")) {
                 JsonParser jsonParser = new JsonParser();
                 json = new JSONObject(jsonParser.parse(string).getAsJsonObject().toString());
             }
@@ -193,7 +181,7 @@ public class FileDriver {
         HashMap<String, Object> map = this.getAllKeysWithValues(filename);
         Set<String> keys = map.keySet();
         for (String key : keys) {
-            if (map.get(key).toString().toLowerCase().equals(search)) {
+            if (map.get(key).toString().toLowerCase().equalsIgnoreCase(search)) {
                 return key;
             }
         }
