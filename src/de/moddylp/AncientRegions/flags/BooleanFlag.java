@@ -6,6 +6,7 @@ import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.gui.Events.ActivateMode;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -37,10 +38,10 @@ public class BooleanFlag {
             flag = new BooleanFlag(flagOBJ);
             FlagUtil.booleanFlagHashMap.put(flagOBJ.getName(), flag);
         }
-        flag.loadgui(menu, p);
+        FlagUtil.loadBooleanGUI(menu, p, flagOBJ);
     }
 
-    public static void createandtoggle(FlagOBJ flagOBJ, Player p, Inventory menu, InventoryClickEvent event) {
+    public static void createandtoggle(FlagOBJ flagOBJ, Player p, Inventory menu, InventoryClickEvent event, ActivateMode mode) {
         if (flagOBJ.getMenuposition() == 999) {
             return;
         }
@@ -52,10 +53,10 @@ public class BooleanFlag {
             flag = new BooleanFlag(flagOBJ);
             FlagUtil.booleanFlagHashMap.put(flagOBJ.getName(), flag);
         }
-        flag.toggle(event, menu, p);
+        flag.toggle(event, menu, p, mode);
     }
 
-    public boolean toggle(InventoryClickEvent e, Inventory menu, Player p) {
+    public boolean toggle(InventoryClickEvent e, Inventory menu, Player p, ActivateMode mode) {
         if (p.hasPermission(this.flagOBJ.getPermission())) {
             RegionContainer container = Main.worldguard.getRegionContainer();
             RegionManager regions = container.get(p.getWorld());
@@ -66,24 +67,21 @@ public class BooleanFlag {
                 if (region.isEmpty()) {
                     p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("GobalError"));
                 } else {
-                    ProtectedRegion rg = regions.getRegion((String)region.get(0));
-                    if (rg != null && rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
-                        if (rg != null && rg.getFlag(this.flagOBJ.getFlag()) != null) {
-                            if (Objects.equals(rg.getFlag(this.flagOBJ.getFlag()), false)) {
-                                rg.setFlag(this.flagOBJ.getFlag(), null);
-                                p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagOBJ.getName() + Main.getInstance().lang.getText("FlagRemoved"));
-                            } else if (Objects.equals(rg.getFlag(this.flagOBJ.getFlag()), true)) {
-                                if (FlagUtil.payment(p, e, this.flagOBJ.getName())) {
-                                    rg.setFlag((com.sk89q.worldguard.protection.flags.BooleanFlag) flagOBJ.getFlag(), false);
-                                    p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.RED + " " + this.flagOBJ.getName() + Main.getInstance().lang.getText("fDisabled"));
-                                }
-                            } else {
-                                p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("ToggleError").replace("[PH]", this.flagOBJ.getName()));
+                    ProtectedRegion rg = regions.getRegion((String) region.get(0));
+                    if (rg != null && (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass"))) {
+                        if (mode.equals(ActivateMode.REMOVE)) {
+                            rg.setFlag(this.flagOBJ.getFlag(), null);
+                            p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagOBJ.getName() + Main.getInstance().lang.getText("FlagRemoved"));
+                        } else if (mode.equals(ActivateMode.DEACTIVATE)) {
+                            if (FlagUtil.payment(p, e, this.flagOBJ.getName())) {
+                                rg.setFlag((com.sk89q.worldguard.protection.flags.BooleanFlag) flagOBJ.getFlag(), false);
+                                p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.RED + " " + this.flagOBJ.getName() + Main.getInstance().lang.getText("fDisabled"));
                             }
-                        } else if (rg != null && FlagUtil.payment(p, e, this.flagOBJ.getName())) {
+                        } else if (mode.equals(ActivateMode.ACTIVATE)) {
                             rg.setFlag((com.sk89q.worldguard.protection.flags.BooleanFlag) flagOBJ.getFlag(), true);
                             p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.flagOBJ.getName() + Main.getInstance().lang.getText("fEnabled"));
                         }
+
                     } else {
                         p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("Owner"));
                         e.setCancelled(true);
@@ -95,37 +93,8 @@ public class BooleanFlag {
                 e.setCancelled(true);
             }
         }
-        this.loadgui(menu, p);
+        FlagUtil.loadBooleanGUI(menu, p, flagOBJ);
         return false;
-    }
-
-    public boolean loadgui(Inventory menu, Player p) {
-        if (p.hasPermission(this.flagOBJ.getPermission())) {
-            ItemStack ITEM = new ItemStack(this.flagOBJ.getItem());
-            ArrayList<String> lore = new ArrayList<>();
-            lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Set").replace("[PH]", this.flagOBJ.getName()));
-            lore.add(ChatColor.YELLOW + Objects.requireNonNull(FlagUtil.loadPricefromConfig(this.flagOBJ.getName())).toString() + " " + FlagUtil.loadCurrencyfromConfig());
-            if (!FlagUtil.isSet(p, this.flagOBJ.getFlag()).equals("null")) {
-                lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Current") + ": " + ChatColor.AQUA + FlagUtil.isSet(p, this.flagOBJ.getFlag()));
-            }
-            ItemMeta imeta = ITEM.getItemMeta();
-            if (FlagUtil.isSet(p, this.flagOBJ.getFlag()).equalsIgnoreCase("true")) {
-                imeta.setDisplayName(ChatColor.GREEN + "[ON] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + this.flagOBJ.getName());
-            } else if (FlagUtil.isSet(p, this.flagOBJ.getFlag()).equalsIgnoreCase("false")) {
-                imeta.setDisplayName(ChatColor.RED + "[OFF] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + this.flagOBJ.getName());
-            } else {
-                imeta.setDisplayName(ChatColor.BLUE + "[/] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + this.flagOBJ.getName());
-            }
-            imeta.setLore(lore);
-            imeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-            ITEM.setItemMeta(imeta);
-            menu.setItem(this.flagOBJ.getMenuposition(), ITEM);
-        } else {
-            ItemStack ITEM = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
-            FlagUtil.checkPerm(ITEM, this.flagOBJ.getName());
-            menu.setItem(this.flagOBJ.getMenuposition(), ITEM);
-        }
-        return true;
     }
 }
 

@@ -24,7 +24,7 @@ public class Messages {
         lang.setTextOnce("PayNote2", "You have payed [PH] for this region!");
         lang.setTextOnce("PayNote3", "You have payed [PH] for this region change!");
         lang.setTextOnce("FlagRemoved", "FlagOBJ removed!");
-        lang.setTextOnce("Message", "Please type in the Chat your [PH] Message!");
+        lang.setTextOnce("SimpleTypeChatMSG", "Please type in the Chat your [PH] Message!");
         lang.setTextOnce("Message2", "Please type in the Chat your EntityTypes. Seperate it with a comma! e.g. Creeper, Zombie");
         lang.setTextOnce("Message3", "Please type in the Chat only numeric Values.");
         lang.setTextOnce("Message4", "Please type in the Chat commands without slash. Seperate each command with a Comma!");
@@ -95,6 +95,9 @@ public class Messages {
         lang.setTextOnce("ErrorCreate", "Failed to create Region");
         lang.setTextOnce("build", "Build");
         lang.setTextOnce("Player", "That Player ([PH]) doesn't exist, or is not online. Please choose another one!");
+        lang.setTextOnce("deactivatemode", "To Deactivate press LeftClick");
+        lang.setTextOnce("activatemode", "To Activate press LeftClick");
+        lang.setTextOnce("removemode", "To Remove press ShiftLeftClick");
     }
 }
 

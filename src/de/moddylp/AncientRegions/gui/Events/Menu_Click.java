@@ -49,31 +49,33 @@ implements Listener {
 
     @EventHandler
     public void item_clicked(InventoryClickEvent e) {
-        block140 : {
+        ActivateMode mode = null;
+        if (e.isLeftClick()) {
+            mode = ActivateMode.ACTIVATE;
+        } else if (e.isRightClick()) {
+            mode = ActivateMode.DEACTIVATE;
+        } else if (e.isShiftClick()) {
+            mode = ActivateMode.REMOVE;
+        }
             Player p = (Player)e.getWhoClicked();
             if (e.getInventory().getName().equals(ChatColor.GOLD + "AncientRegions")) {
-                if (e.getCurrentItem() != null) {
-                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 100.0f, 100.0f);
-                }
+                playSound(e, p);
                 Inventory menu = e.getInventory();
                 try {
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(this.plugin.lang.getText("EditFlagsItem"))) {
                         GUIOpener opener = new GUIOpener(this.loader);
                         opener.openeditflagsgui(p);
                         e.setCancelled(true);
-                        break block140;
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(this.plugin.lang.getText("RegionManager"))) {
                         RegionManageGUI gui = new RegionManageGUI(p, this.plugin, this.worldguard);
                         gui.open();
                         e.setCancelled(true);
-                        break block140;
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Particle")) {
                         ParticleShower show = new ParticleShower(this.plugin, menu);
                         show.toggle(p, this.worldguard);
                         e.setCancelled(true);
-                        break block140;
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Info")) {
                         p.closeInventory();
@@ -101,7 +103,6 @@ implements Listener {
                             }
                         }
                         e.setCancelled(true);
-                        break block140;
                     }
                     e.setCancelled(true);
                 }
@@ -110,207 +111,205 @@ implements Listener {
                 }
             } else if (e.getInventory().getName().equals(ChatColor.RED + this.plugin.lang.getText("EditFlags") + " 1")) {
                 Inventory menu = e.getInventory();
-                if (e.getCurrentItem() != null) {
-                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 100.0f, 100.0f);
-                }
+                playSound(e, p);
                 try {
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj( DefaultFlag.BUILD)).getName())) {
-                        StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.BUILD)), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.BUILD)), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj( DefaultFlag.GREET_MESSAGE)).getName())) {
-                        de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj( DefaultFlag.GREET_MESSAGE)), p, menu, e);
-                        break block140;
+                        de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj( DefaultFlag.GREET_MESSAGE)), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj( DefaultFlag.FAREWELL_MESSAGE)).getName())) {
-                        de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.FAREWELL_MESSAGE)), p, menu, e);
-                        break block140;
+                        de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.FAREWELL_MESSAGE)), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.PVP)).getName())) {
-                        StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.PVP)), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.PVP)), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.MOB_DAMAGE)).getName())) {
-                        StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.MOB_DAMAGE)), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.MOB_DAMAGE)), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ENTRY)).getName())) {
-                        StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ENTRY)), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ENTRY)), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.EXIT)).getName())) {
-                        StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.EXIT)), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.EXIT)), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ENDERPEARL)).getName())) {
-                        StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ENDERPEARL)), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ENDERPEARL)), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.TELE_LOC)).getName())) {
-                        LocationFlagimpl.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.TELE_LOC)), p, menu, e);
-                        break block140;
+                        LocationFlagimpl.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.TELE_LOC)), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ITEM_PICKUP)).getName())) {
-                        StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ITEM_PICKUP)), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ITEM_PICKUP)), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ITEM_DROP)).getName())) {
-                        StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ITEM_DROP)), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ITEM_DROP)), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.EXP_DROPS).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.EXP_DROPS), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.EXP_DROPS), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MOB_SPAWNING).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MOB_SPAWNING), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MOB_SPAWNING), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.CREEPER_EXPLOSION).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.CREEPER_EXPLOSION), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.CREEPER_EXPLOSION), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.TNT).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.TNT), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.TNT), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.INVINCIBILITY).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.INVINCIBILITY), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.INVINCIBILITY), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ENDERDRAGON_BLOCK_DAMAGE).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENDERDRAGON_BLOCK_DAMAGE), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENDERDRAGON_BLOCK_DAMAGE), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.DENY_SPAWN).getName())) {
-                        EntitySetFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.DENY_SPAWN), p, menu, e);
-                        break block140;
+                        EntitySetFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.DENY_SPAWN), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.SNOW_MELT).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SNOW_MELT), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SNOW_MELT), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.SNOW_FALL).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SNOW_FALL), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SNOW_FALL), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ICE_FORM).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ICE_FORM), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ICE_FORM), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ICE_MELT).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ICE_MELT), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ICE_MELT), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.GRASS_SPREAD).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.GRASS_SPREAD), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.GRASS_SPREAD), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.HEAL_DELAY).getName())) {
-                        de.moddylp.AncientRegions.flags.IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.HEAL_DELAY), p, menu, e);
-                        break block140;
+                        de.moddylp.AncientRegions.flags.IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.HEAL_DELAY), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.HEAL_AMOUNT).getName())) {
-                        de.moddylp.AncientRegions.flags.IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.HEAL_AMOUNT), p, menu, e);
-                        break block140;
+                        de.moddylp.AncientRegions.flags.IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.HEAL_AMOUNT), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MIN_HEAL).getName())) {
-                        de.moddylp.AncientRegions.flags.DoubleFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MIN_HEAL), p, menu, e);
-                        break block140;
+                        de.moddylp.AncientRegions.flags.DoubleFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MIN_HEAL), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MAX_HEAL).getName())) {
-                        de.moddylp.AncientRegions.flags.DoubleFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MAX_HEAL), p, menu, e);
-                        break block140;
+                        de.moddylp.AncientRegions.flags.DoubleFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MAX_HEAL), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.BLOCKED_CMDS).getName())) {
-                        de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.BLOCKED_CMDS), p, menu, e);
-                        break block140;
+                        de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.BLOCKED_CMDS), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ALLOWED_CMDS).getName())) {
-                        de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ALLOWED_CMDS), p, menu, e);
-                        break block140;
+                        de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ALLOWED_CMDS), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.TIME_LOCK).getName())) {
-                        de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.TIME_LOCK), p, menu, e);
-                        break block140;
+                        de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.TIME_LOCK), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.WEATHER_LOCK).getName())) {
                         WeatherFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.WEATHER_LOCK), p, menu, e);
-                        break block140;
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.SPAWN_LOC).getName())) {
-                        LocationFlagimpl.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SPAWN_LOC), p, menu, e);
-                        break block140;
+                        LocationFlagimpl.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SPAWN_LOC), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.FEED_DELAY).getName())) {
-                        de.moddylp.AncientRegions.flags.IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FEED_DELAY), p, menu, e);
-                        break block140;
+                        de.moddylp.AncientRegions.flags.IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FEED_DELAY), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.FEED_AMOUNT).getName())) {
-                        de.moddylp.AncientRegions.flags.IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FEED_AMOUNT), p, menu, e);
-                        break block140;
+                        de.moddylp.AncientRegions.flags.IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FEED_AMOUNT), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MIN_FOOD).getName())) {
-                        de.moddylp.AncientRegions.flags.IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MIN_FOOD), p, menu, e);
-                        break block140;
+                        de.moddylp.AncientRegions.flags.IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MIN_FOOD), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MAX_FOOD).getName())) {
-                        de.moddylp.AncientRegions.flags.IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MAX_FOOD), p, menu, e);
-                        break block140;
+                        de.moddylp.AncientRegions.flags.IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MAX_FOOD), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FLOW).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FLOW), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FLOW), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.WATER_FLOW).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.WATER_FLOW), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.WATER_FLOW), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.LIGHTNING).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LIGHTNING), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LIGHTNING), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FIRE).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FIRE), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FIRE), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MUSHROOMS).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MUSHROOMS), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MUSHROOMS), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.PISTONS).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.PISTONS), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.PISTONS), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.SEND_CHAT).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SEND_CHAT), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SEND_CHAT), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.RECEIVE_CHAT).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.RECEIVE_CHAT), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.RECEIVE_CHAT), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.POTION_SPLASH).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.POTION_SPLASH), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.POTION_SPLASH), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.LEAF_DECAY).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LEAF_DECAY), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LEAF_DECAY), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(this.plugin.lang.getText("Mainmenu"))) {
                         e.setCancelled(true);
                         p.closeInventory();
                         Startgui gui = new Startgui(p, this.plugin);
                         gui.open();
-                        break block140;
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(this.plugin.lang.getText("Next"))) {
                         p.closeInventory();
                         EditflagsPage2 page2 = new EditflagsPage2(p, this.plugin);
                         page2.open();
                         e.setCancelled(true);
-                        break block140;
+                        
                     }
                     e.setCancelled(true);
                 }
@@ -319,151 +318,143 @@ implements Listener {
                 }
             } else if (e.getInventory().getName().equals(ChatColor.RED + this.plugin.lang.getText("EditFlags") + " 2")) {
                 Inventory menu = e.getInventory();
-                if (e.getCurrentItem() != null) {
-                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 100.0f, 100.0f);
-                }
+                playSound(e, p);
                 try {
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(this.plugin.lang.getText("Back"))) {
                         p.closeInventory();
                         Editflags page1 = new Editflags(p, this.plugin);
                         page1.open();
                         e.setCancelled(true);
-                        break block140;
+                        
                     }
-                    if (e.getCurrentItem().getItemMeta().getDisplayName().contains(this.plugin.lang.getText("Mainmenu"))) {
-                        p.closeInventory();
-                        Startgui start = new Startgui(p, this.plugin);
-                        start.open();
-                        e.setCancelled(true);
-                        break block140;
-                    }
+                    openMainMenu(e, p);
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.PASSTHROUGH).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.PASSTHROUGH), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.PASSTHROUGH), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_BREAK).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_BREAK), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_BREAK), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_PLACE).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_PLACE), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_PLACE), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.INTERACT).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.INTERACT), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.INTERACT), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.USE).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.USE), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.USE), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.DAMAGE_ANIMALS).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.DAMAGE_ANIMALS), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.DAMAGE_ANIMALS), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.CHEST_ACCESS).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.CHEST_ACCESS), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.CHEST_ACCESS), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.RIDE).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.RIDE), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.RIDE), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.SLEEP).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SLEEP), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SLEEP), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.PLACE_VEHICLE).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.PLACE_VEHICLE), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.PLACE_VEHICLE), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.DESTROY_VEHICLE).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.DESTROY_VEHICLE), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.DESTROY_VEHICLE), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.LIGHTER).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LIGHTER), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LIGHTER), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.GHAST_FIREBALL).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.GHAST_FIREBALL), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.GHAST_FIREBALL), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.OTHER_EXPLOSION).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.OTHER_EXPLOSION), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.OTHER_EXPLOSION), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.FIRE_SPREAD).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FIRE_SPREAD), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FIRE_SPREAD), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ENDER_BUILD).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENDER_BUILD), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENDER_BUILD), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_PAINTING_DESTROY).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_PAINTING_DESTROY), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_PAINTING_DESTROY), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_ITEM_FRAME_DESTROY).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_ITEM_FRAME_DESTROY), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_ITEM_FRAME_DESTROY), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MYCELIUM_SPREAD).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MYCELIUM_SPREAD), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MYCELIUM_SPREAD), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.VINE_GROWTH).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.VINE_GROWTH), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.VINE_GROWTH), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.SOIL_DRY).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SOIL_DRY), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SOIL_DRY), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.GAME_MODE).getName())) {
-                        GamemodeFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.GAME_MODE), p, menu, e);
-                        break block140;
+                        GamemodeFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.GAME_MODE), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.NOTIFY_ENTER).getName())) {
-                        de.moddylp.AncientRegions.flags.BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.NOTIFY_ENTER), p, menu, e);
-                        break block140;
+                        de.moddylp.AncientRegions.flags.BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.NOTIFY_ENTER), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.NOTIFY_LEAVE).getName())) {
-                        de.moddylp.AncientRegions.flags.BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.NOTIFY_LEAVE), p, menu, e);
-                        break block140;
+                        de.moddylp.AncientRegions.flags.BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.NOTIFY_LEAVE), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.FIREWORK_DAMAGE).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FIREWORK_DAMAGE), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FIREWORK_DAMAGE), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.WITHER_DAMAGE).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.WITHER_DAMAGE), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.WITHER_DAMAGE), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.CHORUS_TELEPORT).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.CHORUS_TELEPORT), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.CHORUS_TELEPORT), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.EXIT_DENY_MESSAGE).getName())) {
                         de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.EXIT_DENY_MESSAGE), p, menu, e);
-                        break block140;
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ENTRY_DENY_MESSAGE).getName())) {
                         de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENTRY_DENY_MESSAGE), p, menu, e);
-                        break block140;
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.EXIT_VIA_TELEPORT).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.EXIT_VIA_TELEPORT), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.EXIT_VIA_TELEPORT), p, menu, e, mode);
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.EXIT_OVERRIDE).getName())) {
                         de.moddylp.AncientRegions.flags.BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.EXIT_OVERRIDE), p, menu, e);
-                        break block140;
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.FALL_DAMAGE).getName())) {
-                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FALL_DAMAGE), p, menu, e);
-                        break block140;
+                        StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FALL_DAMAGE), p, menu, e, mode);
+                        
                     }
                     e.setCancelled(true);
                 }
@@ -471,9 +462,7 @@ implements Listener {
                     e.setCancelled(true);
                 }
             } else if (e.getInventory().getName().equals(ChatColor.GOLD + this.plugin.lang.getText("RegionManager"))) {
-                if (e.getCurrentItem() != null) {
-                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 100.0f, 100.0f);
-                }
+                playSound(e, p);
                 Inventory menu = e.getInventory();
                 try {
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(this.plugin.lang.getText("RegionBuy"))) {
@@ -481,41 +470,35 @@ implements Listener {
                         BuyRegionGUI gui = new BuyRegionGUI(p, this.plugin, this.worldguard);
                         gui.open();
                         e.setCancelled(true);
-                        break block140;
+                        
                     }
-                    if (e.getCurrentItem().getItemMeta().getDisplayName().contains(this.plugin.lang.getText("Mainmenu"))) {
-                        p.closeInventory();
-                        Startgui gui = new Startgui(p, this.plugin);
-                        gui.open();
-                        e.setCancelled(true);
-                        break block140;
-                    }
+                    openMainMenu(e, p);
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(this.plugin.lang.getText("AddMember"))) {
                         p.closeInventory();
                         MembersGUI gui = new MembersGUI(p, this.plugin, this.worldguard);
                         gui.addMember(e);
                         e.setCancelled(true);
-                        break block140;
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(this.plugin.lang.getText("RemoveMember"))) {
                         p.closeInventory();
                         MembersGUI gui = new MembersGUI(p, this.plugin, this.worldguard);
                         gui.openregion();
                         e.setCancelled(true);
-                        break block140;
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(this.plugin.lang.getText("SetOwner"))) {
                         p.closeInventory();
                         MembersGUI gui = new MembersGUI(p, this.plugin, this.worldguard);
                         gui.changeowner(e);
                         e.setCancelled(true);
-                        break block140;
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(this.plugin.lang.getText("RemoveRegion"))) {
                         e.setCancelled(true);
                         Region region = new Region(this.plugin, 1);
                         region.removeRegion(this.worldguard, p, e, menu);
-                        break block140;
+                        
                     }
                     e.setCancelled(true);
                 }
@@ -523,40 +506,30 @@ implements Listener {
                     e.setCancelled(true);
                 }
             } else if (e.getInventory().getName().equals(ChatColor.GOLD + this.plugin.lang.getText("RemoveMember"))) {
-                if (e.getCurrentItem() != null) {
-                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 100.0f, 100.0f);
-                }
+                playSound(e, p);
                 try {
                     String name = e.getCurrentItem().getItemMeta().getDisplayName();
                     if (!name.contains(this.plugin.lang.getText("Back")) && !name.contains(this.plugin.lang.getText("Mainmenu"))) {
                         MembersGUI gui = new MembersGUI(p, this.plugin, this.worldguard);
                         gui.removeMember(this.uuid(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName())), e, ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
                         e.setCancelled(true);
-                        break block140;
+                        
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(this.plugin.lang.getText("Back"))) {
                         p.closeInventory();
                         RegionManageGUI gui = new RegionManageGUI(p, this.plugin, this.worldguard);
                         gui.open();
                         e.setCancelled(true);
-                        break block140;
+                        
                     }
-                    if (e.getCurrentItem().getItemMeta().getDisplayName().contains(this.plugin.lang.getText("Mainmenu"))) {
-                        p.closeInventory();
-                        Startgui gui = new Startgui(p, this.plugin);
-                        gui.open();
-                        e.setCancelled(true);
-                        break block140;
-                    }
+                    openMainMenu(e, p);
                     e.setCancelled(true);
                 }
                 catch (Exception ex) {
                     e.setCancelled(true);
                 }
             } else if (e.getInventory().getName().equals(ChatColor.GOLD + this.plugin.lang.getText("RegionBuy"))) {
-                if (e.getCurrentItem() != null) {
-                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 100.0f, 100.0f);
-                }
+                playSound(e, p);
                 try {
                     Inventory menu = e.getInventory();
                     if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_region1name"))) {
@@ -593,6 +566,27 @@ implements Listener {
                     e.setCancelled(true);
                 }
             }
+    }
+
+    private void playSound(InventoryClickEvent e, Player p) {
+        if (e.getCurrentItem() != null) {
+            if (e.isLeftClick()) {
+                p.playSound(p.getLocation(), Sound.BLOCK_IRON_DOOR_OPEN, 100.0f, 100.0f);
+            } else if (e.isRightClick()) {
+                p.playSound(p.getLocation(), Sound.BLOCK_IRON_DOOR_CLOSE, 100.0f, 100.0f);
+            } else if (e.isShiftClick()) {
+                p.playSound(p.getLocation(), Sound.ENTITY_CREEPER_DEATH, 100.0f, 100.0f);
+            }
+        }
+    }
+
+    private void openMainMenu(InventoryClickEvent e, Player p) {
+        if (e.getCurrentItem().getItemMeta().getDisplayName().contains(this.plugin.lang.getText("Mainmenu"))) {
+            p.closeInventory();
+            Startgui gui = new Startgui(p, this.plugin);
+            gui.open();
+            e.setCancelled(true);
+
         }
     }
 

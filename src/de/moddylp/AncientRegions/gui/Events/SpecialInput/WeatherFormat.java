@@ -1,4 +1,4 @@
-package de.moddylp.AncientRegions.gui.Events;
+package de.moddylp.AncientRegions.gui.Events.SpecialInput;
 
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.LocalPlayer;
@@ -45,7 +45,7 @@ implements Listener {
                     this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("GobalError"));
                 } else {
                     ProtectedRegion rg = regions.getRegion((String)region.get(0));
-                    if (rg != null && rg.isOwner(ply) || rg != null && this.p.hasPermission("ancient.regions.admin.bypass")) {
+                    if (rg != null && (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass"))) {
                         if (msg.contains("sun") || msg.contains("clear")) {
                             if (FlagUtil.payment(this.p, e, this.flag.getName())) {
                                 rg.setFlag((EnumFlag)this.flag.getFlag(), WeatherType.CLEAR);

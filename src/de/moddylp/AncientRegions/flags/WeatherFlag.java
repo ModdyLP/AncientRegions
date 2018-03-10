@@ -6,19 +6,13 @@ import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.AncientRegions.gui.Events.WeatherFormat;
+import de.moddylp.AncientRegions.gui.Events.SpecialInput.WeatherFormat;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class WeatherFlag {
     private FlagOBJ flagOBJ;
@@ -38,7 +32,7 @@ public class WeatherFlag {
             flag = new WeatherFlag(flagOBJ);
             FlagUtil.weatherFlagHashMap.put(flagOBJ.getName(), flag);
         }
-        flag.loadgui(menu, p);
+        FlagUtil.loadStringGUI(menu, p, flagOBJ);
     }
 
     public static void createandtoggle(FlagOBJ flagOBJ, Player p, Inventory menu, InventoryClickEvent event) {
@@ -69,7 +63,7 @@ public class WeatherFlag {
                     p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("GobalError"));
                 } else {
                     ProtectedRegion rg = regions.getRegion((String)region.get(0));
-                    if (rg != null && rg.isOwner(ply) || rg != null && p.hasPermission("ancient.regions.admin.bypass")) {
+                    if (rg != null && (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass"))) {
                         if (rg.getFlag(this.flagOBJ.getFlag()) != null) {
                             rg.setFlag(this.flagOBJ.getFlag(), null);
                             p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagOBJ.getName() + Main.getInstance().lang.getText("FlagRemoved"));
@@ -89,43 +83,8 @@ public class WeatherFlag {
             p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("Permission"));
             e.setCancelled(true);
         }
-        this.loadgui(menu, p);
+        FlagUtil.loadStringGUI(menu, p, flagOBJ);
         return false;
-    }
-
-    public boolean loadgui(Inventory menu, Player p) {
-        if (p.hasPermission(this.flagOBJ.getPermission())) {
-            ItemStack ITEM = new ItemStack(this.flagOBJ.getItem());
-            ArrayList<String> lore = new ArrayList<>();
-            lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Set").replace("[PH]", this.flagOBJ.getName()));
-            lore.add(ChatColor.YELLOW + Objects.requireNonNull(FlagUtil.loadPricefromConfig(this.flagOBJ.getName())).toString() + " " + FlagUtil.loadCurrencyfromConfig());
-            if (!FlagUtil.isSet(p, this.flagOBJ.getFlag()).equals("null")) {
-                lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Current") + ": " + ChatColor.AQUA + FlagUtil.isSet(p, this.flagOBJ.getFlag()));
-            }
-            ItemMeta imeta = ITEM.getItemMeta();
-            if (!FlagUtil.isSet(p, this.flagOBJ.getFlag()).equals("null")) {
-                imeta.setDisplayName(ChatColor.GREEN + "[ON] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + this.flagOBJ.getName());
-            } else {
-                imeta.setDisplayName(ChatColor.BLUE + "[/] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + this.flagOBJ.getName());
-            }
-            imeta.setLore(lore);
-            imeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-            ITEM.setItemMeta(imeta);
-            menu.setItem(this.flagOBJ.getMenuposition(), ITEM);
-        } else {
-            ItemStack ITEM = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
-            if (ITEM.getItemMeta().getLore() == null) {
-                ArrayList<String> lore = new ArrayList<>();
-                lore.add(ChatColor.RED + Main.getInstance().lang.getText("Permission"));
-                ItemMeta imeta = ITEM.getItemMeta();
-                imeta.setDisplayName(ChatColor.RED + "[OFF] " + Main.getInstance().lang.getText("s") + this.flagOBJ.getName());
-                imeta.setLore(lore);
-                imeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                ITEM.setItemMeta(imeta);
-            }
-            menu.setItem(this.flagOBJ.getMenuposition(), ITEM);
-        }
-        return true;
     }
 }
 

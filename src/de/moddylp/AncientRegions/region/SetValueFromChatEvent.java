@@ -55,7 +55,7 @@ implements Listener {
                                 this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("GobalError"));
                             } else {
                                 ProtectedRegion rg = regions.getRegion((String)region.get(0));
-                                if (rg != null && rg.isOwner(ply) || rg != null && this.p.hasPermission("ancient.regions.admin.bypass")) {
+                                if (rg != null && (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass"))) {
                                     if (FlagUtil.payment(this.p, e, "_addmember") || this.p.hasPermission("ancient.regions.admin.bypass")) {
                                         DefaultDomain member = new DefaultDomain();
                                         member.addPlayer(uuid);

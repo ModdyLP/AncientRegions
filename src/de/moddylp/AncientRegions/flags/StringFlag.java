@@ -7,20 +7,15 @@ import com.sk89q.worldguard.protection.flags.SetFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.AncientRegions.gui.Events.SetValueFromChatEvent;
-import de.moddylp.AncientRegions.gui.Events.SpezialFormatString;
+import de.moddylp.AncientRegions.gui.Events.ActivateMode;
+import de.moddylp.AncientRegions.gui.Events.SpecialInput.SetValueFromChatEvent;
+import de.moddylp.AncientRegions.gui.Events.SpecialInput.SpezialFormatString;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class StringFlag {
     private final FlagOBJ flagOBJ;
@@ -40,10 +35,10 @@ public class StringFlag {
             flag = new StringFlag(flagOBJ);
             FlagUtil.stringFlagHashMap.put(flagOBJ.getName(), flag);
         }
-        flag.loadgui(menu, p);
+        FlagUtil.loadStringGUI(menu, p, flagOBJ);
     }
 
-    public static void createandtoggle(FlagOBJ flagOBJ, Player p, Inventory menu, InventoryClickEvent event) {
+    public static void createandtoggle(FlagOBJ flagOBJ, Player p, Inventory menu, InventoryClickEvent event, ActivateMode mode) {
         if (flagOBJ.getMenuposition() == 999) {
             return;
         }
@@ -55,10 +50,10 @@ public class StringFlag {
             flag = new StringFlag(flagOBJ);
             FlagUtil.stringFlagHashMap.put(flagOBJ.getName(), flag);
         }
-        flag.toggle(event, menu, p);
+        flag.toggle(event, menu, p, mode);
     }
 
-    public boolean toggle(InventoryClickEvent e, Inventory menu, Player p) {
+    public boolean toggle(InventoryClickEvent e, Inventory menu, Player p, ActivateMode mode) {
         if (p.hasPermission(this.flagOBJ.getPermission())) {
             RegionContainer container = Main.worldguard.getRegionContainer();
             RegionManager regions = container.get(p.getWorld());
@@ -70,18 +65,18 @@ public class StringFlag {
                     p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("GobalError"));
                 } else {
                     ProtectedRegion rg = regions.getRegion((String)region.get(0));
-                    if (rg != null && rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
-                        if (rg != null && rg.getFlag(this.flagOBJ.getFlag()) != null) {
+                    if (rg != null && (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass"))) {
+                        if (mode.equals(ActivateMode.REMOVE)) {
                             rg.setFlag(this.flagOBJ.getFlag(), null);
                             p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagOBJ.getName() + Main.getInstance().lang.getText("FlagRemoved"));
-                        } else if (FlagUtil.payment(p, e, this.flagOBJ.getName())) {
+                        } else if (mode.equals(ActivateMode.ACTIVATE)) {
                             if (this.flagOBJ.getFlag() instanceof SetFlag) {
                                 p.closeInventory();
                                 p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("Message4").replace("[PH]", this.flagOBJ.getName()));
                                 Main.getInstance().getServer().getPluginManager().registerEvents(new SpezialFormatString(p, this.flagOBJ), Main.getInstance());
                             } else if (this.flagOBJ.getFlag() instanceof com.sk89q.worldguard.protection.flags.StringFlag) {
                                 p.closeInventory();
-                                p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("Message").replace("[PH]", this.flagOBJ.getName()));
+                                p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("SimpleTypeChatMSG").replace("[PH]", this.flagOBJ.getName()));
                                 Main.getInstance().getServer().getPluginManager().registerEvents(new SetValueFromChatEvent(p, this.flagOBJ), Main.getInstance());
                             }
                         }
@@ -96,35 +91,8 @@ public class StringFlag {
             p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("Permission"));
             e.setCancelled(true);
         }
-        this.loadgui(menu, p);
+        FlagUtil.loadStringGUI(menu, p, flagOBJ);
         return false;
-    }
-
-    public boolean loadgui(Inventory menu, Player p) {
-        if (p.hasPermission(this.flagOBJ.getPermission())) {
-            ItemStack ITEM = new ItemStack(this.flagOBJ.getItem());
-            ArrayList<String> lore = new ArrayList<>();
-            lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Set").replace("[PH]", this.flagOBJ.getName()));
-            lore.add(ChatColor.YELLOW + Objects.requireNonNull(FlagUtil.loadPricefromConfig(this.flagOBJ.getName())).toString() + " " + FlagUtil.loadCurrencyfromConfig());
-            if (!FlagUtil.isSet(p, this.flagOBJ.getFlag()).equals("null")) {
-                lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Current") + ": " + ChatColor.AQUA + FlagUtil.isSet(p, this.flagOBJ.getFlag()));
-            }
-            ItemMeta imeta = ITEM.getItemMeta();
-            if (!FlagUtil.isSet(p, this.flagOBJ.getFlag()).equals("null")) {
-                imeta.setDisplayName(ChatColor.GREEN + "[ON] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + this.flagOBJ.getName());
-            } else {
-                imeta.setDisplayName(ChatColor.BLUE + "[/] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + this.flagOBJ.getName());
-            }
-            imeta.setLore(lore);
-            imeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-            ITEM.setItemMeta(imeta);
-            menu.setItem(this.flagOBJ.getMenuposition(), ITEM);
-        } else {
-            ItemStack ITEM = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
-            FlagUtil.checkPerm(ITEM, this.flagOBJ.getName());
-            menu.setItem(this.flagOBJ.getMenuposition(), ITEM);
-        }
-        return true;
     }
 }
 
