@@ -68,7 +68,7 @@ public class GamemodeFlag {
                         if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("null") && mode.equals(ActivateMode.REMOVE)) {
                             if (FlagUtil.payment(p, e, this.flagOBJ.getName(), mode)) {
                                 rg.setFlag(this.flagOBJ.getFlag(), null);
-                                p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagOBJ.getName() + " "+Main.getInstance().lang.getText("FlagRemoved"));
+                                p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + ChatColor.GOLD + " " + this.flagOBJ.getName() + " "+Main.getInstance().lang.getText("FlagRemoved"));
                             }
                         } else if (mode.equals(ActivateMode.ACTIVATE)) {
                             p.closeInventory();

@@ -98,7 +98,7 @@ public class FlagUtil {
             Double price = FlagUtil.loadPricefromConfig(flagname, mode);
             if (price != null && vaultEcon.getBalance(p) != 0.0 && vaultEcon.getBalance(p) >= price) {
                 vaultEcon.withdrawPlayer(p, price);
-                p.sendMessage(ChatColor.BLUE + "[AR][INFO]" + Main.getInstance().lang.getText("PayNote").replace("[PH]", String.valueOf(FlagUtil.loadPricefromConfig(flagname, mode)) + " " + FlagUtil.loadCurrencyfromConfig()));
+                p.sendMessage(ChatColor.BLUE + "[AR][INFO] " + Main.getInstance().lang.getText("PayNote").replace("[PH]", String.valueOf(FlagUtil.loadPricefromConfig(flagname, mode)) + " " + FlagUtil.loadCurrencyfromConfig()));
                 e.setCancelled(true);
                 return true;
             }
@@ -147,22 +147,26 @@ public class FlagUtil {
             ItemStack ITEM = new ItemStack(flagOBJ.getItem());
             ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Set").replace("[PH]", flagOBJ.getName()));
-            lore.add(ChatColor.GREEN +
-                    Objects.requireNonNull(FlagUtil.loadPricefromConfig(flagOBJ.getName(), ActivateMode.ACTIVATE)).toString() + " " + FlagUtil.loadCurrencyfromConfig() + "    " +
-                    ChatColor.LIGHT_PURPLE +
-                    Objects.requireNonNull(FlagUtil.loadPricefromConfig(flagOBJ.getName(), ActivateMode.REMOVE)).toString() + " " + FlagUtil.loadCurrencyfromConfig()
-            );
             if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("null")) {
                 lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Current") + ": " + ChatColor.AQUA + FlagUtil.isSet(p, flagOBJ.getFlag()));
             }
             ItemMeta imeta = ITEM.getItemMeta();
             if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("null")) {
                 imeta.setDisplayName(ChatColor.GREEN + "[ON] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + flagOBJ.getName());
-                lore.add(ChatColor.GREEN + "- "+Main.getInstance().lang.getText("changemode"));
-                lore.add(ChatColor.LIGHT_PURPLE + "- "+Main.getInstance().lang.getText("removemode"));
+                lore.add(ChatColor.GREEN
+                        + "- "+Main.getInstance().lang.getText("changemode")
+                        +" = "+FlagUtil.loadPricefromConfig(flagOBJ.getName(), ActivateMode.ACTIVATE)
+                        + " " +FlagUtil.loadCurrencyfromConfig());
+                lore.add(ChatColor.LIGHT_PURPLE
+                        + "- "+Main.getInstance().lang.getText("removemode")
+                        +" = "+FlagUtil.loadPricefromConfig(flagOBJ.getName(), ActivateMode.REMOVE)
+                        + " " +FlagUtil.loadCurrencyfromConfig());
             } else {
                 imeta.setDisplayName(ChatColor.BLUE + "[/] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + flagOBJ.getName());
-                lore.add(ChatColor.GREEN + "- "+Main.getInstance().lang.getText("activatemode"));
+                lore.add(ChatColor.GREEN
+                        +"- "+Main.getInstance().lang.getText("activatemode")
+                        +" = "+FlagUtil.loadPricefromConfig(flagOBJ.getName(), ActivateMode.ACTIVATE)
+                        + " " +FlagUtil.loadCurrencyfromConfig());
             }
             imeta.setLore(lore);
             imeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -180,13 +184,6 @@ public class FlagUtil {
             ItemStack ITEM = new ItemStack(flagOBJ.getItem());
             ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Set").replace("[PH]", flagOBJ.getName()));
-            lore.add(ChatColor.GREEN +
-                    Objects.requireNonNull(FlagUtil.loadPricefromConfig(flagOBJ.getName(), ActivateMode.ACTIVATE)).toString() + " " + FlagUtil.loadCurrencyfromConfig() + "    " +
-                    ChatColor.RED +
-                    Objects.requireNonNull(FlagUtil.loadPricefromConfig(flagOBJ.getName(), ActivateMode.DEACTIVATE)).toString() + " " + FlagUtil.loadCurrencyfromConfig() + "    " +
-                    ChatColor.LIGHT_PURPLE +
-                    Objects.requireNonNull(FlagUtil.loadPricefromConfig(flagOBJ.getName(), ActivateMode.REMOVE)).toString() + " " + FlagUtil.loadCurrencyfromConfig()
-            );
             if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("null")) {
                 lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Current") + ": " + ChatColor.AQUA + FlagUtil.isSet(p, flagOBJ.getFlag()));
             }
@@ -194,17 +191,35 @@ public class FlagUtil {
             if (FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("true")
                     || FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("allow")) {
                 imeta.setDisplayName(ChatColor.GREEN + "[ON] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + flagOBJ.getName());
-                lore.add(ChatColor.RED + "- "+Main.getInstance().lang.getText("deactivatemode"));
-                lore.add(ChatColor.LIGHT_PURPLE + "- "+Main.getInstance().lang.getText("removemode"));
+                lore.add(ChatColor.RED
+                        + "- "+Main.getInstance().lang.getText("deactivatemode")
+                        +" = "+FlagUtil.loadPricefromConfig(flagOBJ.getName(), ActivateMode.DEACTIVATE)
+                        + " " +FlagUtil.loadCurrencyfromConfig());
+                lore.add(ChatColor.LIGHT_PURPLE
+                        + "- "+Main.getInstance().lang.getText("removemode")
+                        +" = "+FlagUtil.loadPricefromConfig(flagOBJ.getName(), ActivateMode.REMOVE)
+                        + " " +FlagUtil.loadCurrencyfromConfig());
             } else if (FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("false")
                     || FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("deny")) {
                 imeta.setDisplayName(ChatColor.RED + "[OFF] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + flagOBJ.getName());
-                lore.add(ChatColor.GREEN + "- "+Main.getInstance().lang.getText("activatemode"));
-                lore.add(ChatColor.LIGHT_PURPLE + "- "+Main.getInstance().lang.getText("removemode"));
+                lore.add(ChatColor.GREEN
+                        + "- "+Main.getInstance().lang.getText("activatemode")
+                        +" = "+FlagUtil.loadPricefromConfig(flagOBJ.getName(), ActivateMode.ACTIVATE)
+                        + " " +FlagUtil.loadCurrencyfromConfig());
+                lore.add(ChatColor.LIGHT_PURPLE
+                        + "- "+Main.getInstance().lang.getText("removemode")
+                        +" = "+FlagUtil.loadPricefromConfig(flagOBJ.getName(), ActivateMode.REMOVE)
+                        + " " +FlagUtil.loadCurrencyfromConfig());
             } else {
                 imeta.setDisplayName(ChatColor.BLUE + "[/] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + flagOBJ.getName());
-                lore.add(ChatColor.GREEN + "- "+Main.getInstance().lang.getText("activatemode"));
-                lore.add(ChatColor.RED + "- "+Main.getInstance().lang.getText("deactivatemode"));
+                lore.add(ChatColor.GREEN
+                        + "- "+Main.getInstance().lang.getText("activatemode")
+                        +" = "+FlagUtil.loadPricefromConfig(flagOBJ.getName(), ActivateMode.ACTIVATE)
+                        + " " +FlagUtil.loadCurrencyfromConfig());
+                lore.add(ChatColor.RED
+                        + "- "+Main.getInstance().lang.getText("deactivatemode")
+                        +" = "+FlagUtil.loadPricefromConfig(flagOBJ.getName(), ActivateMode.DEACTIVATE)
+                        + " " +FlagUtil.loadCurrencyfromConfig());
             }
             imeta.setLore(lore);
             imeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);

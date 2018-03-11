@@ -36,7 +36,7 @@ public class GamemodeFormat
             if (msg.contains("creative") || msg.contains("c") || msg.contains("1")) {
                 if (FlagUtil.payment(p, e, flag.getName(), mode)) {
                     this.rg.setFlag((EnumFlag) this.flag.getFlag(), GameMode.CREATIVE);
-                    this.p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
+                    this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
                     EditflagsPage2 gui = new EditflagsPage2(this.p, Main.getInstance());
                     gui.open();
                     e.setCancelled(true);
@@ -45,7 +45,7 @@ public class GamemodeFormat
             } else if (msg.contains("survival") || msg.contains("sv") || msg.contains("0")) {
                 if (FlagUtil.payment(p, e, flag.getName(), mode)) {
                     this.rg.setFlag((EnumFlag) this.flag.getFlag(), GameMode.SURVIVAL);
-                    this.p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
+                    this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
                     EditflagsPage2 gui = new EditflagsPage2(this.p, Main.getInstance());
                     gui.open();
                     e.setCancelled(true);
@@ -54,7 +54,7 @@ public class GamemodeFormat
             } else if (msg.contains("spectator") || msg.contains("sp") || msg.contains("3")) {
                 if (FlagUtil.payment(p, e, flag.getName(), mode)) {
                     this.rg.setFlag((EnumFlag) this.flag.getFlag(), GameMode.SPECTATOR);
-                    this.p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
+                    this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
                     EditflagsPage2 gui = new EditflagsPage2(this.p, Main.getInstance());
                     gui.open();
                     e.setCancelled(true);
@@ -63,7 +63,7 @@ public class GamemodeFormat
             } else if (msg.contains("adventure") || msg.contains("a") || msg.contains("2")) {
                 if (FlagUtil.payment(p, e, flag.getName(), mode)) {
                     this.rg.setFlag((EnumFlag) this.flag.getFlag(), GameMode.ADVENTURE);
-                    this.p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
+                    this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
                     EditflagsPage2 gui = new EditflagsPage2(this.p, Main.getInstance());
                     gui.open();
                     e.setCancelled(true);

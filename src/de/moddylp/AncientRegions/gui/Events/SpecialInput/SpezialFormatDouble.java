@@ -49,7 +49,7 @@ public class SpezialFormatDouble
                     if (rg != null && (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass"))) {
                         if (FlagUtil.payment(this.p, e, this.flagObj.getName(), mode)) {
                             rg.setFlag((DoubleFlag) this.flagObj.getFlag(), Double.valueOf(msg));
-                            this.p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flagObj.getName()));
+                            this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flagObj.getName()));
                             EditflagsPage2 gui = new EditflagsPage2(this.p, Main.getInstance());
                             gui.open();
                             HandlerList.unregisterAll(this);

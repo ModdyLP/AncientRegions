@@ -75,7 +75,7 @@ public class LocationFlagimpl {
                         if (!FlagUtil.isSet(p, flagobj.getFlag()).equalsIgnoreCase("null") && mode.equals(ActivateMode.REMOVE)) {
                             if (FlagUtil.payment(p, e, this.flagobj.getName(), mode)) {
                                 rg.setFlag(this.flagobj.getFlag(), null);
-                                p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagobj.getName() + " "+Main.getInstance().lang.getText("FlagRemoved"));
+                                p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + ChatColor.GOLD + " " + this.flagobj.getName() + " "+Main.getInstance().lang.getText("FlagRemoved"));
                             }
                         } else if (mode.equals(ActivateMode.ACTIVATE) && FlagUtil.payment(p, e, flagobj.getName(), mode)) {
                             rg.setFlag((LocationFlag) flagobj.getFlag(), BukkitUtil.toLocation(p.getLocation()));

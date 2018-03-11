@@ -67,7 +67,7 @@ public class EntitySetFlag {
                         if (!FlagUtil.isSet(p, flagobj.getFlag()).equalsIgnoreCase("null") && mode.equals(ActivateMode.REMOVE)) {
                             if (FlagUtil.payment(p, e, this.flagobj.getName(), mode)) {
                                 rg.setFlag(this.flagobj.getFlag(), null);
-                                p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagobj.getName() + " "+Main.getInstance().lang.getText("FlagRemoved"));
+                                p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + ChatColor.GOLD + " " + this.flagobj.getName() + " "+Main.getInstance().lang.getText("FlagRemoved"));
                             }
                         } else if (mode.equals(ActivateMode.ACTIVATE)) {
                             p.closeInventory();

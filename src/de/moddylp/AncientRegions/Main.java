@@ -154,7 +154,7 @@ public class Main
                 p.performCommand("ancr gui");
                 return true;
             }
-            this.getLogger().log(Level.INFO, "{0}[AR][ERROR] {1}", new Object[]{ChatColor.RED, this.lang.getText("Console")});
+            this.getLogger().log(Level.INFO, "{0}[AR][ERROR] {1} ", new Object[]{ChatColor.RED, this.lang.getText("Console")});
             return true;
         }
         return false;

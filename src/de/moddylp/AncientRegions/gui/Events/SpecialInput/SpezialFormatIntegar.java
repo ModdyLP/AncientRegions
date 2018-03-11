@@ -50,7 +50,7 @@ public class SpezialFormatIntegar
                     if (rg != null && (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass"))) {
                         if (FlagUtil.payment(this.p, e, this.flagobj.getName(), mode)) {
                             rg.setFlag((IntegerFlag) this.flagobj.getFlag(), Integer.valueOf(msg));
-                            this.p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flagobj.getName()));
+                            this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flagobj.getName()));
                             Editflags gui = new Editflags(this.p, Main.getInstance());
                             gui.open();
                             HandlerList.unregisterAll(this);

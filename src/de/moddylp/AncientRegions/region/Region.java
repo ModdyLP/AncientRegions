@@ -286,7 +286,7 @@ public class Region {
         if (vaultEcon != null) {
             if (vaultEcon.getBalance(p) != 0.0 && vaultEcon.getBalance(p) >= this.regionprice) {
                 vaultEcon.withdrawPlayer(p, this.regionprice);
-                p.sendMessage(ChatColor.BLUE + "[AR][INFO]" + this.plugin.lang.getText("PayNote2").replace("[PH]", String.valueOf(regionprice) + " " + FlagUtil.loadCurrencyfromConfig()));
+                p.sendMessage(ChatColor.BLUE + "[AR][INFO] " + this.plugin.lang.getText("PayNote2").replace("[PH]", String.valueOf(regionprice) + " " + FlagUtil.loadCurrencyfromConfig()));
                 e.setCancelled(true);
                 return true;
             }
@@ -307,7 +307,7 @@ public class Region {
         }
         if (vaultEcon != null) {
             vaultEcon.depositPlayer(p, Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_region" + this.getregionnumber(regionname, p) + "price")) * Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_payback")) / 100.0);
-            p.sendMessage(ChatColor.BLUE + "[AR][INFO]" + this.plugin.lang.getText("Payback").replace("[PH]", String.valueOf(Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_region" + this.getregionnumber(regionname, p) + "price")) * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_payback")) / 100.0)) + " " + FlagUtil.loadCurrencyfromConfig()));
+            p.sendMessage(ChatColor.BLUE + "[AR][INFO] " + this.plugin.lang.getText("Payback").replace("[PH]", String.valueOf(Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_region" + this.getregionnumber(regionname, p) + "price")) * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_payback")) / 100.0)) + " " + FlagUtil.loadCurrencyfromConfig()));
             e.setCancelled(true);
         } else {
             p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("VaultError"));

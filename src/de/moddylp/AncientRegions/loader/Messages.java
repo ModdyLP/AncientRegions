@@ -95,10 +95,10 @@ public class Messages {
         lang.setTextOnce("ErrorCreate", "Failed to create Region");
         lang.setTextOnce("build", "Build");
         lang.setTextOnce("Player", "That Player ([PH]) doesn't exist, or is not online. Please choose another one!");
-        lang.setTextOnce("deactivatemode", "To Deactivate press RightClick");
-        lang.setTextOnce("activatemode", "To Activate press LeftClick");
-        lang.setTextOnce("removemode", "To Remove press MiddleClick");
-        lang.setTextOnce("changemode", "To Change press LeftClick");
+        lang.setTextOnce("deactivatemode", "Rightclick (Deaktivate)");
+        lang.setTextOnce("activatemode", "LeftClick (Activate)");
+        lang.setTextOnce("removemode", "MiddleClick (Remove)");
+        lang.setTextOnce("changemode", "LeftClick (Change)");
     }
 }
 

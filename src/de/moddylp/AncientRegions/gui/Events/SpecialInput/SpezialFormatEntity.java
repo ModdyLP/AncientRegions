@@ -54,7 +54,7 @@ public class SpezialFormatEntity
                             HashSet<EntityType> set = new HashSet<>();
                             set.add(EntityType.valueOf(msg));
                             rg.setFlag((SetFlag) this.flagobj.getFlag(), set);
-                            this.p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flagobj.getName()));
+                            this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flagobj.getName()));
                             Editflags gui = new Editflags(this.p, Main.getInstance());
                             gui.open();
                             HandlerList.unregisterAll(this);

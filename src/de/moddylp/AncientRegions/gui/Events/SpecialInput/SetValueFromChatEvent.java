@@ -49,7 +49,7 @@ public class SetValueFromChatEvent
                     if (rg != null && (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass"))) {
                         if (FlagUtil.payment(this.p, e, this.flag.getName(), mode)) {
                             rg.setFlag((StringFlag) this.flag.getFlag(), msg);
-                            this.p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
+                            this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
                             Editflags gui = new Editflags(this.p, Main.getInstance());
                             gui.open();
                             HandlerList.unregisterAll(this);

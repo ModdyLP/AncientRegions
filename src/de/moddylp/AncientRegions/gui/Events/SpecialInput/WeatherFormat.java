@@ -52,7 +52,7 @@ public class WeatherFormat
                         if (msg.contains("sun") || msg.contains("clear")) {
                             if (FlagUtil.payment(this.p, e, this.flag.getName(), mode)) {
                                 rg.setFlag((EnumFlag) this.flag.getFlag(), WeatherType.CLEAR);
-                                this.p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
+                                this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
                                 Editflags gui = new Editflags(this.p, Main.getInstance());
                                 gui.open();
                                 e.setCancelled(true);
@@ -61,7 +61,7 @@ public class WeatherFormat
                         } else if (msg.contains("storm") || msg.contains("thunder") || msg.contains("rain") || msg.contains("downfall")) {
                             if (FlagUtil.payment(this.p, e, this.flag.getName(), mode)) {
                                 rg.setFlag((EnumFlag) this.flag.getFlag(), WeatherType.DOWNFALL);
-                                this.p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
+                                this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
                                 Editflags gui = new Editflags(this.p, Main.getInstance());
                                 gui.open();
                                 e.setCancelled(true);

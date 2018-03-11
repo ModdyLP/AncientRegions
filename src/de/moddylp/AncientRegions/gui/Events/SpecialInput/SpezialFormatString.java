@@ -52,7 +52,7 @@ public class SpezialFormatString
                             HashSet<String> set = new HashSet<>();
                             set.add(msg);
                             rg.setFlag((SetFlag) this.flag.getFlag(), set);
-                            this.p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
+                            this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
                             Editflags gui = new Editflags(this.p, Main.getInstance());
                             gui.open();
                             HandlerList.unregisterAll(this);

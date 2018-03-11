@@ -66,12 +66,12 @@ public class BooleanFlag {
                         if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("null") && mode.equals(ActivateMode.REMOVE)) {
                             if (FlagUtil.payment(p, e, this.flagOBJ.getName(), mode)) {
                                 rg.setFlag(this.flagOBJ.getFlag(), null);
-                                p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagOBJ.getName() + " "+Main.getInstance().lang.getText("FlagRemoved"));
+                                p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + ChatColor.GOLD + " " + this.flagOBJ.getName() + " "+Main.getInstance().lang.getText("FlagRemoved"));
                             }
                         } else if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("false") && mode.equals(ActivateMode.DEACTIVATE)) {
                             if (FlagUtil.payment(p, e, this.flagOBJ.getName(), mode)) {
                                 rg.setFlag((com.sk89q.worldguard.protection.flags.BooleanFlag) flagOBJ.getFlag(), false);
-                                p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.RED + " " + this.flagOBJ.getName() + Main.getInstance().lang.getText("fDisabled"));
+                                p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + ChatColor.RED + " " + this.flagOBJ.getName() + Main.getInstance().lang.getText("fDisabled"));
                             }
                         } else if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("true") && mode.equals(ActivateMode.ACTIVATE)) {
                             if (FlagUtil.payment(p, e, this.flagOBJ.getName(), mode)) {
