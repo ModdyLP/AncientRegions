@@ -1,8 +1,13 @@
 package de.moddylp.AncientRegions;
 
+import com.google.common.base.CaseFormat;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.flags.BooleanFlag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
+import de.moddylp.AncientRegions.flags.FlagOBJ;
+import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.gui.Events.GUIEvents;
 import de.moddylp.AncientRegions.gui.Events.GUIOpener;
 import de.moddylp.AncientRegions.loader.*;
@@ -65,6 +70,7 @@ public class Main
                 this.getLogger().warning("Metrics cant be enabled because there was an error: " + ex.getLocalizedMessage());
             }
         }
+        checkConfiguration();
         System.out.println(this.lang.getText("Enabled"));
     }
 
@@ -108,6 +114,7 @@ public class Main
                         if (sender.hasPermission("ancient.regions.admin.reload")) {
                             DRIVER.loadJson();
                             this.lang.reload();
+                            checkConfiguration();
                             sender.sendMessage(ChatColor.GOLD + "[AR][INFO] " + this.lang.getText("ConfigReload"));
                             return true;
                         }
@@ -154,7 +161,7 @@ public class Main
                 p.performCommand("ancr gui");
                 return true;
             }
-            this.getLogger().log(Level.INFO, "{0}[AR][ERROR] {1} ", new Object[]{ChatColor.RED, this.lang.getText("Console")});
+            this.getLogger().log(Level.INFO, "{0}[AR][ERROR] {1} ", new Object[]{this.lang.getText("Console")});
             return true;
         }
         return false;
@@ -178,6 +185,54 @@ public class Main
 
     private void loadMessages() {
         Messages messages = new Messages(this);
+    }
+
+    private void checkConfiguration()  {
+        if (!Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_standartdenyflags").contains("[]")) {
+            JSONArray standartdenyflags = FileDriver.objectToJSONArray(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_standartdenyflags"));
+            ArrayList<String> flags = new ArrayList<>();
+            for (Object object : standartdenyflags) {
+                flags.add(object.toString());
+            }
+            for (String flag : flags) {
+                boolean valid;
+                valid = isValid(flag);
+                if (!valid) {
+                    this.getLogger().log(Level.WARNING, "[AR][ERROR] No valid Deny Flag: "+flag);
+                }
+
+            }
+        }
+        if (!Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_standartallowflags").contains("[]")) {
+            JSONArray standartallowflags = FileDriver.objectToJSONArray(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_standartallowflags"));
+            ArrayList<String> flags = new ArrayList<>();
+            for (Object object : standartallowflags) {
+                flags.add(object.toString());
+            }
+            for (String flag : flags) {
+                boolean valid;
+                valid = isValid(flag);
+                if (!valid) {
+                    this.getLogger().log(Level.WARNING, "[AR][ERROR] No valid Allow Flag: "+flag);
+                }
+
+            }
+        }
+    }
+
+    private boolean isValid(String flag) {
+        boolean valid = false;
+        FlagOBJ flagOBJ = FlagOBJ.getFlagObj(flag);
+        if (Main.DRIVER.hasKey(Main.DRIVER.CONFIG, flag) && !flagOBJ.getName().equals("NOT FOUND"))
+        {
+            if (flagOBJ.getFlag() instanceof StateFlag) {
+                valid = true;
+            }
+            if (flagOBJ.getFlag() instanceof BooleanFlag) {
+                valid = true;
+            }
+        }
+        return valid;
     }
 }
 

@@ -1,5 +1,5 @@
 name: AncientRegions
-version: 20180310
+version: 20180311
 author: ModdyLP
 description: To edit Worldguard Regions
 website: https://moddylp.de
@@ -129,6 +129,7 @@ permissions:
        ancient.regions.region.removemember: true
        ancient.regions.region.changeowner: true
        ancient.regions.region.particle: true
+       ancient.regions.region.removeregion: true
   ancient.regions.admin.*:
      description: Defines admin permissions
      children:
@@ -333,3 +334,5 @@ permissions:
   ancient.regions.admin.bypass:
     description: Admin dont need to pay for the FlagOBJ Changes.
     default: op
+  ancient.regions.region.removeregion:
+    description: Allow to sell a region

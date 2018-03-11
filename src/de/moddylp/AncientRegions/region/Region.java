@@ -1,5 +1,6 @@
 package de.moddylp.AncientRegions.region;
 
+import com.google.common.base.CaseFormat;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
@@ -7,11 +8,13 @@ import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.domains.DefaultDomain;
+import com.sk89q.worldguard.protection.flags.BooleanFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.flags.FlagOBJ;
 import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.loader.FileDriver;
 import de.moddylp.AncientRegions.loader.WorldEditHandler6;
@@ -94,8 +97,37 @@ public class Region {
                                                 flags.add(object.toString());
                                             }
                                             for (String flag : flags) {
-                                                if (!Main.DRIVER.hasKey(Main.DRIVER.CONFIG, flag)) continue;
-                                                region.setFlag(new StateFlag(flag, false), StateFlag.State.DENY);
+                                                FlagOBJ flagOBJ = FlagOBJ.getFlagObj(flag);
+                                                if (Main.DRIVER.hasKey(Main.DRIVER.CONFIG, flag) && !flagOBJ.getName().equals("NOT FOUND"))
+                                                {
+                                                    if (flagOBJ.getFlag() instanceof StateFlag) {
+                                                        region.setFlag(new StateFlag(flag, false), StateFlag.State.DENY);
+                                                    }
+                                                    if (flagOBJ.getFlag() instanceof BooleanFlag) {
+                                                        region.setFlag(new BooleanFlag(flag), false);
+                                                    }
+                                                }
+
+                                            }
+                                        }
+                                        if (!Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_standartallowflags").contains("[]")) {
+                                            JSONArray standartallowflags = FileDriver.objectToJSONArray(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_standartallowflags"));
+                                            ArrayList<String> flags = new ArrayList<>();
+                                            for (Object object : standartallowflags) {
+                                                flags.add(object.toString());
+                                            }
+                                            for (String flag : flags) {
+                                                FlagOBJ flagOBJ = FlagOBJ.getFlagObj(flag);
+                                                if (Main.DRIVER.hasKey(Main.DRIVER.CONFIG, flag) && !flagOBJ.getName().equals("NOT FOUND"))
+                                                {
+                                                    if (flagOBJ.getFlag() instanceof StateFlag) {
+                                                        region.setFlag(new StateFlag(flag, true), StateFlag.State.ALLOW);
+                                                    }
+                                                    if (flagOBJ.getFlag() instanceof BooleanFlag) {
+                                                        region.setFlag(new BooleanFlag(flag), true);
+                                                    }
+                                                }
+
                                             }
                                         }
                                         if (Boolean.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_backuprg"))) {

@@ -40,6 +40,9 @@ public class ConfigLoader {
         Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_payback", 10);
         Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_regionpriority", 10);
         Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_standartdenyflags", new String[0]);
+        Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_standartdenyflagsex", "The Config option _standartdenyflags only accepts boolean flags");
+        Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_standartallowflags", new String[0]);
+        Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_standartallowflagsex", "The Config option _standartallowflags only accepts boolean flags");
         Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_particleshowrange", 16);
         Main.DRIVER.saveJson();
     }

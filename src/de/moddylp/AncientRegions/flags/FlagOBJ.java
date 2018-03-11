@@ -26,12 +26,26 @@ public class FlagOBJ {
         this.permission = flag instanceof BooleanFlag || flag instanceof StateFlag ? "ancient.regions.flag.toggle" + this.configname : "ancient.regions.flag." + this.configname;
         this.item = item;
         this.menuposition = menuposition;
-        FlagUtil.flagOBJHashMap.put(this.name, this);
+        FlagUtil.flagOBJHashMap.put(this.configname, this);
         FileDriver.getInstance().getProperty(FileDriver.getInstance().CONFIG, this.configname, 100);
+        if (flag instanceof BooleanFlag || flag instanceof StateFlag) {
+            FileDriver.getInstance().getProperty(FileDriver.getInstance().CONFIG, this.configname+("_type").toUpperCase(), "boolean");
+        } else {
+            FileDriver.getInstance().getProperty(FileDriver.getInstance().CONFIG, this.configname+("_type").toUpperCase(), "string");
+        }
+
     }
 
     public static FlagOBJ getFlagObj(Flag flag) {
-        String search = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, flag.getName().replaceAll("-", "_").toUpperCase());
+        String search = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, flag.getName().replaceAll("-", "_").toUpperCase()).toLowerCase();
+        if (FlagUtil.flagOBJHashMap.containsKey(search)) {
+            return FlagUtil.flagOBJHashMap.get(search);
+        }
+        Main.getInstance().getLogger().warning("No Flag found with name: " + search);
+        return new FlagOBJ("NOT FOUND", 999, Material.BARRIER, DefaultFlag.ALLOWED_CMDS);
+    }
+    public static FlagOBJ getFlagObj(String flag) {
+        String search = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, flag.replaceAll("-", "_").toUpperCase()).toLowerCase();
         if (FlagUtil.flagOBJHashMap.containsKey(search)) {
             return FlagUtil.flagOBJHashMap.get(search);
         }
