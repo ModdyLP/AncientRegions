@@ -1,6 +1,7 @@
 package de.moddylp.AncientRegions.loader.config;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -143,7 +144,11 @@ public class SimpleConfig {
     }
 
     public void reloadConfig() {
-        this.config = YamlConfiguration.loadConfiguration(new InputStreamReader(manager.getConfigContent(file)));
+        try {
+            this.config = YamlConfiguration.loadConfiguration(new InputStreamReader(manager.getConfigContent(file)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void saveConfig() {
