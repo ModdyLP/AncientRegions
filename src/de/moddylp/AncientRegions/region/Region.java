@@ -51,11 +51,11 @@ public class Region {
         String region = "region" + number;
         this.number = number;
         this.permission = "buy" + region.toLowerCase();
-        this.regionname = Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_" + region + "name");
-        this.regionprice = Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_" + region + "price"));
-        this.regionsize = Integer.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_" + region + "size"));
-        this.intregionheight = Integer.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_regionheight"));
-        this.intregiondepth = Integer.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_regiondepth"));
+        this.regionname = Main.getInstance().getMainConfig().getString("region."+region + "name");
+        this.regionprice = Main.getInstance().getMainConfig().getDouble( "region."+region + "price");
+        this.regionsize = Main.getInstance().getMainConfig().getInt( "region."+region + "size");
+        this.intregionheight = Main.getInstance().getMainConfig().getInt( "region.regionheight");
+        this.intregiondepth = Main.getInstance().getMainConfig().getInt( "region.regiondepth");
     }
 
     public void buy(final WorldGuardPlugin worldguard, final Player p, final InventoryClickEvent e, Inventory menu, WorldEditPlugin worldedit) {
@@ -68,7 +68,7 @@ public class Region {
                 p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("RegionCreation"));
                 LocalPlayer ply = worldguard.wrapPlayer(p);
                 if (regions != null) {
-                    if (regions.getRegionCountOfPlayer(ply) < Integer.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_limit")) || p.hasPermission("ancient.regions.admin.bypassregion")) {
+                    if (regions.getRegionCountOfPlayer(ply) < Main.getInstance().getMainConfig().getInt("region.limit") || p.hasPermission("ancient.regions.admin.bypassregion")) {
                         new BukkitRunnable() {
 
                             public void run() {
@@ -81,7 +81,7 @@ public class Region {
                                     }
                                     ProtectedCuboidRegion region = new ProtectedCuboidRegion(p.getName() + seperator + regionname + seperator + id, edges.get(0), edges.get(2));
                                     ProtectedRegion grg = regions.getRegion("__global__");
-                                    region.setPriority(Integer.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_regionpriority")));
+                                    region.setPriority(Main.getInstance().getMainConfig().getInt("region.regionpriority"));
                                     try {
                                         region.setParent(grg);
                                     } catch (ProtectedRegion.CircularInheritanceException e2) {
@@ -90,15 +90,15 @@ public class Region {
                                     DefaultDomain owner = region.getOwners();
                                     owner.addPlayer(p.getUniqueId());
                                     if (payment(p, e) || p.hasPermission("ancient.regions.admin.bypass")) {
-                                        if (!Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_standartdenyflags").contains("[]")) {
-                                            JSONArray standartdenyflags = FileDriver.objectToJSONArray(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_standartdenyflags"));
+                                        if (Main.getInstance().getMainConfig().getList("region.standartdenyflags").size() > 0) {
+                                            List<?> standartdenyflags = Main.getInstance().getMainConfig().getList("region.standartdenyflags");
                                             ArrayList<String> flags = new ArrayList<>();
                                             for (Object object : standartdenyflags) {
                                                 flags.add(object.toString());
                                             }
                                             for (String flag : flags) {
                                                 FlagOBJ flagOBJ = FlagOBJ.getFlagObj(flag);
-                                                if (Main.DRIVER.hasKey(Main.DRIVER.CONFIG, flag) && !flagOBJ.getName().equals("NOT FOUND"))
+                                                if (Main.getInstance().getMainConfig().contains("flag."+flag) && !flagOBJ.getName().equals("NOT FOUND"))
                                                 {
                                                     if (flagOBJ.getFlag() instanceof StateFlag) {
                                                         region.setFlag(new StateFlag(flag, false), StateFlag.State.DENY);
@@ -110,15 +110,15 @@ public class Region {
 
                                             }
                                         }
-                                        if (!Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_standartallowflags").contains("[]")) {
-                                            JSONArray standartallowflags = FileDriver.objectToJSONArray(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_standartallowflags"));
+                                        if (Main.getInstance().getMainConfig().getList("region.standartallowflags").size() > 0) {
+                                            List<?> standartallowflags = Main.getInstance().getMainConfig().getList("region.standartallowflags");
                                             ArrayList<String> flags = new ArrayList<>();
                                             for (Object object : standartallowflags) {
                                                 flags.add(object.toString());
                                             }
                                             for (String flag : flags) {
                                                 FlagOBJ flagOBJ = FlagOBJ.getFlagObj(flag);
-                                                if (Main.DRIVER.hasKey(Main.DRIVER.CONFIG, flag) && !flagOBJ.getName().equals("NOT FOUND"))
+                                                if (Main.getInstance().getMainConfig().contains("flag."+flag) && !flagOBJ.getName().equals("NOT FOUND"))
                                                 {
                                                     if (flagOBJ.getFlag() instanceof StateFlag) {
                                                         region.setFlag(new StateFlag(flag, true), StateFlag.State.ALLOW);
@@ -130,11 +130,11 @@ public class Region {
 
                                             }
                                         }
-                                        if (Boolean.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_backuprg"))) {
+                                        if (Main.getInstance().getMainConfig().getBoolean("main.backuprg")) {
                                             File schematic = new File(plugin.getDataFolder(), "/schematics/" + region.getId() + ".schematic");
                                             File dir = new File(plugin.getDataFolder(), "/schematics/");
-                                            if (!dir.exists()) {
-                                                dir.mkdirs();
+                                            if (!dir.exists() && !dir.mkdirs()) {
+                                                System.err.println("Cant access file: "+dir.getAbsolutePath());
                                             }
                                             if (new WorldEditHandler6(plugin).saveRegionBlocks(schematic, p.getName() + seperator + regionname + seperator + id, p, region)) {
                                                 Main.getInstance().getLogger().info("BACKUP SUCCESS");
@@ -195,7 +195,7 @@ public class Region {
                             ProtectedRegion rg = regions.getRegion(region.get(0));
                             if (rg != null) {
                                 if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
-                                    if (Boolean.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_backuprg"))) {
+                                    if (Main.getInstance().getMainConfig().getBoolean("main.backuprg")) {
                                         p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Restore"));
                                         File file = new File(plugin.getDataFolder(), "/schematics/" + rg.getId() + ".schematic");
                                         BlockVector max = rg.getMaximumPoint();
@@ -338,8 +338,9 @@ public class Region {
             e.setCancelled(true);
         }
         if (vaultEcon != null) {
-            vaultEcon.depositPlayer(p, Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_region" + this.getregionnumber(regionname, p) + "price")) * Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_payback")) / 100.0);
-            p.sendMessage(ChatColor.BLUE + "[AR][INFO] " + this.plugin.lang.getText("Payback").replace("[PH]", String.valueOf(Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_region" + this.getregionnumber(regionname, p) + "price")) * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_payback")) / 100.0)) + " " + FlagUtil.loadCurrencyfromConfig()));
+            double price = Main.getInstance().getMainConfig().getDouble("region.region" + this.getregionnumber(regionname, p) + "price") * Main.getInstance().getMainConfig().getDouble( "eco.paybackpercent") / 100.0;
+            vaultEcon.depositPlayer(p, price);
+            p.sendMessage(ChatColor.BLUE + "[AR][INFO] " + this.plugin.lang.getText("Payback").replace("[PH]", String.valueOf(price) + " " + FlagUtil.loadCurrencyfromConfig()));
             e.setCancelled(true);
         } else {
             p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("VaultError"));
@@ -399,9 +400,9 @@ public class Region {
     private int getregionnumber(String regioname, Player p) {
         String numbername = regioname.replaceAll("-", "").replaceAll("_", "").replaceAll(p.getName().toLowerCase(), "");
         String number = numbername.replaceAll("\\D+", "");
-        String option = Main.DRIVER.getPropertyByValue(Main.DRIVER.CONFIG, numbername.replaceAll(number, ""));
+        String option = Main.getInstance().getMainConfig().findKeybyvalue(numbername.replaceAll(number, ""));
         if (option != null) {
-            return Integer.valueOf(option.replaceAll("region", "").replaceAll("name", "").replaceAll("_", ""));
+            return Integer.valueOf(option.replaceAll("region", "").replaceAll("name", "").replaceAll("_", "").replaceAll("\\.", ""));
         }
         return 0;
     }

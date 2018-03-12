@@ -11,6 +11,8 @@ import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.gui.Events.GUIEvents;
 import de.moddylp.AncientRegions.gui.Events.GUIOpener;
 import de.moddylp.AncientRegions.loader.*;
+import de.moddylp.AncientRegions.loader.config.SimpleConfig;
+import de.moddylp.AncientRegions.loader.config.SimpleConfigManager;
 import de.moddylp.AncientRegions.particle.LogFile;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -23,6 +25,7 @@ import org.json.JSONArray;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 
@@ -31,6 +34,8 @@ public class Main
     public static WorldGuardPlugin worldguard;
     public static WorldEditPlugin worldedit;
     public static FileDriver DRIVER;
+    private SimpleConfigManager manager;
+    private SimpleConfig config;
     private static Main instance;
 
     static {
@@ -44,10 +49,20 @@ public class Main
         return instance;
     }
 
+    public SimpleConfigManager getManager() {
+        return manager;
+    }
+    public SimpleConfig getMainConfig() {
+        return config;
+    }
+
     public void onEnable() {
         instance = this;
         worldguard = this.getWorldGuard();
         worldedit = this.setupWorldEdit();
+        this.manager = new SimpleConfigManager(this);
+        String[] header = {"###AncientRegions "+this.getDescription().getVersion()+"###", "Written by "+this.getDescription().getAuthors(), "This is the Configuration File"};
+        this.config = manager.getNewConfig("config.yml", header);
         this.getLogger().info("Worldguard hooked");
         VaultLoader vaultloader = new VaultLoader(this);
         if (!vaultloader.load()) {
@@ -55,13 +70,14 @@ public class Main
             return;
         }
         ConfigLoader.saveDefaultconfig();
-        this.lang = new Language(new File(this.getDataFolder(), "messages.yml"));
+        this.lang = new Language();
+        this.lang.setLangCode(Main.getInstance().getMainConfig().getString("main.language", "en"));
         this.loadMessages();
         LogFile file = new LogFile();
         file.setup();
         this.loader = new GUIEvents(this, worldguard, worldedit);
         FlagLoader.load();
-        if (DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_metrics").equalsIgnoreCase("true")) {
+        if (Main.getInstance().getMainConfig().getBoolean("main.metrics", true)) {
             try {
                 de.moddylp.AncientRegions.bukkit.Metrics metrics = new de.moddylp.AncientRegions.bukkit.Metrics(this);
                 Metrics metrics1 = new Metrics(this);
@@ -85,8 +101,8 @@ public class Main
                     case "gui": {
                         if (sender instanceof Player) {
                             Player p = ((Player) sender).getPlayer();
-                            if (DRIVER.hasKey(Main.DRIVER.CONFIG, "_worlds")) {
-                                JSONArray worldconfig = FileDriver.objectToJSONArray(DRIVER.getProperty(Main.DRIVER.CONFIG, "_worlds", "[]"));
+                            if (Main.getInstance().getMainConfig().contains("main.worlds")) {
+                                List<?> worldconfig = Main.getInstance().getMainConfig().getList("main.worlds");
                                 ArrayList<String> worlds = new ArrayList<>();
                                 for (Object object : worldconfig) {
                                     worlds.add(object.toString());
@@ -112,7 +128,7 @@ public class Main
                     }
                     case "reload": {
                         if (sender.hasPermission("ancient.regions.admin.reload")) {
-                            DRIVER.loadJson();
+                            Main.getInstance().getMainConfig().reloadConfig();
                             this.lang.reload();
                             checkConfiguration();
                             sender.sendMessage(ChatColor.GOLD + "[AR][INFO] " + this.lang.getText("ConfigReload"));
@@ -126,8 +142,11 @@ public class Main
                             if (sender.hasPermission("ancient.regions.admin.cancelall")) {
                                 LogFile file = new LogFile();
                                 RegionContainer container = worldguard.getRegionContainer();
-                                this.getServer().getWorlds().stream().map(container::get).map(regions -> Objects.requireNonNull(regions).getRegions()).forEach(rgids -> rgids.values().stream().filter(rg -> file.getString(rg.getId()) != null).forEach(rg -> file.setString(rg.getId(), null)
-                                        )
+                                this.getServer().getWorlds().stream().map(container::get)
+                                        .map(regions -> Objects.requireNonNull(regions).getRegions())
+                                        .forEach(rgids -> rgids.values().stream()
+                                                .filter(rg -> file.getString(rg.getId()) != null)
+                                                .forEach(rg -> file.setString(rg.getId(), null))
                                 );
                                 sender.sendMessage(ChatColor.GREEN + "[AR][ERROR] " + this.lang.getText("Canceled"));
                                 return true;
@@ -188,8 +207,8 @@ public class Main
     }
 
     private void checkConfiguration()  {
-        if (!Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_standartdenyflags").contains("[]")) {
-            JSONArray standartdenyflags = FileDriver.objectToJSONArray(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_standartdenyflags"));
+        if (Main.getInstance().getMainConfig().getList("region.standartdenyflags").size() > 0) {
+            List<?> standartdenyflags = Main.getInstance().getMainConfig().getList("region.standartdenyflags");
             ArrayList<String> flags = new ArrayList<>();
             for (Object object : standartdenyflags) {
                 flags.add(object.toString());
@@ -203,8 +222,8 @@ public class Main
 
             }
         }
-        if (!Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_standartallowflags").contains("[]")) {
-            JSONArray standartallowflags = FileDriver.objectToJSONArray(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_standartallowflags"));
+        if (Main.getInstance().getMainConfig().getList("region.standartallowflags").size() > 0) {
+            List<?> standartallowflags = Main.getInstance().getMainConfig().getList("region.standartallowflags");
             ArrayList<String> flags = new ArrayList<>();
             for (Object object : standartallowflags) {
                 flags.add(object.toString());
@@ -223,7 +242,7 @@ public class Main
     private boolean isValid(String flag) {
         boolean valid = false;
         FlagOBJ flagOBJ = FlagOBJ.getFlagObj(flag);
-        if (Main.DRIVER.hasKey(Main.DRIVER.CONFIG, flag) && !flagOBJ.getName().equals("NOT FOUND"))
+        if (Main.getInstance().getMainConfig().contains("flags."+flag) && !flagOBJ.getName().equals("NOT FOUND"))
         {
             if (flagOBJ.getFlag() instanceof StateFlag) {
                 valid = true;

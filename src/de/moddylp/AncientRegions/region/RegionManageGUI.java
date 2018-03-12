@@ -46,7 +46,7 @@ public class RegionManageGUI {
             ItemMeta meta2 = addmember.getItemMeta();
             meta2.setDisplayName(ChatColor.GREEN + this.plugin.lang.getText("AddMember"));
             ArrayList<String> values = new ArrayList<>();
-            values.add(ChatColor.YELLOW + Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_addmember") + " " + FlagUtil.loadCurrencyfromConfig());
+            values.add(ChatColor.YELLOW + Main.getInstance().getMainConfig().getString("manage.addmember") + " " + FlagUtil.loadCurrencyfromConfig());
             meta2.setLore(values);
             addmember.setItemMeta(meta2);
             this.menu.setItem(3, addmember);
@@ -54,7 +54,7 @@ public class RegionManageGUI {
             ItemMeta meta3 = removemember.getItemMeta();
             meta3.setDisplayName(ChatColor.RED + this.plugin.lang.getText("RemoveMember"));
             ArrayList<String> values2 = new ArrayList<>();
-            values2.add(ChatColor.YELLOW + Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_removemember") + " " + FlagUtil.loadCurrencyfromConfig());
+            values2.add(ChatColor.YELLOW + Main.getInstance().getMainConfig().getString("manage.changeowner") + " " + FlagUtil.loadCurrencyfromConfig());
             meta3.setLore(values2);
             removemember.setItemMeta(meta3);
             this.menu.setItem(5, removemember);
@@ -62,7 +62,7 @@ public class RegionManageGUI {
             ItemMeta meta4 = setowner.getItemMeta();
             meta4.setDisplayName(ChatColor.GOLD + this.plugin.lang.getText("SetOwner"));
             ArrayList<String> values3 = new ArrayList<>();
-            values3.add(ChatColor.YELLOW + Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_changeowner") + " " + FlagUtil.loadCurrencyfromConfig());
+            values3.add(ChatColor.YELLOW + Main.getInstance().getMainConfig().getString("manage.removemember") + " " + FlagUtil.loadCurrencyfromConfig());
             meta4.setLore(values3);
             setowner.setItemMeta(meta4);
             this.menu.setItem(4, setowner);
@@ -74,7 +74,7 @@ public class RegionManageGUI {
             if (getregionnumber() == 0) {
                 desc.add(ChatColor.AQUA + this.plugin.lang.getText("RemoveRegionLore2").replace("[PH]", "XX"));
             } else {
-                desc.add(ChatColor.AQUA + this.plugin.lang.getText("RemoveRegionLore2").replace("[PH]", String.valueOf(Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_region" + this.getregionnumber() + "price")) * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_payback")) / 100.0)) + " " + FlagUtil.loadCurrencyfromConfig()));
+                desc.add(ChatColor.AQUA + this.plugin.lang.getText("RemoveRegionLore2").replace("[PH]", String.valueOf(Main.getInstance().getMainConfig().getDouble("region.region" + this.getregionnumber() + "price") * (Main.getInstance().getMainConfig().getDouble("eco.paybackpercent") / 100.0)) + " " + FlagUtil.loadCurrencyfromConfig()));
             }
             meta5.setLore(desc);
             removeregion.setItemMeta(meta5);
@@ -111,9 +111,9 @@ public class RegionManageGUI {
                 if (Objects.requireNonNull(rg).isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
                     String numbername = rg.getId().replaceAll("-", "").replaceAll("_", "").replaceAll(p.getName().toLowerCase(), "");
                     String number = numbername.replaceAll("\\D+","");
-                    String option = Main.DRIVER.getPropertyByValue(Main.DRIVER.CONFIG, numbername.replaceAll(number, ""));
+                    String option = Main.getInstance().getMainConfig().findKeybyvalue(numbername.replaceAll(number, ""));
                     if (option != null) {
-                        return Integer.valueOf(option.replaceAll("region", "").replaceAll("name", "").replaceAll("_", ""));
+                        return Integer.valueOf(option.replaceAll("region", "").replaceAll("name", "").replaceAll("_", "").replaceAll("\\.", ""));
                     }
                     return 0;
                 }

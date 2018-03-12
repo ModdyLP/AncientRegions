@@ -1,5 +1,6 @@
 package de.moddylp.AncientRegions;
 
+import de.moddylp.AncientRegions.loader.config.SimpleConfig;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -8,42 +9,33 @@ import java.io.File;
 import java.io.IOException;
 
 public class Language {
-    private final File langFile;
-    private final FileConfiguration lang;
+    private static SimpleConfig messages;
 
-    public Language(File config) {
-        this.langFile = config;
-        this.lang = YamlConfiguration.loadConfiguration(this.langFile);
+    private static String langcode = "en";
+
+    public void setLangCode(String langCode) {
+        Language.langcode = langCode;
+        Language.messages = Main.getInstance().getManager().getNewConfig(langcode+"_messages.yml");
     }
 
     public void reload() {
-        try {
-            this.lang.load(this.langFile);
-        }
-        catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+        Language.messages.reloadConfig();
     }
 
     private void save() {
-        try {
-            this.lang.save(this.langFile);
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        Language.messages.saveConfig();
     }
 
     public void setTextOnce(String path, String text) {
-        if (this.lang.getString(path) == null) {
-            this.lang.set(path, text);
+        if (!Language.messages.contains(path)) {
+            Language.messages.set(path, text);
             this.save();
         }
     }
 
     public String getText(String path) {
-        if (this.lang.getString(path) != null) {
-            return this.lang.getString(path).replaceAll("&", "\u00a7");
+        if (!Language.messages.contains(path)) {
+            return Language.messages.getString(path).replaceAll("&", "\u00a7");
         }
         return "&cThis sentence does not exist. Please check lang-file message ".replaceAll("&", "\u00a7") + path;
     }

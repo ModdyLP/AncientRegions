@@ -28,12 +28,15 @@ public class FileDriver {
     public boolean checkIfFileExists(String filename) {
         return files.get(filename) != null && files.get(filename).exists();
     }
+    public boolean deletefile(String filename) {
+        return files.get(filename) != null && files.get(filename).exists() && files.get(filename).delete();
+    }
 
     public boolean checkIfFileisEmpty(String filename) {
         return jsons.get(filename).keySet().size() == 0;
     }
 
-    public void createNewFile() {
+    /*public void createNewFile() {
         try {
             File file = new File(Main.getInstance().getDataFolder(), "config.json");
             this.CONFIG = Main.getInstance().getDataFolder() + "/config.json";
@@ -50,7 +53,7 @@ public class FileDriver {
         catch (Exception ex) {
             Main.getInstance().getLogger().warning("File can not be accessed: " + Main.getInstance().getDataFolder() + "config.json " + ex.getMessage());
         }
-    }
+    }*/
 
     private JSONObject parseJson(String string) {
         JSONObject json = new JSONObject();

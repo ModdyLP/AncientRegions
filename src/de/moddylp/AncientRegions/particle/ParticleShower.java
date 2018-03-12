@@ -55,7 +55,7 @@ public class ParticleShower {
                         timer(rg, p);
                         show(world, p, rg);
                         data.setString(regionid, "true");
-                        p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("Particles").replace("[PH]", Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "showtimeofparticle", 20)));
+                        p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("Particles").replace("[PH]", Main.getInstance().getMainConfig().getString("particle.showtimeofparticle")));
                         continue;
                     }
                     this.data.setString(regionid, null);
@@ -76,9 +76,9 @@ public class ParticleShower {
                     particles.cancel();
                     timertask.cancel();
                 }
-                if (Integer.valueOf(Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showtimeofparticle", 20)) != -1) {
+                if (Main.getInstance().getMainConfig().getInt("particle.showtimeofparticle") != -1) {
                     timernum++;
-                    if (timernum >= Integer.valueOf(Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showtimeofparticle", 20)) * 2) {
+                    if (timernum >= Main.getInstance().getMainConfig().getInt("particle.showtimeofparticle") * 2) {
                         data.setString(rg.getId(), null);
                     }
                 }
@@ -177,7 +177,7 @@ public class ParticleShower {
     private List<Vector> calcVisibleVectors(List<Vector> vectoren, Player p) {
         Vector playerlocation = new Vector(p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ());
         ArrayList<Vector> visbleVectors = new ArrayList<>();
-        double range = Double.valueOf(Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_particleshowrange", 16));
+        double range = Main.getInstance().getMainConfig().getDouble("particle.particleshowrange");
         for (Vector pt : vectoren) {
             double distance = pt.distance(playerlocation);
             if (distance < range) {
@@ -199,10 +199,10 @@ public class ParticleShower {
                         try {
                             for (Vector vector : calcVisibleVectors(vectoren, p)) {
                                 Location loc = new Location(world, (double) vector.getBlockX(), (double) vector.getBlockY(), (double) vector.getBlockZ());
-                                if (Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showfor", "player").equalsIgnoreCase("player")) {
+                                if (Main.getInstance().getMainConfig().getString("particle.showfor").equalsIgnoreCase("player")) {
                                     p.spawnParticle(Particle.FIREWORKS_SPARK, loc, 1, 0, 0, 0, 0);
                                 }
-                                if (Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showfor", "player").equalsIgnoreCase("all")) {
+                                if (Main.getInstance().getMainConfig().getString("particle.showfor").equalsIgnoreCase("all")) {
                                     if (players.size() <= 0) {
                                         loc.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc, 1, 0, 0, 0, 0);
                                     }

@@ -27,12 +27,16 @@ public class FlagOBJ {
         this.item = item;
         this.menuposition = menuposition;
         FlagUtil.flagOBJHashMap.put(this.configname, this);
-        FileDriver.getInstance().getProperty(FileDriver.getInstance().CONFIG, this.configname, 100);
+        //TODO: FileDriver.getInstance().getProperty(FileDriver.getInstance().CONFIG, this.configname, 100);
+        String type;
         if (flag instanceof BooleanFlag || flag instanceof StateFlag) {
-            FileDriver.getInstance().getProperty(FileDriver.getInstance().CONFIG, this.configname+("_type").toUpperCase(), "boolean");
+            type = "BOOLEAN";
+            //TODO: FileDriver.getInstance().getProperty(FileDriver.getInstance().CONFIG, this.configname+("_type").toUpperCase(), "boolean");
         } else {
-            FileDriver.getInstance().getProperty(FileDriver.getInstance().CONFIG, this.configname+("_type").toUpperCase(), "string");
+            type = "STRING";
+            //TODO: FileDriver.getInstance().getProperty(FileDriver.getInstance().CONFIG, this.configname+("_type").toUpperCase(), "string");
         }
+        Main.getInstance().getMainConfig().get("flags."+this.configname, 100, "TYPE: "+type);
 
     }
 

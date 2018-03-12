@@ -59,17 +59,21 @@ public class FlagUtil {
     public static Double loadPricefromConfig(String flagname, ActivateMode mode) {
         try {
             double price = 0.0;
-            if (Main.DRIVER.hasKey(Main.DRIVER.CONFIG, flagname.toLowerCase())) {
-                price = Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, flagname.toLowerCase()));
+            if (Main.getInstance().getMainConfig().contains("flags."+flagname.toLowerCase())) {
+                //TODO: price = Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, flagname.toLowerCase()));
+                price = Main.getInstance().getMainConfig().getDouble("flags."+flagname.toLowerCase());
             }
             if (mode.equals(ActivateMode.ACTIVATE)) {
-                price = price * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_activatecostpercent")) / 100.0);
+                //TODO:price = price * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_activatecostpercent")) / 100.0);
+                price = price * (Main.getInstance().getMainConfig().getDouble( "eco.activatecostpercent") / 100.0);
             }
             if (mode.equals(ActivateMode.REMOVE)) {
-                price = price * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_removecostpercent")) / 100.0);
+                //TODO:price = price * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_removecostpercent")) / 100.0);
+                price = price * (Main.getInstance().getMainConfig().getDouble( "eco.removecostpercent") / 100.0);
             }
             if (mode.equals(ActivateMode.DEACTIVATE)) {
-                price = price * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_deactivatecostpercent")) / 100.0);
+                //TODO: price = price * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_deactivatecostpercent")) / 100.0);
+                price = price * (Main.getInstance().getMainConfig().getDouble( "eco.deactivatecostpercent") / 100.0);
             }
             return price;
         } catch (Exception ex) {
@@ -80,7 +84,8 @@ public class FlagUtil {
 
     public static String loadCurrencyfromConfig() {
         try {
-            return Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_currency");
+            return Main.getInstance().getMainConfig().get("eco.currency", "Euro").toString();
+            //TODO: return Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_currency");
         } catch (Exception ex) {
             Main.getInstance().getLogger().info(ex.toString());
             return null;
