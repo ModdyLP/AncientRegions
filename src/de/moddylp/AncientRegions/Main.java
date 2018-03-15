@@ -1,19 +1,17 @@
 package de.moddylp.AncientRegions;
 
-import com.google.common.base.CaseFormat;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.BooleanFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.moddylp.AncientRegions.flags.FlagOBJ;
-import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.gui.Events.GUIEvents;
 import de.moddylp.AncientRegions.gui.Events.GUIOpener;
 import de.moddylp.AncientRegions.loader.*;
-import de.moddylp.AncientRegions.loader.config.SimpleConfig;
-import de.moddylp.AncientRegions.loader.config.SimpleConfigManager;
 import de.moddylp.AncientRegions.particle.LogFile;
+import de.moddylp.Config;
+import de.moddylp.ConfigManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -21,9 +19,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.json.JSONArray;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -34,8 +30,8 @@ public class Main
     public static WorldGuardPlugin worldguard;
     public static WorldEditPlugin worldedit;
     public static FileDriver DRIVER;
-    private SimpleConfigManager manager;
-    private SimpleConfig config;
+    private ConfigManager manager;
+    private Config config;
     private static Main instance;
 
     static {
@@ -49,10 +45,10 @@ public class Main
         return instance;
     }
 
-    public SimpleConfigManager getManager() {
+    public ConfigManager getManager() {
         return manager;
     }
-    public SimpleConfig getMainConfig() {
+    public Config getMainConfig() {
         return config;
     }
 
@@ -60,9 +56,10 @@ public class Main
         instance = this;
         worldguard = this.getWorldGuard();
         worldedit = this.setupWorldEdit();
-        this.manager = new SimpleConfigManager(this);
+        this.manager = new ConfigManager();
         String[] header = {"###AncientRegions "+this.getDescription().getVersion()+"###", "Written by "+this.getDescription().getAuthors(), "This is the Configuration File"};
-        this.config = manager.getNewConfig("config.yml", header);
+        this.config = manager.getConfig("config.yml");
+        this.config.setHeader(header);
         this.getLogger().info("Worldguard hooked");
         VaultLoader vaultloader = new VaultLoader(this);
         if (!vaultloader.load()) {
@@ -71,13 +68,13 @@ public class Main
         }
         ConfigLoader.saveDefaultconfig();
         this.lang = new Language();
-        this.lang.setLangCode(Main.getInstance().getMainConfig().getString("main.language", "en"));
+        this.lang.setLangCode(Main.getInstance().getMainConfig().get("main.language", "en").toString());
         this.loadMessages();
         LogFile file = new LogFile();
         file.setup();
         this.loader = new GUIEvents(this, worldguard, worldedit);
         FlagLoader.load();
-        if (Main.getInstance().getMainConfig().getBoolean("main.metrics", true)) {
+        if (Boolean.valueOf(Main.getInstance().getMainConfig().get("main.metrics", true).toString())) {
             try {
                 de.moddylp.AncientRegions.bukkit.Metrics metrics = new de.moddylp.AncientRegions.bukkit.Metrics(this);
                 Metrics metrics1 = new Metrics(this);
@@ -101,8 +98,8 @@ public class Main
                     case "gui": {
                         if (sender instanceof Player) {
                             Player p = ((Player) sender).getPlayer();
-                            if (Main.getInstance().getMainConfig().contains("main.worlds")) {
-                                List<?> worldconfig = Main.getInstance().getMainConfig().getList("main.worlds");
+                            if (Main.getInstance().getMainConfig().containsKey("main.worlds")) {
+                                List<?> worldconfig = (ArrayList)Main.getInstance().getMainConfig().get("main.worlds");
                                 ArrayList<String> worlds = new ArrayList<>();
                                 for (Object object : worldconfig) {
                                     worlds.add(object.toString());
@@ -128,7 +125,7 @@ public class Main
                     }
                     case "reload": {
                         if (sender.hasPermission("ancient.regions.admin.reload")) {
-                            Main.getInstance().getMainConfig().reloadConfig();
+                            Main.getInstance().getMainConfig().reload();
                             this.lang.reload();
                             checkConfiguration();
                             sender.sendMessage(ChatColor.GOLD + "[AR][INFO] " + this.lang.getText("ConfigReload"));
@@ -207,8 +204,8 @@ public class Main
     }
 
     private void checkConfiguration()  {
-        if (Main.getInstance().getMainConfig().getList("region.standartdenyflags").size() > 0) {
-            List<?> standartdenyflags = Main.getInstance().getMainConfig().getList("region.standartdenyflags");
+        if (((ArrayList)Main.getInstance().getMainConfig().get("region.standartdenyflags")).size() > 0) {
+            List<?> standartdenyflags = (ArrayList)Main.getInstance().getMainConfig().get("region.standartdenyflags");
             ArrayList<String> flags = new ArrayList<>();
             for (Object object : standartdenyflags) {
                 flags.add(object.toString());
@@ -222,8 +219,8 @@ public class Main
 
             }
         }
-        if (Main.getInstance().getMainConfig().getList("region.standartallowflags").size() > 0) {
-            List<?> standartallowflags = Main.getInstance().getMainConfig().getList("region.standartallowflags");
+        if (((ArrayList)Main.getInstance().getMainConfig().get("region.standartallowflags")).size() > 0) {
+            List<?> standartallowflags = (ArrayList)Main.getInstance().getMainConfig().get("region.standartallowflags");
             ArrayList<String> flags = new ArrayList<>();
             for (Object object : standartallowflags) {
                 flags.add(object.toString());
@@ -242,7 +239,7 @@ public class Main
     private boolean isValid(String flag) {
         boolean valid = false;
         FlagOBJ flagOBJ = FlagOBJ.getFlagObj(flag);
-        if (Main.getInstance().getMainConfig().contains("flags."+flag) && !flagOBJ.getName().equals("NOT FOUND"))
+        if (Main.getInstance().getMainConfig().containsKey("flags."+flag) && !flagOBJ.getName().equals("NOT FOUND"))
         {
             if (flagOBJ.getFlag() instanceof StateFlag) {
                 valid = true;

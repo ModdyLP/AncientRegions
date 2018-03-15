@@ -1,19 +1,16 @@
 package de.moddylp.AncientRegions.particle;
 
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.AncientRegions.loader.config.SimpleConfig;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import java.io.File;
+import de.moddylp.Config;
 
 public class LogFile {
-    private SimpleConfig data;
+    private Config data;
 
     private void getfile() {
-        this.data = Main.getInstance().getManager().getNewConfig("data.yml", new String[]{
+        this.data = Main.getInstance().getManager().getConfig("data.yml");
+        this.data.setHeader(new String[]{
                 "The plugin saves the data of the Particle Shower in this file",
-        "AncientRegions v."+Main.getInstance().getDescription().getVersion()});
+                "AncientRegions v."+Main.getInstance().getDescription().getVersion()});
     }
 
     public void setup() {
@@ -22,7 +19,7 @@ public class LogFile {
             if (data != null) {
                 Main.getInstance().getLogger().info("Creating data file");
                 this.data.createSection("regions");
-                this.data.saveConfig();
+                this.data.saveToFile();
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -32,14 +29,14 @@ public class LogFile {
     public void setString(String option, String value) {
         try {
             this.data.set("regions." + option, value);
-            this.data.saveConfig();
+            this.data.saveToFile();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     public String getString(String option) {
-        return this.data.getString("regions." + option);
+        return this.data.get("regions." + option).toString();
     }
 }
 

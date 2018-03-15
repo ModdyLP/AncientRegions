@@ -59,21 +59,21 @@ public class FlagUtil {
     public static Double loadPricefromConfig(String flagname, ActivateMode mode) {
         try {
             double price = 0.0;
-            if (Main.getInstance().getMainConfig().contains("flags."+flagname.toLowerCase())) {
+            if (Main.getInstance().getMainConfig().containsKey("flags."+flagname.toLowerCase())) {
                 //TODO: price = Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, flagname.toLowerCase()));
-                price = Main.getInstance().getMainConfig().getDouble("flags."+flagname.toLowerCase());
+                price = ((Double)Main.getInstance().getMainConfig().get("flags."+flagname.toLowerCase()));
             }
             if (mode.equals(ActivateMode.ACTIVATE)) {
                 //TODO:price = price * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_activatecostpercent")) / 100.0);
-                price = price * (Main.getInstance().getMainConfig().getDouble( "eco.activatecostpercent") / 100.0);
+                price = price * ((Double)Main.getInstance().getMainConfig().get( "eco.activatecostpercent") / 100.0);
             }
             if (mode.equals(ActivateMode.REMOVE)) {
                 //TODO:price = price * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_removecostpercent")) / 100.0);
-                price = price * (Main.getInstance().getMainConfig().getDouble( "eco.removecostpercent") / 100.0);
+                price = price * ((Double)Main.getInstance().getMainConfig().get( "eco.removecostpercent") / 100.0);
             }
             if (mode.equals(ActivateMode.DEACTIVATE)) {
                 //TODO: price = price * (Double.valueOf(Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_deactivatecostpercent")) / 100.0);
-                price = price * (Main.getInstance().getMainConfig().getDouble( "eco.deactivatecostpercent") / 100.0);
+                price = price * ((Double)Main.getInstance().getMainConfig().get( "eco.deactivatecostpercent") / 100.0);
             }
             return price;
         } catch (Exception ex) {

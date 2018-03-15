@@ -18,6 +18,7 @@ import de.moddylp.AncientRegions.flags.FlagOBJ;
 import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.loader.FileDriver;
 import de.moddylp.AncientRegions.loader.WorldEditHandler6;
+import javafx.beans.property.BooleanProperty;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -51,11 +52,11 @@ public class Region {
         String region = "region" + number;
         this.number = number;
         this.permission = "buy" + region.toLowerCase();
-        this.regionname = Main.getInstance().getMainConfig().getString("region."+region + "name");
-        this.regionprice = Main.getInstance().getMainConfig().getDouble( "region."+region + "price");
-        this.regionsize = Main.getInstance().getMainConfig().getInt( "region."+region + "size");
-        this.intregionheight = Main.getInstance().getMainConfig().getInt( "region.regionheight");
-        this.intregiondepth = Main.getInstance().getMainConfig().getInt( "region.regiondepth");
+        this.regionname = Main.getInstance().getMainConfig().get("region."+region + "name").toString();
+        this.regionprice = ((Double)Main.getInstance().getMainConfig().get( "region."+region + "price"));
+        this.regionsize = ((Integer)Main.getInstance().getMainConfig().get( "region."+region + "size"));
+        this.intregionheight = ((Integer)Main.getInstance().getMainConfig().get( "region.regionheight"));
+        this.intregiondepth = ((Integer)Main.getInstance().getMainConfig().get( "region.regiondepth"));
     }
 
     public void buy(final WorldGuardPlugin worldguard, final Player p, final InventoryClickEvent e, Inventory menu, WorldEditPlugin worldedit) {
@@ -68,7 +69,7 @@ public class Region {
                 p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("RegionCreation"));
                 LocalPlayer ply = worldguard.wrapPlayer(p);
                 if (regions != null) {
-                    if (regions.getRegionCountOfPlayer(ply) < Main.getInstance().getMainConfig().getInt("region.limit") || p.hasPermission("ancient.regions.admin.bypassregion")) {
+                    if (regions.getRegionCountOfPlayer(ply) < ((Integer)Main.getInstance().getMainConfig().get("region.limit")) || p.hasPermission("ancient.regions.admin.bypassregion")) {
                         new BukkitRunnable() {
 
                             public void run() {
@@ -81,7 +82,7 @@ public class Region {
                                     }
                                     ProtectedCuboidRegion region = new ProtectedCuboidRegion(p.getName() + seperator + regionname + seperator + id, edges.get(0), edges.get(2));
                                     ProtectedRegion grg = regions.getRegion("__global__");
-                                    region.setPriority(Main.getInstance().getMainConfig().getInt("region.regionpriority"));
+                                    region.setPriority(((Integer)Main.getInstance().getMainConfig().get("region.regionpriority")));
                                     try {
                                         region.setParent(grg);
                                     } catch (ProtectedRegion.CircularInheritanceException e2) {
@@ -90,15 +91,15 @@ public class Region {
                                     DefaultDomain owner = region.getOwners();
                                     owner.addPlayer(p.getUniqueId());
                                     if (payment(p, e) || p.hasPermission("ancient.regions.admin.bypass")) {
-                                        if (Main.getInstance().getMainConfig().getList("region.standartdenyflags").size() > 0) {
-                                            List<?> standartdenyflags = Main.getInstance().getMainConfig().getList("region.standartdenyflags");
+                                        if (((ArrayList)Main.getInstance().getMainConfig().get("region.standartdenyflags")).size() > 0) {
+                                            List<?> standartdenyflags = ((ArrayList)Main.getInstance().getMainConfig().get("region.standartdenyflags"));
                                             ArrayList<String> flags = new ArrayList<>();
                                             for (Object object : standartdenyflags) {
                                                 flags.add(object.toString());
                                             }
                                             for (String flag : flags) {
                                                 FlagOBJ flagOBJ = FlagOBJ.getFlagObj(flag);
-                                                if (Main.getInstance().getMainConfig().contains("flag."+flag) && !flagOBJ.getName().equals("NOT FOUND"))
+                                                if (Main.getInstance().getMainConfig().containsKey("flag."+flag) && !flagOBJ.getName().equals("NOT FOUND"))
                                                 {
                                                     if (flagOBJ.getFlag() instanceof StateFlag) {
                                                         region.setFlag(new StateFlag(flag, false), StateFlag.State.DENY);
@@ -110,15 +111,15 @@ public class Region {
 
                                             }
                                         }
-                                        if (Main.getInstance().getMainConfig().getList("region.standartallowflags").size() > 0) {
-                                            List<?> standartallowflags = Main.getInstance().getMainConfig().getList("region.standartallowflags");
+                                        if (((ArrayList)Main.getInstance().getMainConfig().get("region.standartallowflags")).size() > 0) {
+                                            List<?> standartallowflags = ((ArrayList)Main.getInstance().getMainConfig().get("region.standartallowflags"));
                                             ArrayList<String> flags = new ArrayList<>();
                                             for (Object object : standartallowflags) {
                                                 flags.add(object.toString());
                                             }
                                             for (String flag : flags) {
                                                 FlagOBJ flagOBJ = FlagOBJ.getFlagObj(flag);
-                                                if (Main.getInstance().getMainConfig().contains("flag."+flag) && !flagOBJ.getName().equals("NOT FOUND"))
+                                                if (Main.getInstance().getMainConfig().containsKey("flag."+flag) && !flagOBJ.getName().equals("NOT FOUND"))
                                                 {
                                                     if (flagOBJ.getFlag() instanceof StateFlag) {
                                                         region.setFlag(new StateFlag(flag, true), StateFlag.State.ALLOW);
@@ -130,7 +131,7 @@ public class Region {
 
                                             }
                                         }
-                                        if (Main.getInstance().getMainConfig().getBoolean("main.backuprg")) {
+                                        if (((Boolean)Main.getInstance().getMainConfig().get("main.backuprg"))) {
                                             File schematic = new File(plugin.getDataFolder(), "/schematics/" + region.getId() + ".schematic");
                                             File dir = new File(plugin.getDataFolder(), "/schematics/");
                                             if (!dir.exists() && !dir.mkdirs()) {
@@ -195,7 +196,7 @@ public class Region {
                             ProtectedRegion rg = regions.getRegion(region.get(0));
                             if (rg != null) {
                                 if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
-                                    if (Main.getInstance().getMainConfig().getBoolean("main.backuprg")) {
+                                    if ((Boolean)Main.getInstance().getMainConfig().get("main.backuprg")) {
                                         p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Restore"));
                                         File file = new File(plugin.getDataFolder(), "/schematics/" + rg.getId() + ".schematic");
                                         BlockVector max = rg.getMaximumPoint();
@@ -338,7 +339,7 @@ public class Region {
             e.setCancelled(true);
         }
         if (vaultEcon != null) {
-            double price = Main.getInstance().getMainConfig().getDouble("region.region" + this.getregionnumber(regionname, p) + "price") * Main.getInstance().getMainConfig().getDouble( "eco.paybackpercent") / 100.0;
+            double price = ((Double)Main.getInstance().getMainConfig().get("region.region" + this.getregionnumber(regionname, p) + "price")) * ((Double)Main.getInstance().getMainConfig().get( "eco.paybackpercent") / 100.0);
             vaultEcon.depositPlayer(p, price);
             p.sendMessage(ChatColor.BLUE + "[AR][INFO] " + this.plugin.lang.getText("Payback").replace("[PH]", String.valueOf(price) + " " + FlagUtil.loadCurrencyfromConfig()));
             e.setCancelled(true);
@@ -400,7 +401,7 @@ public class Region {
     private int getregionnumber(String regioname, Player p) {
         String numbername = regioname.replaceAll("-", "").replaceAll("_", "").replaceAll(p.getName().toLowerCase(), "");
         String number = numbername.replaceAll("\\D+", "");
-        String option = Main.getInstance().getMainConfig().findKeybyvalue(numbername.replaceAll(number, ""));
+        String option = Main.getInstance().getMainConfig().findKeyByValue(numbername.replaceAll(number, ""));
         if (option != null) {
             return Integer.valueOf(option.replaceAll("region", "").replaceAll("name", "").replaceAll("_", "").replaceAll("\\.", ""));
         }
