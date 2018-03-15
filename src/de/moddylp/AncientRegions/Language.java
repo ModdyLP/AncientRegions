@@ -1,6 +1,6 @@
 package de.moddylp.AncientRegions;
 
-import de.moddylp.Config;
+import de.moddylp.simplecommentconfig.Config;
 
 public class Language {
     private static Config messages;
@@ -9,7 +9,7 @@ public class Language {
 
     public void setLangCode(String langCode) {
         Language.langcode = langCode;
-        Language.messages = Main.getInstance().getManager().getConfig(langcode+"_messages.yml");
+        Language.messages = Main.getInstance().getManager().getConfig(Main.getInstance().getDataFolder()+"/"+langcode + "_messages.lang");
     }
 
     public void reload() {

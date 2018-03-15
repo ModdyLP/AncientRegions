@@ -1,7 +1,7 @@
 package de.moddylp.AncientRegions.loader;
 
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.Config;
+import de.moddylp.simplecommentconfig.Config;
 
 public class ConfigLoader {
     public static void saveDefaultconfig() {

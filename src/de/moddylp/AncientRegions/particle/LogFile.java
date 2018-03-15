@@ -1,16 +1,16 @@
 package de.moddylp.AncientRegions.particle;
 
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.Config;
+import de.moddylp.simplecommentconfig.Config;
 
 public class LogFile {
     private Config data;
 
     private void getfile() {
-        this.data = Main.getInstance().getManager().getConfig("data.yml");
+        this.data = Main.getInstance().getManager().getConfig(Main.getInstance().getDataFolder()+"/"+"data.data");
         this.data.setHeader(new String[]{
                 "The plugin saves the data of the Particle Shower in this file",
-                "AncientRegions v."+Main.getInstance().getDescription().getVersion()});
+                "AncientRegions v." + Main.getInstance().getDescription().getVersion()});
     }
 
     public void setup() {
