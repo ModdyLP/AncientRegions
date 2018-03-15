@@ -528,19 +528,19 @@ public class Menu_Click
             playMainSound(e, p);
             try {
                 Inventory menu = e.getInventory();
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().getMainConfig().getString("region.region1name"))) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().getMainConfig().get("region.region1name").toString())) {
                     Region region1 = new Region(this.plugin, 1);
                     region1.buy(this.worldguard, p, e, menu, this.worldedit);
                     e.setCancelled(true);
-                } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().getMainConfig().getString("region.region2name"))) {
+                } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().getMainConfig().get("region.region2name").toString())) {
                     Region region2 = new Region(this.plugin, 2);
                     region2.buy(this.worldguard, p, e, menu, this.worldedit);
                     e.setCancelled(true);
-                } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().getMainConfig().getString("region.region3name"))) {
+                } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().getMainConfig().get("region.region3name").toString())) {
                     Region region3 = new Region(this.plugin, 3);
                     region3.buy(this.worldguard, p, e, menu, this.worldedit);
                     e.setCancelled(true);
-                } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().getMainConfig().getString("region.region4name"))) {
+                } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().getMainConfig().get("region.region4name").toString())) {
                     Region region4 = new Region(this.plugin, 4);
                     region4.buy(this.worldguard, p, e, menu, this.worldedit);
                     e.setCancelled(true);

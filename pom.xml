@@ -41,6 +41,10 @@
                             <include>com.fasterxml.jackson.datatype:*</include>
                             <include>org.bstats:*</include>
                             <include>org.mcstats.*:*</include>
+                            <include>de.moddylp.Config</include>
+                            <include>de.moddylp.ConfigManager</include>
+                            <include>de.moddylp.ConfigUtils</include>
+                            <include>de.moddylp.Serilizer</include>
                         </includes>
                     </artifactSet>
                     <relocations>
