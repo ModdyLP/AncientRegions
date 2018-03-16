@@ -7,6 +7,7 @@ import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.loader.FileDriver;
+import de.moddylp.AncientRegions.utils.Console;
 import org.bukkit.Material;
 
 public class FlagOBJ {
@@ -27,17 +28,10 @@ public class FlagOBJ {
         this.item = item;
         this.menuposition = menuposition;
         FlagUtil.flagOBJHashMap.put(this.configname, this);
-        //TODO: FileDriver.getInstance().getProperty(FileDriver.getInstance().CONFIG, this.configname, 100);
-        String type;
-        if (flag instanceof BooleanFlag || flag instanceof StateFlag) {
-            type = "BOOLEAN";
-            //TODO: FileDriver.getInstance().getProperty(FileDriver.getInstance().CONFIG, this.configname+("_type").toUpperCase(), "boolean");
-        } else {
-            type = "STRING";
-            //TODO: FileDriver.getInstance().getProperty(FileDriver.getInstance().CONFIG, this.configname+("_type").toUpperCase(), "string");
+        Main.getInstance().getMainConfig().get("flags."+this.configname, 100, "TYPE: "+flag.getClass().getSimpleName());
+        if (Main.DRIVER.checkIfFileExists(Main.DRIVER.CONFIG)) {
+            Main.getInstance().getMainConfig().set("flags."+this.configname, Main.DRIVER.getProperty(Main.DRIVER.CONFIG, this.configname, 100));
         }
-        Main.getInstance().getMainConfig().get("flags."+this.configname, 100, "TYPE: "+type);
-
     }
 
     public static FlagOBJ getFlagObj(Flag flag) {
@@ -45,7 +39,7 @@ public class FlagOBJ {
         if (FlagUtil.flagOBJHashMap.containsKey(search)) {
             return FlagUtil.flagOBJHashMap.get(search);
         }
-        Main.getInstance().getLogger().warning("No Flag found with name: " + search);
+        Console.error("No Flag found with name: " + search);
         return new FlagOBJ("NOT FOUND", 999, Material.BARRIER, DefaultFlag.ALLOWED_CMDS);
     }
     public static FlagOBJ getFlagObj(String flag) {
@@ -53,7 +47,7 @@ public class FlagOBJ {
         if (FlagUtil.flagOBJHashMap.containsKey(search)) {
             return FlagUtil.flagOBJHashMap.get(search);
         }
-        Main.getInstance().getLogger().warning("No Flag found with name: " + search);
+        Console.error("No Flag found with name: " + search);
         return new FlagOBJ("NOT FOUND", 999, Material.BARRIER, DefaultFlag.ALLOWED_CMDS);
     }
 

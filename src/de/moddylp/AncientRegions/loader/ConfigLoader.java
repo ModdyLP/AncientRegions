@@ -1,12 +1,16 @@
 package de.moddylp.AncientRegions.loader;
 
 import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.utils.Console;
 import de.moddylp.simplecommentconfig.Config;
+
+import java.util.ArrayList;
 
 public class ConfigLoader {
     public static void saveDefaultconfig() {
         Config config = Main.getInstance().getMainConfig();
-        Main.getInstance().getLogger().info("Loading Config Default Options");
+        config.reload();
+        Console.send("Loading Config Default Options");
 
         config.get("main.language", "en", "Define Language code");
         config.get("main.metrics", true, "Define if the Plugin sends Usage statistics.");
@@ -77,8 +81,8 @@ public class ConfigLoader {
             config.set("eco.activatecostpercent", Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_activatecostpercent", 100));
             config.set("eco.paybackpercent", Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_payback", 10));
             config.set("region.regionpriority", Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_regionpriority", 10));
-            config.set("region.standartdenyflags", Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_standartdenyflags", new String[0]));
-            config.set("region.standartallowflags", Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_standartallowflags", new String[0]));
+            config.set("region.standartdenyflags", Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_standartdenyflags", new ArrayList<>()));
+            config.set("region.standartallowflags", Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_standartallowflags", new ArrayList<>()));
             config.set("particle.particleshowrange", Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_particleshowrange", 16));
 
             Main.DRIVER.deletefile(Main.DRIVER.CONFIG);

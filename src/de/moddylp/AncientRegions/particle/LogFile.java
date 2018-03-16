@@ -1,6 +1,7 @@
 package de.moddylp.AncientRegions.particle;
 
 import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.utils.Console;
 import de.moddylp.simplecommentconfig.Config;
 
 public class LogFile {
@@ -17,7 +18,7 @@ public class LogFile {
         try {
             getfile();
             if (data != null) {
-                Main.getInstance().getLogger().info("Creating data file");
+                Console.send("Creating data file");
                 this.data.createSection("regions");
                 this.data.saveToFile();
             }

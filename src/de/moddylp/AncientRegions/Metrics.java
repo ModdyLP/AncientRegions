@@ -1,5 +1,6 @@
 package de.moddylp.AncientRegions;
 
+import de.moddylp.AncientRegions.utils.Console;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -197,7 +198,7 @@ public class Metrics {
                             this.firstPost = false;
                         } catch (IOException e) {
                             if (!Metrics.this.debug) break block7;
-                            Bukkit.getLogger().log(Level.INFO, "[Metrics] " + e.getMessage());
+                            Console.error("[Metrics] " + e.getMessage());
                         }
                     }
                 }
@@ -215,7 +216,7 @@ public class Metrics {
                 this.configuration.load(this.getConfigFile());
             } catch (IOException | InvalidConfigurationException ex) {
                 if (this.debug) {
-                    Bukkit.getLogger().log(Level.INFO, "[Metrics] " + ex.getMessage());
+                    Console.error("[Metrics] " + ex.getMessage());
                 }
                 return true;
             }
@@ -268,7 +269,7 @@ public class Metrics {
             return ((Player[]) onlinePlayerMethod.invoke(Bukkit.getServer(), new Object[0])).length;
         } catch (Exception ex) {
             if (this.debug) {
-                Bukkit.getLogger().log(Level.INFO, "[Metrics] " + ex.getMessage());
+                Console.error("[Metrics] " + ex.getMessage());
             }
             return 0;
         }

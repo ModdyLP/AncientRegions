@@ -18,6 +18,7 @@ import de.moddylp.AncientRegions.region.BuyRegionGUI;
 import de.moddylp.AncientRegions.region.MembersGUI;
 import de.moddylp.AncientRegions.region.Region;
 import de.moddylp.AncientRegions.region.RegionManageGUI;
+import de.moddylp.AncientRegions.utils.Console;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
@@ -45,7 +46,7 @@ public class Menu_Click
         this.loader = loaderClass;
         this.plugin = plugin;
         this.worldedit = worldedit;
-        Main.getInstance().getLogger().info("Events registered");
+        Console.send("Events registered");
     }
 
     @EventHandler

@@ -18,6 +18,7 @@ import de.moddylp.AncientRegions.flags.FlagOBJ;
 import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.loader.FileDriver;
 import de.moddylp.AncientRegions.loader.WorldEditHandler6;
+import de.moddylp.AncientRegions.utils.Console;
 import javafx.beans.property.BooleanProperty;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
@@ -138,13 +139,13 @@ public class Region {
                                                 System.err.println("Cant access file: "+dir.getAbsolutePath());
                                             }
                                             if (new WorldEditHandler6(plugin).saveRegionBlocks(schematic, p.getName() + seperator + regionname + seperator + id, p, region)) {
-                                                Main.getInstance().getLogger().info("BACKUP SUCCESS");
+                                                Console.send("BACKUP SUCCESS");
                                                 regions.addRegion(region);
                                                 p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Created") + "[ " + edges.get(0) + " | " + edges.get(2) + " ]");
                                                 RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
                                                 gui.open();
                                             } else {
-                                                Main.getInstance().getLogger().info("BACKUP ERROR");
+                                                Console.send("BACKUP ERROR");
                                                 p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("ErrorCreate"));
                                             }
                                         } else {
@@ -204,7 +205,7 @@ public class Region {
                                         Vector dimension = new Vector(max.getBlockX() - min.getBlockX() + 1, max.getBlockY() - min.getBlockY() + 1, max.getBlockZ() - min.getBlockZ() + 1);
                                         WorldEditHandler6 handler = new WorldEditHandler6(plugin);
                                         if (handler.restoreRegionBlocks(file, rg.getId(), p, rg, dimension)) {
-                                            Main.getInstance().getLogger().info("RESTORE SUCCESS");
+                                            Console.send("RESTORE SUCCESS");
                                             regions.removeRegion(rg.getId());
                                             p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Removed").replace("[PH]", rg.getId()));
                                             give(p, e, rg.getId());
@@ -212,7 +213,7 @@ public class Region {
                                             gui.open();
                                         } else {
                                             regions.removeRegion(rg.getId());
-                                            Main.getInstance().getLogger().warning("RESTORE ERROR on " + rg.getId() + " money was payed back to customer.");
+                                            Console.error("RESTORE ERROR on " + rg.getId() + " money was payed back to customer.");
                                             p.sendMessage(ChatColor.RED + "[AR][ERROR] " + plugin.lang.getText("RemovedError").replace("[PH]", rg.getId()));
                                             give(p, e, rg.getId());
                                             RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
@@ -265,12 +266,10 @@ public class Region {
             edges.add(new BlockVector((double) (p.getLocation().getBlockX() + halfregionsize), regiondepth, (double) (p.getLocation().getBlockZ() + halfregionsize)));
             edges.add(new BlockVector((double) (p.getLocation().getBlockX() + halfregionsize), regiondepth, (double) (p.getLocation().getBlockZ() - halfregionsize)));
         }
-        Main.getInstance().getLogger().info("Edges Initiated");
         return edges;
     }
 
     private boolean checkRegionsExists(List<BlockVector> edges, WorldGuardPlugin worldGuard, Player p) {
-        Main.getInstance().getLogger().info("checking region");
         try {
             Vector KGK = edges.get(0);
             Vector GGK = edges.get(1);
@@ -278,21 +277,17 @@ public class Region {
             Vector GKK = edges.get(3);
             Vector KKK = new Vector(KGK.getX(), GKK.getY(), KGK.getZ());
             Vector GGG = new Vector(GGK.getX() + 1.0, GGK.getY(), GKG.getZ() + 1.0);
-            Main.getInstance().getLogger().info(GGG + " " + KKK);
             RegionContainer container = worldGuard.getRegionContainer();
             RegionManager regions = container.get(p.getWorld());
-            Main.getInstance().getLogger().info("parameter set");
             while (KKK.getY() < GGG.getY()) {
                 while (KKK.getX() < GGG.getX()) {
                     List<String> region = Objects.requireNonNull(regions).getApplicableRegionsIDs(KKK);
                     if (!region.isEmpty()) {
-                        Main.getInstance().getLogger().info("!!! Check complete collision by" + KKK);
                         return false;
                     }
                     while (KKK.getZ() < GGG.getZ()) {
                         region = regions.getApplicableRegionsIDs(KKK);
                         if (!region.isEmpty()) {
-                            Main.getInstance().getLogger().info("!!! Check complete collision by" + KKK);
                             return false;
                         }
                         KKK = new Vector(KKK.getX(), KKK.getY(), KKK.getZ() + 1.0);
@@ -305,7 +300,6 @@ public class Region {
             ex.printStackTrace();
             return false;
         }
-        Main.getInstance().getLogger().info("Check complete no collision");
         return true;
     }
 

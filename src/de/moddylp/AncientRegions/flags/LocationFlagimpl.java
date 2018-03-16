@@ -9,6 +9,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.gui.Events.ActivateMode;
+import de.moddylp.AncientRegions.utils.Console;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -108,7 +109,6 @@ public class LocationFlagimpl {
             );
             if (!FlagUtil.isSet(p, this.flagobj.getFlag()).equalsIgnoreCase("null")) {
                 lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Current") + ":");
-                Main.getInstance().getLogger().info(FlagUtil.isSet(p, this.flagobj.getFlag()));
                 String[] location = FlagUtil.isSet(p, this.flagobj.getFlag()).split(",");
                 location[1] = location[1].replace(" :", "X: ");
                 location[2] = "Y: " + location[2];

@@ -4,17 +4,9 @@ import de.moddylp.AncientRegions.Language;
 import de.moddylp.AncientRegions.Main;
 
 public class Messages {
-    private Main plugin;
 
-    public Messages(Main plugin) {
-        this.plugin = plugin;
-        this.setup();
-    }
-
-    private void setup() {
-        Language lang = this.plugin.lang;
-        lang.setTextOnce("1", "ATTENTION: Please don't touch the placeholder ( [PH] ) tag!!");
-        lang.setTextOnce("2", "------------------------------------------------------------");
+    public static void setup(Main plugin) {
+        Language lang = plugin.lang;
         lang.setTextOnce("Enabled", "AncientRegions has been enabled!");
         lang.setTextOnce("Disabled", "AncientRegions has been disabled!");
         lang.setTextOnce("ConfigReload", "Config and LanguageFile have been reloaded!");

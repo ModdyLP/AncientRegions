@@ -1,5 +1,6 @@
 package de.moddylp.AncientRegions.bukkit;
 
+import de.moddylp.AncientRegions.utils.Console;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -205,7 +206,7 @@ public class Metrics {
                     Metrics.sendData(data);
                 } catch (Exception e) {
                     if (!logFailedRequests) break block2;
-                    Metrics.this.plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + Metrics.this.plugin.getName(), e);
+                    Console.error("Could not submit plugin stats of " + Metrics.this.plugin.getName());
                 }
             }
         }).start();
@@ -435,7 +436,7 @@ public class Metrics {
                 chart.put("data", data);
             } catch (Throwable t) {
                 if (logFailedRequests) {
-                    Bukkit.getLogger().log(Level.WARNING, "Failed to get data for custom chart with id " + this.chartId, t);
+                    Console.error("Failed to get data for custom chart with id " + this.chartId);
                 }
                 return null;
             }

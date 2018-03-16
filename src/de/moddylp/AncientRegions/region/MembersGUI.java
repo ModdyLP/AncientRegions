@@ -10,6 +10,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.gui.Events.ActivateMode;
+import de.moddylp.AncientRegions.utils.Console;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -79,7 +80,7 @@ public class MembersGUI {
             Navigation2 navi = new Navigation2();
             navi.loadguiitems(this.menu, this.plugin);
         } catch (Throwable ex) {
-            Main.getInstance().getLogger().warning("Minecraft Version incompatible: " + ex.getMessage());
+            Console.error("Minecraft Version incompatible: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -108,7 +109,7 @@ public class MembersGUI {
             Navigation2 navi = new Navigation2();
             navi.loadguiitems(this.menu, this.plugin);
         } catch (Throwable ex) {
-            Main.getInstance().getLogger().warning("Minecraft Version incompatible: " + ex.getMessage());
+            Console.error("Minecraft Version incompatible: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -157,7 +158,7 @@ public class MembersGUI {
             }
             this.loadregionskulls(this.worldguard);
         } catch (Exception ex) {
-            Main.getInstance().getLogger().warning("Minecraft Version incompatible: " + ex.getMessage());
+            Console.error("Minecraft Version incompatible: " + ex.getMessage());
             ex.printStackTrace();
         }
     }

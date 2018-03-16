@@ -10,6 +10,7 @@ public class Language {
     public void setLangCode(String langCode) {
         Language.langcode = langCode;
         Language.messages = Main.getInstance().getManager().getConfig(Main.getInstance().getDataFolder()+"/"+langcode + "_messages.lang");
+        Language.messages.setHeader(new String[]{"DO NOT MODIFY [PH] TAGS AND ALL TAGS in {}", "THEY ARE REQUIRED"});
     }
 
     public void reload() {
@@ -28,10 +29,10 @@ public class Language {
     }
 
     public String getText(String path) {
-        if (!Language.messages.containsKey(path)) {
+        if (Language.messages.containsKey(path)) {
             return Language.messages.get(path).toString().replaceAll("&", "\u00a7");
         }
-        return "&cThis sentence does not exist. Please check lang-file message ".replaceAll("&", "\u00a7") + path;
+        return "This sentence does not exist. Please check lang-file message: " + path;
     }
 }
 

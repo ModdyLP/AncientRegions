@@ -10,6 +10,7 @@ import de.moddylp.AncientRegions.gui.Events.GUIEvents;
 import de.moddylp.AncientRegions.gui.Events.GUIOpener;
 import de.moddylp.AncientRegions.loader.*;
 import de.moddylp.AncientRegions.particle.LogFile;
+import de.moddylp.AncientRegions.utils.Console;
 import de.moddylp.simplecommentconfig.Config;
 import de.moddylp.simplecommentconfig.ConfigManager;
 import org.bukkit.ChatColor;
@@ -48,6 +49,7 @@ public class Main
     public ConfigManager getManager() {
         return manager;
     }
+
     public Config getMainConfig() {
         return config;
     }
@@ -57,10 +59,11 @@ public class Main
         worldguard = this.getWorldGuard();
         worldedit = this.setupWorldEdit();
         this.manager = new ConfigManager();
-        String[] header = {"###AncientRegions "+this.getDescription().getVersion()+"###", "Written by "+this.getDescription().getAuthors(), "This is the Configuration File"};
-        this.config = manager.getConfig(getDataFolder()+"/"+"config.conf");
+        String[] header = {"###AncientRegions " + this.getDescription().getVersion() + "###", "Written by " + this.getDescription().getAuthors(), "This is the Configuration File"};
+        this.config = manager.getConfig(getDataFolder() + "/" + "config.conf");
         this.config.setHeader(header);
-        this.getLogger().info("Worldguard hooked");
+        this.config.saveToFile();
+        Console.send("Worldguard hooked");
         VaultLoader vaultloader = new VaultLoader(this);
         if (!vaultloader.load()) {
             this.onDisable();
@@ -80,11 +83,11 @@ public class Main
                 Metrics metrics1 = new Metrics(this);
                 metrics1.start();
             } catch (Exception ex) {
-                this.getLogger().warning("Metrics cant be enabled because there was an error: " + ex.getLocalizedMessage());
+                Console.error("Metrics cant be enabled because there was an error: " + ex.getLocalizedMessage());
             }
         }
         checkConfiguration();
-        System.out.println(this.lang.getText("Enabled"));
+        Console.send(this.lang.getText("Enabled"));
     }
 
     public void onDisable() {
@@ -99,7 +102,7 @@ public class Main
                         if (sender instanceof Player) {
                             Player p = ((Player) sender).getPlayer();
                             if (Main.getInstance().getMainConfig().containsKey("main.worlds")) {
-                                List<?> worldconfig = (ArrayList)Main.getInstance().getMainConfig().get("main.worlds");
+                                List<?> worldconfig = (ArrayList) Main.getInstance().getMainConfig().get("main.worlds");
                                 ArrayList<String> worlds = new ArrayList<>();
                                 for (Object object : worldconfig) {
                                     worlds.add(object.toString());
@@ -120,7 +123,7 @@ public class Main
                             p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.lang.getText("World"));
                             return true;
                         }
-                        this.getLogger().log(Level.INFO, "{0}[AR][ERROR] {1}", new Object[]{ChatColor.RED, this.lang.getText("Console")});
+                        Console.error(this.lang.getText("Console"));
                         return true;
                     }
                     case "reload": {
@@ -144,7 +147,7 @@ public class Main
                                         .forEach(rgids -> rgids.values().stream()
                                                 .filter(rg -> file.getString(rg.getId()) != null)
                                                 .forEach(rg -> file.setString(rg.getId(), null))
-                                );
+                                        );
                                 sender.sendMessage(ChatColor.GREEN + "[AR][ERROR] " + this.lang.getText("Canceled"));
                                 return true;
                             }
@@ -177,7 +180,7 @@ public class Main
                 p.performCommand("ancr gui");
                 return true;
             }
-            this.getLogger().log(Level.INFO, "{0}[AR][ERROR] {1} ", new Object[]{this.lang.getText("Console")});
+            Console.error( this.lang.getText("Console"));
             return true;
         }
         return false;
@@ -186,7 +189,7 @@ public class Main
     private WorldGuardPlugin getWorldGuard() {
         Plugin plugin = this.getServer().getPluginManager().getPlugin("WorldGuard");
         if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
-            System.out.println(ChatColor.RED + "[AR][ERROR] " + this.lang.getText("Worldguard"));
+            Console.error(this.lang.getText("Worldguard"));
         }
         return (WorldGuardPlugin) plugin;
     }
@@ -200,12 +203,13 @@ public class Main
     }
 
     private void loadMessages() {
-        Messages messages = new Messages(this);
+        Messages.setup(this);
     }
 
-    private void checkConfiguration()  {
-        if (((ArrayList)Main.getInstance().getMainConfig().get("region.standartdenyflags")).size() > 0) {
-            List<?> standartdenyflags = (ArrayList)Main.getInstance().getMainConfig().get("region.standartdenyflags");
+    private void checkConfiguration() {
+        if (Main.getInstance().getMainConfig().get("region.standartdenyflags") instanceof ArrayList
+                && ((ArrayList) Main.getInstance().getMainConfig().get("region.standartdenyflags")).size() > 0) {
+            List<?> standartdenyflags = (ArrayList) Main.getInstance().getMainConfig().get("region.standartdenyflags");
             ArrayList<String> flags = new ArrayList<>();
             for (Object object : standartdenyflags) {
                 flags.add(object.toString());
@@ -214,13 +218,14 @@ public class Main
                 boolean valid;
                 valid = isValid(flag);
                 if (!valid) {
-                    this.getLogger().log(Level.WARNING, "[AR][ERROR] No valid Deny Flag: "+flag);
+                    Console.error( "No valid Deny Flag: " + flag);
                 }
 
             }
         }
-        if (((ArrayList)Main.getInstance().getMainConfig().get("region.standartallowflags")).size() > 0) {
-            List<?> standartallowflags = (ArrayList)Main.getInstance().getMainConfig().get("region.standartallowflags");
+        if (Main.getInstance().getMainConfig().get("region.standartdenyflags") instanceof ArrayList
+                && ((ArrayList) Main.getInstance().getMainConfig().get("region.standartallowflags")).size() > 0) {
+            List<?> standartallowflags = (ArrayList) Main.getInstance().getMainConfig().get("region.standartallowflags");
             ArrayList<String> flags = new ArrayList<>();
             for (Object object : standartallowflags) {
                 flags.add(object.toString());
@@ -229,7 +234,7 @@ public class Main
                 boolean valid;
                 valid = isValid(flag);
                 if (!valid) {
-                    this.getLogger().log(Level.WARNING, "[AR][ERROR] No valid Allow Flag: "+flag);
+                    Console.error( "No valid Allow Flag: " + flag);
                 }
 
             }
@@ -239,8 +244,7 @@ public class Main
     private boolean isValid(String flag) {
         boolean valid = false;
         FlagOBJ flagOBJ = FlagOBJ.getFlagObj(flag);
-        if (Main.getInstance().getMainConfig().containsKey("flags."+flag) && !flagOBJ.getName().equals("NOT FOUND"))
-        {
+        if (Main.getInstance().getMainConfig().containsKey("flags." + flag) && !flagOBJ.getName().equals("NOT FOUND")) {
             if (flagOBJ.getFlag() instanceof StateFlag) {
                 valid = true;
             }

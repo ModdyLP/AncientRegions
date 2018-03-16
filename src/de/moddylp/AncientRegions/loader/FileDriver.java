@@ -2,6 +2,7 @@ package de.moddylp.AncientRegions.loader;
 
 import com.google.gson.*;
 import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.utils.Console;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,14 +65,14 @@ public class FileDriver {
             }
         }
         catch (Exception ex) {
-            Main.getInstance().getLogger().warning("Parsing error");
+            Console.error("Parsing error");
         }
         return json;
     }
 
     public void loadJson() {
         try {
-            Main.getInstance().getLogger().info("===LOADFILES===");
+            Console.send("===LOADFILES===");
             for (String filename : files.keySet()) {
                 String line;
                 BufferedReader reader = new BufferedReader(new FileReader(files.get(filename)));
@@ -83,13 +84,13 @@ public class FileDriver {
             }
         }
         catch (Exception ex) {
-            Main.getInstance().getLogger().warning("File can not be loaded");
+            Console.error("File can not be loaded");
         }
     }
 
     public void saveJson() {
         try {
-            Main.getInstance().getLogger().info("===SAVEFILES===");
+            Console.send("===SAVEFILES===");
             for (String filename : files.keySet()) {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(files.get(filename)));
                 String json = jsons.get(filename).toString();
@@ -99,7 +100,7 @@ public class FileDriver {
             }
         }
         catch (Exception ex) {
-            Main.getInstance().getLogger().warning("File can not be saved" + ex.getMessage());
+            Console.error("File can not be saved" + ex.getMessage());
         }
     }
 
@@ -164,7 +165,7 @@ public class FileDriver {
             }
         }
         catch (Exception ex) {
-            Main.getInstance().getLogger().warning("Can not set Property: ");
+            Console.error("Can not set Property: ");
         }
     }
 
@@ -188,7 +189,7 @@ public class FileDriver {
                 return key;
             }
         }
-        Main.getInstance().getLogger().info("Nothing found for search: "+search);
+        Console.error("Nothing found for search: "+search);
         return "Nothing";
     }
 
@@ -216,7 +217,7 @@ public class FileDriver {
             }
         }
         catch (Exception ex) {
-            Main.getInstance().getLogger().warning("Can not remove Property: ");
+            Console.error("Can not remove Property: ");
         }
     }
 
@@ -228,7 +229,7 @@ public class FileDriver {
             }
         }
         catch (Exception ex) {
-            Main.getInstance().getLogger().warning("Can not list Property: ");
+            Console.error("Can not list Property: ");
         }
         return objects;
     }

@@ -7,6 +7,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.utils.Console;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -85,7 +86,7 @@ public class ParticleShower {
                 }
                 if (p == null || !p.isOnline()) {
                     data.setString(rg.getId(), null);
-                    Main.getInstance().getLogger().info("Partciles cancled by Console");
+                    Console.send("Partciles cancled by Console");
                     particles.cancel();
                     timertask.cancel();
                 }

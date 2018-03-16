@@ -7,6 +7,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.gui.Events.ActivateMode;
+import de.moddylp.AncientRegions.utils.Console;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -77,7 +78,7 @@ public class FlagUtil {
             }
             return price;
         } catch (Exception ex) {
-            Main.getInstance().getLogger().info(ex.toString());
+            Console.error(ex.toString());
             return null;
         }
     }
@@ -87,7 +88,7 @@ public class FlagUtil {
             return Main.getInstance().getMainConfig().get("eco.currency", "Euro").toString();
             //TODO: return Main.DRIVER.getPropertyOnly(Main.DRIVER.CONFIG, "_currency");
         } catch (Exception ex) {
-            Main.getInstance().getLogger().info(ex.toString());
+            Console.error(ex.toString());
             return null;
         }
     }
