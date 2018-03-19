@@ -40,8 +40,7 @@ public class SetValueFromChatEvent
     public String getChat(AsyncPlayerChatEvent e) {
         if (e.getPlayer().equals(this.p)) {
             String msg = e.getMessage();
-            UUID uuid = this.uuid(msg);
-            if (uuid != null) {
+            if (msg != null && checkIfPlayerExists(msg)) {
                 RegionContainer container;
                 if (this.mode.equalsIgnoreCase(this.plugin.lang.getText("AddMember"))) {
                     if (this.p.hasPermission("ancient.regions.region.addmember")) {
@@ -58,8 +57,8 @@ public class SetValueFromChatEvent
                                 ProtectedRegion rg = regions.getRegion((String) region.get(0));
                                 if (rg != null && (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass"))) {
                                     if (FlagUtil.payment(this.p, e, "_addmember", ActivateMode.ACTIVATE) || this.p.hasPermission("ancient.regions.admin.bypass")) {
-                                        DefaultDomain member = new DefaultDomain();
-                                        member.addPlayer(uuid);
+                                        DefaultDomain member = rg.getMembers();
+                                        member.addPlayer(msg);
                                         rg.setMembers(member);
                                         this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("PlayerAdded").replace("[PH]", msg));
                                         container.reload();
@@ -94,7 +93,7 @@ public class SetValueFromChatEvent
                                 if (FlagUtil.payment(this.p, e, "_changeowner", ActivateMode.ACTIVATE) || this.p.hasPermission("ancient.regions.admin.bypass")) {
                                     DefaultDomain owner = rg.getOwners();
                                     owner.removePlayer(this.p.getUniqueId());
-                                    owner.addPlayer(uuid);
+                                    owner.addPlayer(msg);
                                     rg.setOwners(owner);
                                     this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("ChangeOwner").replace("[PH]", msg));
                                     container.reload();
@@ -120,7 +119,7 @@ public class SetValueFromChatEvent
                 e.setCancelled(true);
             } else {
                 e.setCancelled(true);
-                this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("Player").replace("[PH]", msg));
+                this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("Player").replace("[PH]", msg != null ? msg : "NO PLAYER"));
                 RegionManageGUI gui = new RegionManageGUI(this.p, this.plugin, this.worldguard);
                 gui.open();
                 HandlerList.unregisterAll(this);
@@ -129,16 +128,20 @@ public class SetValueFromChatEvent
         return this.mode;
     }
 
-    private UUID uuid(String playername) {
+    private boolean checkIfPlayerExists(String playername) {
+        playername = playername.trim();
         OfflinePlayer[] allplayers = this.plugin.getServer().getOfflinePlayers();
         if (allplayers.length > 0) {
-            String uuidname = allplayers[0].getName();
-            if (playername.trim().equalsIgnoreCase(uuidname)) {
-                return allplayers[0].getUniqueId();
+            if (allplayers[0].getName().equalsIgnoreCase(playername) || allplayers[0].getPlayer().getDisplayName().equalsIgnoreCase(playername)) {
+                return true;
             }
-            return null;
         }
-        return null;
+        for (Player player: this.plugin.getServer().getOnlinePlayers()) {
+            if (player.getName().equalsIgnoreCase(playername) || player.getDisplayName().equalsIgnoreCase(playername)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

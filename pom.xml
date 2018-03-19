@@ -87,6 +87,10 @@
             <id>Plugin Metrics</id>
             <url>http://repo.mcstats.org/content/repositories/public</url>
         </repository>
+        <repository>
+            <id>M4taiori</id>
+            <url>http://repos.m4taiori.io/repository/SimpleCommentConfig</url>
+        </repository>
     </repositories>
 
     <dependencies>
