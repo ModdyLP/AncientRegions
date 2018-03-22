@@ -30,6 +30,7 @@ public class SpezialFormatIntegar
         this.p = p;
         this.flagobj = flagOBJ;
         this.mode = mode;
+        this.p.sendMessage(ChatColor.GOLD+"[AR][INFO] "+Main.getInstance().lang.getText("exitinfo"));
     }
 
     @EventHandler

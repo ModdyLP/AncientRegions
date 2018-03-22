@@ -34,14 +34,18 @@ public class SetValueFromChatEvent
         this.mode = mode;
         this.plugin = plugin;
         this.worldguard = worldguard;
+        this.p.sendMessage(ChatColor.GOLD+"[AR][INFO] "+Main.getInstance().lang.getText("exitinfo"));
     }
 
     @EventHandler
     public String getChat(AsyncPlayerChatEvent e) {
         if (e.getPlayer().equals(this.p)) {
             String msg = e.getMessage();
+            if (FlagUtil.cancelEvent(msg, this.p, e, this)) {
+                return null;
+            }
             Player player = checkIfPlayerExists(msg);
-            if (msg != null && player != null) {
+            if (player != null) {
                 RegionContainer container;
                 if (this.mode.equalsIgnoreCase(this.plugin.lang.getText("AddMember"))) {
                     if (this.p.hasPermission("ancient.regions.region.addmember")) {
@@ -118,7 +122,7 @@ public class SetValueFromChatEvent
                 e.setCancelled(true);
             } else {
                 e.setCancelled(true);
-                this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("Player").replace("[PH]", msg != null ? msg : "NO PLAYER"));
+                this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("Player").replace("[PH]", msg));
                 RegionManageGUI gui = new RegionManageGUI(this.p, this.plugin, this.worldguard);
                 gui.open();
                 HandlerList.unregisterAll(this);
@@ -130,9 +134,9 @@ public class SetValueFromChatEvent
     private Player checkIfPlayerExists(String playername) {
         playername = playername.trim();
         OfflinePlayer[] allplayers = this.plugin.getServer().getOfflinePlayers();
-        if (allplayers.length > 0) {
-            if (allplayers[0].getName().equalsIgnoreCase(playername) || allplayers[0].getPlayer().getDisplayName().equalsIgnoreCase(playername)) {
-                return allplayers[0].getPlayer();
+        for (OfflinePlayer offlinePlayer: allplayers) {
+            if (offlinePlayer.getName().equalsIgnoreCase(playername) || (offlinePlayer.getPlayer() != null && offlinePlayer.getPlayer().getDisplayName().equalsIgnoreCase(playername))) {
+                return offlinePlayer.getPlayer();
             }
         }
         for (Player player: this.plugin.getServer().getOnlinePlayers()) {

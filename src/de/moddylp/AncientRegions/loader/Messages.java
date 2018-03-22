@@ -65,6 +65,7 @@ public class Messages {
         lang.setTextOnce("Next", "Next");
         lang.setTextOnce("Back", "Back");
         lang.setTextOnce("Mainmenu", "Main Menu");
+        lang.setTextOnce("exitinfo", "Use 'exit' or 'cancel' to leave the input event.");
         lang.setTextOnce("Current", "Current Value");
         lang.setTextOnce("ErrorPasting", "There was an error. The Plugin can't rollback the Region. Please contact the Adminstrator.");
         lang.setTextOnce("ErrorSaving", "There was an error. The Plugin can't save the Region into file. Please contact the Adminstrator.");

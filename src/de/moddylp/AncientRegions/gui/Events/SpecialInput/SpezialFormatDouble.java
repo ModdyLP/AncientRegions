@@ -30,6 +30,7 @@ public class SpezialFormatDouble
         this.p = p;
         this.flagObj = flagOBJ;
         this.mode = mode;
+        this.p.sendMessage(ChatColor.GOLD+"[AR][INFO] "+Main.getInstance().lang.getText("exitinfo"));
     }
 
     @EventHandler

@@ -92,7 +92,7 @@ public class ConfigLoader {
 
     }
     private static ArrayList<String> convertJsonArray(String config){
-        JSONArray array = (JSONArray)Main.DRIVER.getPropertyAsObj(Main.DRIVER.CONFIG, config, new String[]{});
+        JSONArray array = (JSONArray)Main.DRIVER.getPropertyAsObj(Main.DRIVER.CONFIG, config, new JSONArray());
         ArrayList<String> liste = new ArrayList<>();
         for (Object object: array) {
             liste.add(object.toString());

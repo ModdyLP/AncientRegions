@@ -31,6 +31,7 @@ public class WeatherFormat
         this.p = p;
         this.flag = flag2;
         this.mode = mode;
+        this.p.sendMessage(ChatColor.GOLD+"[AR][INFO] "+Main.getInstance().lang.getText("exitinfo"));
     }
 
     @EventHandler

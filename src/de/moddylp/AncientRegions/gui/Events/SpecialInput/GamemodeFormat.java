@@ -8,6 +8,7 @@ import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.gui.Editflags;
 import de.moddylp.AncientRegions.gui.EditflagsPage2;
 import de.moddylp.AncientRegions.gui.Events.ActivateMode;
+import net.milkbowl.vault.chat.Chat;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -28,6 +29,7 @@ public class GamemodeFormat
         this.flag = flag2;
         this.rg = rg;
         this.mode = mode;
+        this.p.sendMessage(ChatColor.GOLD+"[AR][INFO] "+Main.getInstance().lang.getText("exitinfo"));
     }
 
     @EventHandler
