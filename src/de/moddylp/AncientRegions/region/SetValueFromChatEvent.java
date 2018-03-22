@@ -40,7 +40,8 @@ public class SetValueFromChatEvent
     public String getChat(AsyncPlayerChatEvent e) {
         if (e.getPlayer().equals(this.p)) {
             String msg = e.getMessage();
-            if (msg != null && checkIfPlayerExists(msg)) {
+            Player player = checkIfPlayerExists(msg);
+            if (msg != null && player != null) {
                 RegionContainer container;
                 if (this.mode.equalsIgnoreCase(this.plugin.lang.getText("AddMember"))) {
                     if (this.p.hasPermission("ancient.regions.region.addmember")) {
@@ -56,12 +57,11 @@ public class SetValueFromChatEvent
                             } else {
                                 ProtectedRegion rg = regions.getRegion((String) region.get(0));
                                 if (rg != null && (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass"))) {
-                                    if (FlagUtil.payment(this.p, e, "_addmember", ActivateMode.ACTIVATE) || this.p.hasPermission("ancient.regions.admin.bypass")) {
+                                    if (FlagUtil.payment(this.p, e, "manage.addmember", null) || this.p.hasPermission("ancient.regions.admin.bypass")) {
                                         DefaultDomain member = rg.getMembers();
-                                        member.addPlayer(msg);
+                                        member.addPlayer(this.worldguard.wrapPlayer(player));
                                         rg.setMembers(member);
                                         this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("PlayerAdded").replace("[PH]", msg));
-                                        container.reload();
                                         e.setCancelled(true);
                                     } else {
                                         this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("NoMoney"));
@@ -90,13 +90,12 @@ public class SetValueFromChatEvent
                         } else {
                             ProtectedRegion rg = regions.getRegion(region.get(0));
                             if (Objects.requireNonNull(rg).isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass")) {
-                                if (FlagUtil.payment(this.p, e, "_changeowner", ActivateMode.ACTIVATE) || this.p.hasPermission("ancient.regions.admin.bypass")) {
+                                if (FlagUtil.payment(this.p, e, "manage.changeowner", null) || this.p.hasPermission("ancient.regions.admin.bypass")) {
                                     DefaultDomain owner = rg.getOwners();
-                                    owner.removePlayer(this.p.getUniqueId());
-                                    owner.addPlayer(msg);
+                                    owner.removePlayer(ply);
+                                    owner.addPlayer(this.worldguard.wrapPlayer(player));
                                     rg.setOwners(owner);
                                     this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("ChangeOwner").replace("[PH]", msg));
-                                    container.reload();
                                     e.setCancelled(true);
                                 } else {
                                     this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("NoMoney"));
@@ -128,20 +127,20 @@ public class SetValueFromChatEvent
         return this.mode;
     }
 
-    private boolean checkIfPlayerExists(String playername) {
+    private Player checkIfPlayerExists(String playername) {
         playername = playername.trim();
         OfflinePlayer[] allplayers = this.plugin.getServer().getOfflinePlayers();
         if (allplayers.length > 0) {
             if (allplayers[0].getName().equalsIgnoreCase(playername) || allplayers[0].getPlayer().getDisplayName().equalsIgnoreCase(playername)) {
-                return true;
+                return allplayers[0].getPlayer();
             }
         }
         for (Player player: this.plugin.getServer().getOnlinePlayers()) {
             if (player.getName().equalsIgnoreCase(playername) || player.getDisplayName().equalsIgnoreCase(playername)) {
-                return true;
+                return player;
             }
         }
-        return false;
+        return null;
     }
 }
 

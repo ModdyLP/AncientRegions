@@ -59,7 +59,7 @@ public class WorldEditHandler6 {
             }
             file.delete();
         } catch (Exception e) {
-            e.printStackTrace();
+            Console.error(e.getMessage());
             return false;
         }
         return true;

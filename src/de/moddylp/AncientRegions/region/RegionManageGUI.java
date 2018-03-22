@@ -8,6 +8,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagUtil;
+import de.moddylp.AncientRegions.utils.Console;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -83,7 +84,7 @@ public class RegionManageGUI {
             this.menu.setItem(8, removeregion);
         }
         catch (Exception ex) {
-            ex.printStackTrace();
+            Console.error(ex.getMessage());
         }
     }
 
@@ -113,17 +114,12 @@ public class RegionManageGUI {
                 if (Objects.requireNonNull(rg).isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
                     String numbername = rg.getId().replaceAll("-", "").replaceAll("_", "").replaceAll(p.getName().toLowerCase(), "");
                     String number = numbername.replaceAll("\\D+","");
-                    String option = Main.getInstance().getMainConfig().findKeyByValue(numbername.replaceAll(number, ""));
-                    if (option != null) {
-                        return Integer.valueOf(option.replaceAll("region", "").replaceAll("name", "").replaceAll("_", "").replaceAll("\\.", ""));
-                    }
-                    return 0;
+                    return Integer.valueOf(number);
                 }
                 return 0;
             }
             return 0;
         } catch (Exception ex) {
-            ex.printStackTrace();
             return 0;
         }
     }

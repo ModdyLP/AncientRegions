@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.moddylp</groupId>
     <artifactId>AncientRegions</artifactId>
-    <version>20180311</version>
+    <version>20180322</version>
     <name>AncientRegions</name>
     <description>Plugin for Minecraft Spigot to control Worldguard</description>
     <build>
@@ -60,7 +60,7 @@
         <WorldguardVersion>6.2.1</WorldguardVersion>
         <WorldeditVersion>6.1.7.3</WorldeditVersion>
         <VaultVersion>1.6.6</VaultVersion>
-        <CONFIG>20180316</CONFIG>
+        <CONFIG>20180322</CONFIG>
     </properties>
     <repositories>
         <repository>

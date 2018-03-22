@@ -11,6 +11,7 @@ import de.moddylp.AncientRegions.flags.FlagOBJ;
 import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.gui.Editflags;
 import de.moddylp.AncientRegions.gui.Events.ActivateMode;
+import de.moddylp.AncientRegions.utils.Console;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -38,6 +39,9 @@ public class SpezialFormatEntity
     public String getChat(AsyncPlayerChatEvent e) {
         if (e.getPlayer().equals(this.p)) {
             String msg = e.getMessage();
+            if (FlagUtil.cancelEvent(msg, this.p, e, this)) {
+                return null;
+            }
             RegionContainer container = Main.worldguard.getRegionContainer();
             RegionManager regions = container.get(this.p.getWorld());
             Vector pt = new Vector(this.p.getLocation().getX(), this.p.getLocation().getY(), this.p.getLocation().getZ());
@@ -50,16 +54,27 @@ public class SpezialFormatEntity
                 } else {
                     ProtectedRegion rg = regions.getRegion(region.get(0));
                     if (rg != null && (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass"))) {
-                        if (FlagUtil.payment(this.p, e, this.flagobj.getName(), mode)) {
+                        try {
                             HashSet<EntityType> set = new HashSet<>();
-                            set.add(EntityType.valueOf(msg));
-                            rg.setFlag((SetFlag) this.flagobj.getFlag(), set);
-                            this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flagobj.getName()));
-                            Editflags gui = new Editflags(this.p, Main.getInstance());
-                            gui.open();
-                            HandlerList.unregisterAll(this);
-                            e.setCancelled(true);
+                            if (msg.contains(",")) {
+                                for (String string : msg.split(",")) {
+                                    set.add(EntityType.valueOf(string.toUpperCase().trim()));
+                                }
+                            } else {
+                                set.add(EntityType.valueOf(msg.toUpperCase().trim()));
+                            }
+                            if (FlagUtil.payment(this.p, e, this.flagobj.getConfigname(), mode)) {
+                                rg.setFlag((SetFlag) this.flagobj.getFlag(), set);
+                                this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flagobj.getName()));
+                                Editflags gui = new Editflags(this.p, Main.getInstance());
+                                gui.open();
+                                HandlerList.unregisterAll(this);
+                                e.setCancelled(true);
+                            }
+                        } catch (Exception ex) {
+                            this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("InvalidEnitity"));
                         }
+
                     } else {
                         this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("Owner"));
                         e.setCancelled(true);

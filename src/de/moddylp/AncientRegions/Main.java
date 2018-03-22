@@ -4,8 +4,10 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.BooleanFlag;
+import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.moddylp.AncientRegions.flags.FlagOBJ;
+import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.gui.Events.GUIEvents;
 import de.moddylp.AncientRegions.gui.Events.GUIOpener;
 import de.moddylp.AncientRegions.loader.*;
@@ -33,6 +35,7 @@ public class Main
     public static FileDriver DRIVER;
     private ConfigManager manager;
     private Config config;
+    private LogFile datafile;
     private static Main instance;
 
     static {
@@ -41,6 +44,7 @@ public class Main
 
     public Language lang;
     protected GUIEvents loader;
+
 
     public static Main getInstance() {
         return instance;
@@ -52,6 +56,10 @@ public class Main
 
     public Config getMainConfig() {
         return config;
+    }
+
+    public LogFile getData() {
+        return datafile;
     }
 
     public void onEnable() {
@@ -73,8 +81,8 @@ public class Main
         this.lang = new Language();
         this.lang.setLangCode(Main.getInstance().getMainConfig().get("main.language", "en").toString());
         this.loadMessages();
-        LogFile file = new LogFile();
-        file.setup();
+        datafile = new LogFile();
+        datafile.setup();
         this.loader = new GUIEvents(this, worldguard, worldedit);
         FlagLoader.load();
         if (Boolean.valueOf(Main.getInstance().getMainConfig().get("main.metrics", true).toString())) {
@@ -244,7 +252,7 @@ public class Main
     private boolean isValid(String flag) {
         boolean valid = false;
         FlagOBJ flagOBJ = FlagOBJ.getFlagObj(flag);
-        if (Main.getInstance().getMainConfig().containsKey("flags." + flag) && !flagOBJ.getName().equals("NOT FOUND")) {
+        if (FlagUtil.isValidName(flag)) {
             if (flagOBJ.getFlag() instanceof StateFlag) {
                 valid = true;
             }

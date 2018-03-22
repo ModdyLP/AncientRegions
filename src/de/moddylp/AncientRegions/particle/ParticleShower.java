@@ -28,14 +28,12 @@ public class ParticleShower {
     private int particle;
     private BukkitTask particles;
     private int timernum;
-    private LogFile data;
     private BukkitTask timertask;
     private List<Vector> vectoren = new ArrayList<>();
 
     public ParticleShower(Main plugin, Inventory menu) {
         this.plugin = plugin;
         this.menu = menu;
-        this.data = new LogFile();
     }
 
     public void toggle(Player p, WorldGuardPlugin worldguard) {
@@ -49,22 +47,24 @@ public class ParticleShower {
             } else {
                 for (String regionid : region) {
                     ProtectedRegion rg = regions.getRegion(regionid);
-                    if (data.getString(regionid) == null || data.getString(regionid).equalsIgnoreCase("false")) {
+                    if (Main.getInstance().getData().getString(regionid) == null
+                            || (Main.getInstance().getData().getString(regionid) != null
+                            && Main.getInstance().getData().getString(regionid).equalsIgnoreCase("false"))) {
                         World world = p.getWorld();
                         players = new ArrayList<>();
                         players.addAll(this.plugin.getServer().getOnlinePlayers());
                         timer(rg, p);
                         show(world, p, rg);
-                        data.setString(regionid, "true");
+                        Main.getInstance().getData().setString(regionid, "true");
                         p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("Particles")
                                 .replace("[PH]", Main.getInstance().getMainConfig().get("particle.showtimeofparticle").toString()));
                         continue;
                     }
-                    this.data.setString(regionid, null);
+                    Main.getInstance().getData().remove(regionid);
                 }
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Console.error(ex.getMessage());
         }
     }
 
@@ -73,19 +73,19 @@ public class ParticleShower {
         this.timertask = new BukkitRunnable() {
 
             public void run() {
-                if (data.getString(rg.getId()) == null) {
+                if (Main.getInstance().getData().getString(rg.getId()) == null) {
                     p.sendMessage(ChatColor.RED + "[AR][INFO] " + plugin.lang.getText("ParticlesOff"));
                     particles.cancel();
                     timertask.cancel();
                 }
-                if (((Double)Main.getInstance().getMainConfig().get("particle.showtimeofparticle")) != -1) {
+                if (Double.valueOf(Main.getInstance().getMainConfig().get("particle.showtimeofparticle").toString()) != -1) {
                     timernum++;
-                    if (timernum >= ((Double)Main.getInstance().getMainConfig().get("particle.showtimeofparticle")) * 2) {
-                        data.setString(rg.getId(), null);
+                    if (timernum >= Double.valueOf(Main.getInstance().getMainConfig().get("particle.showtimeofparticle").toString()) * 2) {
+                        Main.getInstance().getData().remove(rg.getId());
                     }
                 }
                 if (p == null || !p.isOnline()) {
-                    data.setString(rg.getId(), null);
+                    Main.getInstance().getData().remove(rg.getId());
                     Console.send("Partciles cancled by Console");
                     particles.cancel();
                     timertask.cancel();
@@ -171,7 +171,7 @@ public class ParticleShower {
                 copymaxYpt = new Vector(maxYpt.getBlockX(), copymaxYpt.getBlockY(), copymaxYpt.getBlockZ() + 2);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Console.error(ex.getMessage());
         }
         return vectoren;
     }
@@ -211,10 +211,10 @@ public class ParticleShower {
                                 }
                             }
                         } catch (Exception ex) {
-                            ex.printStackTrace();
+                            Console.error(ex.getMessage());
                         }
                     }
-                }.runTaskTimerAsynchronously(plugin, 0, 5);
+                }.runTaskTimerAsynchronously(plugin, 0, 10);
             }
 
         }.runTaskAsynchronously(this.plugin);

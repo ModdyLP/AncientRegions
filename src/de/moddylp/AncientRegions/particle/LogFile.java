@@ -23,7 +23,7 @@ public class LogFile {
                 this.data.saveToFile();
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Console.error(ex.getMessage());
         }
     }
 
@@ -32,11 +32,23 @@ public class LogFile {
             this.data.set("regions." + option, value);
             this.data.saveToFile();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Console.error(ex.getMessage());
+        }
+    }
+    public void remove(String option) {
+        try {
+            this.data.remove("regions." + option);
+            this.data.saveToFile();
+        } catch (Exception ex) {
+            Console.error(ex.getMessage());
         }
     }
 
     public String getString(String option) {
+        this.data.reload();
+        if (this.data.get("regions." + option) == null) {
+            return null;
+        }
         return this.data.get("regions." + option).toString();
     }
 }

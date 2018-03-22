@@ -64,17 +64,17 @@ public class StateFlag {
                     ProtectedRegion rg = regions.getRegion((String) region.get(0));
                     if (rg != null && (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass"))) {
                         if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("null") && mode.equals(ActivateMode.REMOVE)) {
-                            if (FlagUtil.payment(p, e, this.flagOBJ.getName(), mode)) {
+                            if (FlagUtil.payment(p, e, this.flagOBJ.getConfigname(), mode)) {
                                 rg.setFlag(this.flagOBJ.getFlag(), null);
                                 p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + ChatColor.GOLD + " " + this.flagOBJ.getName() + " "+Main.getInstance().lang.getText("FlagRemoved"));
                             }
                         } else if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("deny") && mode.equals(ActivateMode.DEACTIVATE)) {
-                            if (FlagUtil.payment(p, e, this.flagOBJ.getName(), mode)) {
+                            if (FlagUtil.payment(p, e, this.flagOBJ.getConfigname(), mode)) {
                                 rg.setFlag((com.sk89q.worldguard.protection.flags.StateFlag) flagOBJ.getFlag(), com.sk89q.worldguard.protection.flags.StateFlag.State.DENY);
                                 p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + ChatColor.RED + " " + this.flagOBJ.getName() + Main.getInstance().lang.getText("fDisabled"));
                             }
                         } else if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("allow") && mode.equals(ActivateMode.ACTIVATE)) {
-                            if (FlagUtil.payment(p, e, this.flagOBJ.getName(), mode)) {
+                            if (FlagUtil.payment(p, e, this.flagOBJ.getConfigname(), mode)) {
                                 rg.setFlag((com.sk89q.worldguard.protection.flags.StateFlag) flagOBJ.getFlag(), com.sk89q.worldguard.protection.flags.StateFlag.State.ALLOW);
                                 p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.flagOBJ.getName() + Main.getInstance().lang.getText("fEnabled"));
                             }

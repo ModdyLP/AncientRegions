@@ -64,17 +64,17 @@ public class BooleanFlag {
                     ProtectedRegion rg = regions.getRegion((String) region.get(0));
                     if (rg != null && (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass"))) {
                         if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("null") && mode.equals(ActivateMode.REMOVE)) {
-                            if (FlagUtil.payment(p, e, this.flagOBJ.getName(), mode)) {
+                            if (FlagUtil.payment(p, e, this.flagOBJ.getConfigname(), mode)) {
                                 rg.setFlag(this.flagOBJ.getFlag(), null);
                                 p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + ChatColor.GOLD + " " + this.flagOBJ.getName() + " "+Main.getInstance().lang.getText("FlagRemoved"));
                             }
                         } else if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("false") && mode.equals(ActivateMode.DEACTIVATE)) {
-                            if (FlagUtil.payment(p, e, this.flagOBJ.getName(), mode)) {
+                            if (FlagUtil.payment(p, e, this.flagOBJ.getConfigname(), mode)) {
                                 rg.setFlag((com.sk89q.worldguard.protection.flags.BooleanFlag) flagOBJ.getFlag(), false);
                                 p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + ChatColor.RED + " " + this.flagOBJ.getName() + Main.getInstance().lang.getText("fDisabled"));
                             }
                         } else if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("true") && mode.equals(ActivateMode.ACTIVATE)) {
-                            if (FlagUtil.payment(p, e, this.flagOBJ.getName(), mode)) {
+                            if (FlagUtil.payment(p, e, this.flagOBJ.getConfigname(), mode)) {
                                 rg.setFlag((com.sk89q.worldguard.protection.flags.BooleanFlag) flagOBJ.getFlag(), true);
                                 p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.flagOBJ.getName() + Main.getInstance().lang.getText("fEnabled"));
                             }

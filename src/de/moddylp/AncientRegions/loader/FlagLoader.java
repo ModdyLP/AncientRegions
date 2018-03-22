@@ -106,6 +106,9 @@ public class FlagLoader {
             FlagOBJ.getFlagObj(flag);
         }
         Main.getInstance().getMainConfig().saveToFile();
+        if (Main.DRIVER.checkIfFileExists(Main.DRIVER.CONFIG)) {
+            Main.DRIVER.deletefile(Main.DRIVER.CONFIG);
+        }
     }
 }
 

@@ -65,7 +65,7 @@ public class EntitySetFlag {
                     ProtectedRegion rg = regions.getRegion((String) region.get(0));
                     if (rg != null && (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass"))) {
                         if (!FlagUtil.isSet(p, flagobj.getFlag()).equalsIgnoreCase("null") && mode.equals(ActivateMode.REMOVE)) {
-                            if (FlagUtil.payment(p, e, this.flagobj.getName(), mode)) {
+                            if (FlagUtil.payment(p, e, this.flagobj.getConfigname(), mode)) {
                                 rg.setFlag(this.flagobj.getFlag(), null);
                                 p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + ChatColor.GOLD + " " + this.flagobj.getName() + " "+Main.getInstance().lang.getText("FlagRemoved"));
                             }
@@ -73,6 +73,7 @@ public class EntitySetFlag {
                             p.closeInventory();
                             p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("Message2").replace("[PH]", this.flagobj.getName()));
                             Main.getInstance().getServer().getPluginManager().registerEvents(new SpezialFormatEntity(p, this.flagobj, mode), Main.getInstance());
+                            e.setCancelled(true);
                         }
                     } else {
                         p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("Owner"));

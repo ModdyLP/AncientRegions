@@ -5,6 +5,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagOBJ;
 import de.moddylp.AncientRegions.flags.FlagUtil;
+import de.moddylp.AncientRegions.gui.Editflags;
 import de.moddylp.AncientRegions.gui.EditflagsPage2;
 import de.moddylp.AncientRegions.gui.Events.ActivateMode;
 import org.bukkit.ChatColor;
@@ -33,8 +34,11 @@ public class GamemodeFormat
     public String getChat(AsyncPlayerChatEvent e) {
         if (e.getPlayer().equals(this.p)) {
             String msg = e.getMessage();
+            if (FlagUtil.cancelEvent(msg, this.p, e, this)) {
+                return null;
+            }
             if (msg.contains("creative") || msg.contains("c") || msg.contains("1")) {
-                if (FlagUtil.payment(p, e, flag.getName(), mode)) {
+                if (FlagUtil.payment(p, e, flag.getConfigname(), mode)) {
                     this.rg.setFlag((EnumFlag) this.flag.getFlag(), GameMode.CREATIVE);
                     this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
                     EditflagsPage2 gui = new EditflagsPage2(this.p, Main.getInstance());
@@ -43,7 +47,7 @@ public class GamemodeFormat
                     HandlerList.unregisterAll(this);
                 }
             } else if (msg.contains("survival") || msg.contains("sv") || msg.contains("0")) {
-                if (FlagUtil.payment(p, e, flag.getName(), mode)) {
+                if (FlagUtil.payment(p, e, flag.getConfigname(), mode)) {
                     this.rg.setFlag((EnumFlag) this.flag.getFlag(), GameMode.SURVIVAL);
                     this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
                     EditflagsPage2 gui = new EditflagsPage2(this.p, Main.getInstance());
@@ -52,7 +56,7 @@ public class GamemodeFormat
                     HandlerList.unregisterAll(this);
                 }
             } else if (msg.contains("spectator") || msg.contains("sp") || msg.contains("3")) {
-                if (FlagUtil.payment(p, e, flag.getName(), mode)) {
+                if (FlagUtil.payment(p, e, flag.getConfigname(), mode)) {
                     this.rg.setFlag((EnumFlag) this.flag.getFlag(), GameMode.SPECTATOR);
                     this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
                     EditflagsPage2 gui = new EditflagsPage2(this.p, Main.getInstance());
@@ -61,7 +65,7 @@ public class GamemodeFormat
                     HandlerList.unregisterAll(this);
                 }
             } else if (msg.contains("adventure") || msg.contains("a") || msg.contains("2")) {
-                if (FlagUtil.payment(p, e, flag.getName(), mode)) {
+                if (FlagUtil.payment(p, e, flag.getConfigname(), mode)) {
                     this.rg.setFlag((EnumFlag) this.flag.getFlag(), GameMode.ADVENTURE);
                     this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
                     EditflagsPage2 gui = new EditflagsPage2(this.p, Main.getInstance());

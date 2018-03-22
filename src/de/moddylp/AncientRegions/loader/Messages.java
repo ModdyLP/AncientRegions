@@ -86,6 +86,7 @@ public class Messages {
         lang.setTextOnce("ErrorDelete", "Failed to delete Region");
         lang.setTextOnce("ErrorCreate", "Failed to create Region");
         lang.setTextOnce("build", "Build");
+        lang.setTextOnce("inputcancel", "You canceled the input");
         lang.setTextOnce("Player", "That Player ([PH]) doesn't exist, or is not online. Please choose another one!");
         lang.setTextOnce("deactivatemode", "Rightclick (Deaktivate)");
         lang.setTextOnce("activatemode", "LeftClick (Activate)");

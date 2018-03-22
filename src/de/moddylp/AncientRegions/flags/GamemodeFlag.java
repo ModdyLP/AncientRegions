@@ -66,7 +66,7 @@ public class GamemodeFlag {
                     ProtectedRegion rg = regions.getRegion((String) region.get(0));
                     if (rg != null && (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass"))) {
                         if (!FlagUtil.isSet(p, flagOBJ.getFlag()).equalsIgnoreCase("null") && mode.equals(ActivateMode.REMOVE)) {
-                            if (FlagUtil.payment(p, e, this.flagOBJ.getName(), mode)) {
+                            if (FlagUtil.payment(p, e, this.flagOBJ.getConfigname(), mode)) {
                                 rg.setFlag(this.flagOBJ.getFlag(), null);
                                 p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + ChatColor.GOLD + " " + this.flagOBJ.getName() + " "+Main.getInstance().lang.getText("FlagRemoved"));
                             }

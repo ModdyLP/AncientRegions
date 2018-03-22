@@ -37,6 +37,9 @@ public class WeatherFormat
     public String getChat(AsyncPlayerChatEvent e) {
         if (e.getPlayer().equals(this.p)) {
             String msg = e.getMessage();
+            if (FlagUtil.cancelEvent(msg, this.p, e, this)) {
+                return null;
+            }
             RegionContainer container = Main.worldguard.getRegionContainer();
             RegionManager regions = container.get(this.p.getWorld());
             Vector pt = new Vector(this.p.getLocation().getX(), this.p.getLocation().getY(), this.p.getLocation().getZ());
@@ -50,7 +53,7 @@ public class WeatherFormat
                     ProtectedRegion rg = regions.getRegion((String) region.get(0));
                     if (rg != null && (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass"))) {
                         if (msg.contains("sun") || msg.contains("clear")) {
-                            if (FlagUtil.payment(this.p, e, this.flag.getName(), mode)) {
+                            if (FlagUtil.payment(this.p, e, this.flag.getConfigname(), mode)) {
                                 rg.setFlag((EnumFlag) this.flag.getFlag(), WeatherType.CLEAR);
                                 this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flag.getName()));
                                 Editflags gui = new Editflags(this.p, Main.getInstance());

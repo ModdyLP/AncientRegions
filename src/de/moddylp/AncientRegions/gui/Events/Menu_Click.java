@@ -29,10 +29,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class Menu_Click
         implements Listener {
@@ -85,7 +82,7 @@ public class Menu_Click
                     RegionManager regions = container.get(p.getWorld());
                     Vector pt = new Vector(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ());
                     LocalPlayer ply = this.worldguard.wrapPlayer(p);
-                    List<String> region = Objects.requireNonNull(regions).getApplicableRegionsIDs(pt);
+                    List<String> region = regions.getApplicableRegionsIDs(pt);
                     if (region.isEmpty()) {
                         p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("GobalError"));
                     } else {
@@ -93,7 +90,7 @@ public class Menu_Click
                             ProtectedRegion rg = regions.getRegion(regionid);
                             if (rg != null && rg.getOwners().contains(ply) || p.hasPermission("ancient.flags.admin.bypass")) {
                                 p.sendMessage(ChatColor.BLUE + "============Region Info============");
-                                p.sendMessage(ChatColor.GOLD + "Regionname:       " + ChatColor.GREEN + Objects.requireNonNull(rg).getId().trim());
+                                p.sendMessage(ChatColor.GOLD + "Regionname:       " + ChatColor.GREEN + rg.getId().trim());
                                 p.sendMessage(ChatColor.GOLD + "Owner:            \n" + ChatColor.GREEN + this.playername(rg, "owner"));
                                 p.sendMessage(ChatColor.GOLD + "Member:           \n" + ChatColor.GREEN + this.playername(rg, "member"));
                                 p.sendMessage(ChatColor.GOLD + "Dimensions:       \n" + ChatColor.GREEN + rg.getPoints().toString().trim().replace("[", "").replace("]", ""));
@@ -114,187 +111,187 @@ public class Menu_Click
             Inventory menu = e.getInventory();
             playSound(e, p);
             try {
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.BUILD)).getName())) {
-                    StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.BUILD)), p, menu, e, mode);
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.BUILD).getName())) {
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.BUILD), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.GREET_MESSAGE)).getName())) {
-                    de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.GREET_MESSAGE)), p, menu, e, mode);
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.GREET_MESSAGE).getName())) {
+                    de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.GREET_MESSAGE), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.FAREWELL_MESSAGE)).getName())) {
-                    de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.FAREWELL_MESSAGE)), p, menu, e, mode);
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.FAREWELL_MESSAGE).getName())) {
+                    de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FAREWELL_MESSAGE), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.PVP)).getName())) {
-                    StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.PVP)), p, menu, e, mode);
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.PVP).getName())) {
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.PVP), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.MOB_DAMAGE)).getName())) {
-                    StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.MOB_DAMAGE)), p, menu, e, mode);
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.MOB_DAMAGE).getName())) {
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MOB_DAMAGE), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ENTRY)).getName())) {
-                    StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ENTRY)), p, menu, e, mode);
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.ENTRY).getName())) {
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENTRY), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.EXIT)).getName())) {
-                    StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.EXIT)), p, menu, e, mode);
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.EXIT).getName())) {
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.EXIT), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ENDERPEARL)).getName())) {
-                    StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ENDERPEARL)), p, menu, e, mode);
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.ENDERPEARL).getName())) {
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENDERPEARL), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.TELE_LOC)).getName())) {
-                    LocationFlagimpl.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.TELE_LOC)), p, menu, e, mode);
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.TELE_LOC).getName())) {
+                    LocationFlagimpl.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.TELE_LOC), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ITEM_PICKUP)).getName())) {
-                    StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ITEM_PICKUP)), p, menu, e, mode);
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.ITEM_PICKUP).getName())) {
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ITEM_PICKUP), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ITEM_DROP)).getName())) {
-                    StateFlag.createandtoggle(Objects.requireNonNull(FlagOBJ.getFlagObj(DefaultFlag.ITEM_DROP)), p, menu, e, mode);
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.ITEM_DROP).getName())) {
+                    StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ITEM_DROP), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.EXP_DROPS).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.EXP_DROPS).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.EXP_DROPS), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MOB_SPAWNING).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.MOB_SPAWNING).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MOB_SPAWNING), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.CREEPER_EXPLOSION).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.CREEPER_EXPLOSION).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.CREEPER_EXPLOSION), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.TNT).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.TNT).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.TNT), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.INVINCIBILITY).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.INVINCIBILITY).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.INVINCIBILITY), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ENDERDRAGON_BLOCK_DAMAGE).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.ENDERDRAGON_BLOCK_DAMAGE).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENDERDRAGON_BLOCK_DAMAGE), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.DENY_SPAWN).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.DENY_SPAWN).getName())) {
                     EntitySetFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.DENY_SPAWN), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.SNOW_MELT).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.SNOW_MELT).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SNOW_MELT), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.SNOW_FALL).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.SNOW_FALL).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SNOW_FALL), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ICE_FORM).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.ICE_FORM).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ICE_FORM), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ICE_MELT).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.ICE_MELT).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ICE_MELT), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.GRASS_SPREAD).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.GRASS_SPREAD).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.GRASS_SPREAD), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.HEAL_DELAY).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.HEAL_DELAY).getName())) {
                     de.moddylp.AncientRegions.flags.IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.HEAL_DELAY), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.HEAL_AMOUNT).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.HEAL_AMOUNT).getName())) {
                     de.moddylp.AncientRegions.flags.IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.HEAL_AMOUNT), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MIN_HEAL).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.MIN_HEAL).getName())) {
                     de.moddylp.AncientRegions.flags.DoubleFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MIN_HEAL), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MAX_HEAL).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.MAX_HEAL).getName())) {
                     de.moddylp.AncientRegions.flags.DoubleFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MAX_HEAL), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.BLOCKED_CMDS).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.BLOCKED_CMDS).getName())) {
                     de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.BLOCKED_CMDS), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ALLOWED_CMDS).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.ALLOWED_CMDS).getName())) {
                     de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ALLOWED_CMDS), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.TIME_LOCK).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.TIME_LOCK).getName())) {
                     de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.TIME_LOCK), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.WEATHER_LOCK).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.WEATHER_LOCK).getName())) {
                     WeatherFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.WEATHER_LOCK), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.SPAWN_LOC).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.SPAWN_LOC).getName())) {
                     LocationFlagimpl.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SPAWN_LOC), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.FEED_DELAY).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.FEED_DELAY).getName())) {
                     de.moddylp.AncientRegions.flags.IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FEED_DELAY), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.FEED_AMOUNT).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.FEED_AMOUNT).getName())) {
                     de.moddylp.AncientRegions.flags.IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FEED_AMOUNT), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MIN_FOOD).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.MIN_FOOD).getName())) {
                     de.moddylp.AncientRegions.flags.IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MIN_FOOD), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MAX_FOOD).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.MAX_FOOD).getName())) {
                     de.moddylp.AncientRegions.flags.IntegerFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MAX_FOOD), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FLOW).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.LAVA_FLOW).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FLOW), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.WATER_FLOW).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.WATER_FLOW).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.WATER_FLOW), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.LIGHTNING).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.LIGHTNING).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LIGHTNING), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FIRE).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.LAVA_FIRE).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LAVA_FIRE), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MUSHROOMS).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.MUSHROOMS).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MUSHROOMS), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.PISTONS).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.PISTONS).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.PISTONS), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.SEND_CHAT).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.SEND_CHAT).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SEND_CHAT), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.RECEIVE_CHAT).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.RECEIVE_CHAT).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.RECEIVE_CHAT), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.POTION_SPLASH).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.POTION_SPLASH).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.POTION_SPLASH), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.LEAF_DECAY).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.LEAF_DECAY).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LEAF_DECAY), p, menu, e, mode);
 
                 }
@@ -328,131 +325,132 @@ public class Menu_Click
 
                 }
                 openMainMenu(e, p);
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.PASSTHROUGH).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.PASSTHROUGH).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.PASSTHROUGH), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_BREAK).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.BLOCK_BREAK).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_BREAK), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_PLACE).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.BLOCK_PLACE).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.BLOCK_PLACE), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.INTERACT).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.INTERACT).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.INTERACT), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.USE).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.USE).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.USE), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.DAMAGE_ANIMALS).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.DAMAGE_ANIMALS).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.DAMAGE_ANIMALS), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.CHEST_ACCESS).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.CHEST_ACCESS).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.CHEST_ACCESS), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.RIDE).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.RIDE).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.RIDE), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.SLEEP).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.SLEEP).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SLEEP), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.PLACE_VEHICLE).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.PLACE_VEHICLE).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.PLACE_VEHICLE), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.DESTROY_VEHICLE).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.DESTROY_VEHICLE).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.DESTROY_VEHICLE), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.LIGHTER).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.LIGHTER).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.LIGHTER), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.GHAST_FIREBALL).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.GHAST_FIREBALL).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.GHAST_FIREBALL), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.OTHER_EXPLOSION).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.OTHER_EXPLOSION).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.OTHER_EXPLOSION), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.FIRE_SPREAD).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.FIRE_SPREAD).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FIRE_SPREAD), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ENDER_BUILD).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.ENDER_BUILD).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENDER_BUILD), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_PAINTING_DESTROY).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.ENTITY_PAINTING_DESTROY).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_PAINTING_DESTROY), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_ITEM_FRAME_DESTROY).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.ENTITY_ITEM_FRAME_DESTROY).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENTITY_ITEM_FRAME_DESTROY), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.MYCELIUM_SPREAD).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.MYCELIUM_SPREAD).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.MYCELIUM_SPREAD), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.VINE_GROWTH).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.VINE_GROWTH).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.VINE_GROWTH), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.SOIL_DRY).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.SOIL_DRY).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.SOIL_DRY), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.GAME_MODE).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.GAME_MODE).getName())) {
                     GamemodeFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.GAME_MODE), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.NOTIFY_ENTER).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.NOTIFY_ENTER).getName())) {
                     de.moddylp.AncientRegions.flags.BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.NOTIFY_ENTER), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.NOTIFY_LEAVE).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.NOTIFY_LEAVE).getName())) {
                     de.moddylp.AncientRegions.flags.BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.NOTIFY_LEAVE), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.FIREWORK_DAMAGE).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.FIREWORK_DAMAGE).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FIREWORK_DAMAGE), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.WITHER_DAMAGE).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.WITHER_DAMAGE).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.WITHER_DAMAGE), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.CHORUS_TELEPORT).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+
+                        FlagOBJ.getFlagObj(DefaultFlag.CHORUS_TELEPORT).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.CHORUS_TELEPORT), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.EXIT_DENY_MESSAGE).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.EXIT_DENY_MESSAGE).getName())) {
                     de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.EXIT_DENY_MESSAGE), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.ENTRY_DENY_MESSAGE).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.ENTRY_DENY_MESSAGE).getName())) {
                     de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENTRY_DENY_MESSAGE), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.EXIT_VIA_TELEPORT).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.EXIT_VIA_TELEPORT).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.EXIT_VIA_TELEPORT), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.EXIT_OVERRIDE).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.EXIT_OVERRIDE).getName())) {
                     de.moddylp.AncientRegions.flags.BooleanFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.EXIT_OVERRIDE), p, menu, e, mode);
 
                 }
-                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(FlagOBJ.getFlagObj(DefaultFlag.FALL_DAMAGE).getName())) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.FALL_DAMAGE).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.FALL_DAMAGE), p, menu, e, mode);
 
                 }
@@ -599,7 +597,7 @@ public class Menu_Click
         } else if (mode.equalsIgnoreCase("owner")) {
             uuids = rg.getOwners().getUniqueIds();
         }
-        for (UUID uuid : Objects.requireNonNull(uuids)) {
+        for (UUID uuid : uuids) {
             OfflinePlayer[] allplayers = this.plugin.getServer().getOfflinePlayers();
             for (int i = 0; allplayers.length >= i; ++i) {
                 UUID uuidname = allplayers[i].getUniqueId();
@@ -610,12 +608,18 @@ public class Menu_Click
         return uuids.toString() + "\n";
     }
 
-    public UUID uuid(String playername) {
+    public Player uuid(String playername) {
         OfflinePlayer[] allplayers = this.plugin.getServer().getOfflinePlayers();
         for (int i = 0; allplayers.length >= i; ++i) {
             String uuidname = allplayers[i].getName();
             if (!playername.trim().equalsIgnoreCase(uuidname)) continue;
-            return allplayers[i].getUniqueId();
+            return allplayers[i].getPlayer();
+        }
+
+        ArrayList<Player> onlinePlayers = new ArrayList<>(this.plugin.getServer().getOnlinePlayers());
+        for (int i = 0; onlinePlayers.size() >= i; ++i) {
+            if (!playername.trim().equalsIgnoreCase(onlinePlayers.get(i).getName()) && !playername.trim().equalsIgnoreCase(onlinePlayers.get(i).getDisplayName())) continue;
+            return onlinePlayers.get(i).getPlayer();
         }
         return null;
     }

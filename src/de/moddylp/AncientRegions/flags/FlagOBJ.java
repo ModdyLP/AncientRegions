@@ -20,22 +20,23 @@ public class FlagOBJ {
     private String permission;
 
     public FlagOBJ(String description, int menuposition, Material item, Flag<?> flag) {
-        this.name = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, flag.getName().replaceAll("-", "_").toUpperCase());
+        this.name = flag.getName();
         this.description = description;
         this.flag = flag;
         this.configname = this.name.toLowerCase();
-        this.permission = flag instanceof BooleanFlag || flag instanceof StateFlag ? "ancient.regions.flag.toggle" + this.configname : "ancient.regions.flag." + this.configname;
+        this.permission = flag instanceof BooleanFlag || flag instanceof StateFlag ? "ancient.regions.flag.toggle" + this.configname.replaceAll("-", "") : "ancient.regions.flag." + this.configname.replaceAll("-", "");
         this.item = item;
         this.menuposition = menuposition;
         FlagUtil.flagOBJHashMap.put(this.configname, this);
         Main.getInstance().getMainConfig().get("flags."+this.configname, 100, "TYPE: "+flag.getClass().getSimpleName());
         if (Main.DRIVER.checkIfFileExists(Main.DRIVER.CONFIG)) {
-            Main.getInstance().getMainConfig().set("flags."+this.configname, Main.DRIVER.getProperty(Main.DRIVER.CONFIG, this.configname, 100));
+            Console.send("OLD: "+this.configname.replaceAll("-", "")+"  "+Main.DRIVER.hasKey(Main.DRIVER.CONFIG, this.configname.replaceAll("-", "")));
+            Main.getInstance().getMainConfig().set("flags."+this.configname, Main.DRIVER.getPropertyAsObj(Main.DRIVER.CONFIG, this.configname.replaceAll("-", ""), 100));
         }
     }
 
     public static FlagOBJ getFlagObj(Flag flag) {
-        String search = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, flag.getName().replaceAll("-", "_").toUpperCase()).toLowerCase();
+        String search = flag.getName().toLowerCase();
         if (FlagUtil.flagOBJHashMap.containsKey(search)) {
             return FlagUtil.flagOBJHashMap.get(search);
         }
@@ -43,7 +44,7 @@ public class FlagOBJ {
         return new FlagOBJ("NOT FOUND", 999, Material.BARRIER, DefaultFlag.ALLOWED_CMDS);
     }
     public static FlagOBJ getFlagObj(String flag) {
-        String search = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, flag.replaceAll("-", "_").toUpperCase()).toLowerCase();
+        String search = flag.toLowerCase();
         if (FlagUtil.flagOBJHashMap.containsKey(search)) {
             return FlagUtil.flagOBJHashMap.get(search);
         }
@@ -53,7 +54,7 @@ public class FlagOBJ {
 
     public String getName() {
         if (this.name != null) {
-            return this.name;
+            return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, this.name.replaceAll("-", "_"));
         }
         return "NoName";
     }
