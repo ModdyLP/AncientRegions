@@ -39,6 +39,7 @@ public class SpezialFormatString
         if (e.getPlayer().equals(this.p)) {
             String msg = e.getMessage();
             if (FlagUtil.cancelEvent(msg, this.p, e, this)) {
+                e.setCancelled(true);
                 return null;
             }
             RegionContainer container = Main.worldguard.getRegionContainer();

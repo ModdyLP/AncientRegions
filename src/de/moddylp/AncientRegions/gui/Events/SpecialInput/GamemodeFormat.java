@@ -37,6 +37,7 @@ public class GamemodeFormat
         if (e.getPlayer().equals(this.p)) {
             String msg = e.getMessage();
             if (FlagUtil.cancelEvent(msg, this.p, e, this)) {
+                e.setCancelled(true);
                 return null;
             }
             if (msg.contains("creative") || msg.contains("c") || msg.contains("1")) {

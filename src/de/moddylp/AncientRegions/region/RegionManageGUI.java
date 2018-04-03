@@ -55,7 +55,7 @@ public class RegionManageGUI {
             ItemMeta meta3 = removemember.getItemMeta();
             meta3.setDisplayName(ChatColor.RED + this.plugin.lang.getText("RemoveMember"));
             ArrayList<String> values2 = new ArrayList<>();
-            values2.add(ChatColor.YELLOW + Main.getInstance().getMainConfig().get("manage.changeowner").toString() + " " + FlagUtil.loadCurrencyfromConfig());
+            values2.add(ChatColor.YELLOW + Main.getInstance().getMainConfig().get("manage.removemember").toString() + " " + FlagUtil.loadCurrencyfromConfig());
             meta3.setLore(values2);
             removemember.setItemMeta(meta3);
             this.menu.setItem(5, removemember);
@@ -63,7 +63,7 @@ public class RegionManageGUI {
             ItemMeta meta4 = setowner.getItemMeta();
             meta4.setDisplayName(ChatColor.GOLD + this.plugin.lang.getText("SetOwner"));
             ArrayList<String> values3 = new ArrayList<>();
-            values3.add(ChatColor.YELLOW + Main.getInstance().getMainConfig().get("manage.removemember").toString() + " " + FlagUtil.loadCurrencyfromConfig());
+            values3.add(ChatColor.YELLOW + Main.getInstance().getMainConfig().get("manage.changeowner").toString() + " " + FlagUtil.loadCurrencyfromConfig());
             meta4.setLore(values3);
             setowner.setItemMeta(meta4);
             this.menu.setItem(4, setowner);

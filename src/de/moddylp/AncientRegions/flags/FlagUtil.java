@@ -70,8 +70,8 @@ public class FlagUtil {
     }
 
     public static Double loadPricefromConfig(String flagname, ActivateMode mode) {
+        double price = 0.0;
         try {
-            double price = 0.0;
             if (!flagname.contains(".")) {
                 if (Main.getInstance().getMainConfig().containsKey("flags."+flagname.toLowerCase())) {
                     price = Double.valueOf(Main.getInstance().getMainConfig().get("flags."+flagname.toLowerCase()).toString());
@@ -96,7 +96,7 @@ public class FlagUtil {
             return price;
         } catch (Exception ex) {
             Console.error(ex.toString());
-            return null;
+            return price;
         }
     }
 
@@ -165,7 +165,7 @@ public class FlagUtil {
     }
 
     public static void loadStringGUI(Inventory menu, Player p, FlagOBJ flagOBJ) {
-        if (p.hasPermission(flagOBJ.getPermission())) {
+        if (p.hasPermission(flagOBJ.getPermission()) && loadPricefromConfig(flagOBJ.getConfigname(), null) != -1) {
             ItemStack ITEM = new ItemStack(flagOBJ.getItem());
             ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Set").replace("[PH]", flagOBJ.getName()));
