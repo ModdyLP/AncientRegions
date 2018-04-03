@@ -70,7 +70,6 @@ public class Editflags {
             StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.RECEIVE_CHAT), this.p, this.menu);
             StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.POTION_SPLASH), this.p, this.menu);
             StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.LEAF_DECAY), this.p, this.menu);
-            de.moddylp.AncientRegions.flags.StringFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.DENY_MESSAGE), this.p, this.menu);
         } catch (Exception ex) {
             Console.error(ex.getMessage());
         }

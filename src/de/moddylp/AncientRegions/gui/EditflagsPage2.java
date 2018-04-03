@@ -57,6 +57,7 @@ public class EditflagsPage2 {
         StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.EXIT_VIA_TELEPORT), this.p, this.menu);
         de.moddylp.AncientRegions.flags.BooleanFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.EXIT_OVERRIDE), this.p, this.menu);
         StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.FALL_DAMAGE), this.p, this.menu);
+        de.moddylp.AncientRegions.flags.StringFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.DENY_MESSAGE), this.p, this.menu);
     }
 
     public void open() {

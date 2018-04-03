@@ -442,6 +442,10 @@ public class Menu_Click
                     de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.ENTRY_DENY_MESSAGE), p, menu, e, mode);
 
                 }
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.DENY_MESSAGE).getName())) {
+                    de.moddylp.AncientRegions.flags.StringFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.DENY_MESSAGE), p, menu, e, mode);
+
+                }
                 if (e.getCurrentItem().getItemMeta().getDisplayName().contains(Main.getInstance().lang.getText("s")+FlagOBJ.getFlagObj(DefaultFlag.EXIT_VIA_TELEPORT).getName())) {
                     StateFlag.createandtoggle(FlagOBJ.getFlagObj(DefaultFlag.EXIT_VIA_TELEPORT), p, menu, e, mode);
 

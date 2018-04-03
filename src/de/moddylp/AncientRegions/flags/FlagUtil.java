@@ -202,7 +202,7 @@ public class FlagUtil {
     }
 
     public static void loadBooleanGUI(Inventory menu, Player p, FlagOBJ flagOBJ) {
-        if (p.hasPermission(flagOBJ.getPermission())) {
+        if (p.hasPermission(flagOBJ.getPermission()) && loadPricefromConfig(flagOBJ.getConfigname(), null) != -1) {
             ItemStack ITEM = new ItemStack(flagOBJ.getItem());
             ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Set").replace("[PH]", flagOBJ.getName()));
