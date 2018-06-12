@@ -3,7 +3,7 @@ package de.moddylp.AncientRegions.gui.Events;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.AncientRegions.gui.Events.Menu_Click;
+import de.moddylp.AncientRegions.utils.Console;
 
 public class GUIEvents {
     protected Main plugin;
@@ -16,9 +16,8 @@ public class GUIEvents {
         this.worldedit = worldedit;
         try {
             this.registerGuiEvents();
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            Console.error(ex.getMessage());
         }
     }
 

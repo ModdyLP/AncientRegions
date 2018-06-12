@@ -9,11 +9,12 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagUtil;
+import de.moddylp.AncientRegions.gui.Events.ActivateMode;
+import de.moddylp.AncientRegions.utils.Console;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Skull;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -46,7 +47,7 @@ public class MembersGUI {
             if (region.isEmpty()) {
                 this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("GobalError"));
             } else {
-                ProtectedRegion rg = regions.getRegion((String)region.get(0));
+                ProtectedRegion rg = regions.getRegion((String) region.get(0));
                 if (Objects.requireNonNull(rg).isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass")) {
                     Set<UUID> players = rg.getMembers().getUniqueIds();
                     for (UUID p : players) {
@@ -78,10 +79,8 @@ public class MembersGUI {
             }
             Navigation2 navi = new Navigation2();
             navi.loadguiitems(this.menu, this.plugin);
-        }
-        catch (Throwable ex) {
-            Main.getInstance().getLogger().warning("Minecraft Version incompatible: " + ex.getMessage());
-            ex.printStackTrace();
+        } catch (Throwable ex) {
+            Console.error("Minecraft Version incompatible: " + ex.getMessage());
         }
     }
 
@@ -108,10 +107,8 @@ public class MembersGUI {
             }
             Navigation2 navi = new Navigation2();
             navi.loadguiitems(this.menu, this.plugin);
-        }
-        catch (Throwable ex) {
-            Main.getInstance().getLogger().warning("Minecraft Version incompatible: " + ex.getMessage());
-            ex.printStackTrace();
+        } catch (Throwable ex) {
+            Console.error("Minecraft Version incompatible: " + ex.getMessage());
         }
     }
 
@@ -121,7 +118,7 @@ public class MembersGUI {
         this.plugin.getServer().getPluginManager().registerEvents(new SetValueFromChatEvent(this.p, this.plugin.lang.getText("AddMember"), this.plugin, this.worldguard), this.plugin);
     }
 
-    public void removeMember(UUID uuid, InventoryClickEvent e, String name) {
+    public void removeMember(Player player, InventoryClickEvent e, String name) {
         try {
             if (this.p.hasPermission("ancient.regions.region.removemember")) {
                 RegionContainer container = this.worldguard.getRegionContainer();
@@ -132,14 +129,13 @@ public class MembersGUI {
                 if (region.isEmpty()) {
                     this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("GobalError"));
                 } else {
-                    ProtectedRegion rg = regions.getRegion((String)region.get(0));
+                    ProtectedRegion rg = regions.getRegion(region.get(0));
                     if (Objects.requireNonNull(rg).isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass")) {
-                        if (FlagUtil.payment(this.p, e, "_removemember") || this.p.hasPermission("ancient.regions.admin.bypass")) {
+                        if (FlagUtil.payment(this.p, e, "manage.removemember", ActivateMode.ACTIVATE) || this.p.hasPermission("ancient.regions.admin.bypass")) {
                             DefaultDomain member = rg.getMembers();
-                            member.removePlayer(uuid);
+                            member.removePlayer(this.worldguard.wrapPlayer(player));
                             rg.setMembers(member);
                             this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("PlayerRemoved").replace("[PH]", name));
-                            container.reload();
                             this.p.closeInventory();
                             RegionManageGUI gui = new RegionManageGUI(this.p, this.plugin, this.worldguard);
                             gui.open();
@@ -158,10 +154,8 @@ public class MembersGUI {
                 e.setCancelled(true);
             }
             this.loadregionskulls(this.worldguard);
-        }
-        catch (Exception ex) {
-            Main.getInstance().getLogger().warning("Minecraft Version incompatible: " + ex.getMessage());
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            Console.error("Minecraft Version incompatible: " + ex.getMessage());
         }
     }
 

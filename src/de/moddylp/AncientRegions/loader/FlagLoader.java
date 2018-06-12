@@ -5,14 +5,15 @@ import com.sk89q.worldguard.protection.flags.Flag;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagOBJ;
 import de.moddylp.AncientRegions.flags.FlagUtil;
-import de.moddylp.AncientRegions.loader.FileDriver;
-import java.util.ArrayList;
-
+import de.moddylp.AncientRegions.utils.Console;
 import org.bukkit.Material;
+
+import java.util.ArrayList;
 
 public class FlagLoader {
     public static void load() {
-        Main.getInstance().getLogger().info("Start loading flags");
+        Console.send("Start loading flags");
+        Main.getInstance().getMainConfig().reload();
         new FlagOBJ("", 0, Material.STONE, DefaultFlag.BUILD);
         new FlagOBJ("", 1, Material.SIGN, DefaultFlag.GREET_MESSAGE);
         new FlagOBJ("", 2, Material.SIGN, DefaultFlag.FAREWELL_MESSAGE);
@@ -96,16 +97,18 @@ public class FlagLoader {
         deprecated.add(DefaultFlag.BUYABLE);
         deprecated.add(DefaultFlag.PRICE);
         deprecated.add(DefaultFlag.ENABLE_SHOP);
-        FileDriver.getInstance().saveJson();
-        Main.getInstance().getLogger().info("Finished loading flags: " + (FlagUtil.flagOBJHashMap.size() + deprecated.size()) + "  of Worldguard Flags (diff is normal) " + DefaultFlag.getDefaultFlags().size());
+        Console.send( "Finished loading flags: " + (FlagUtil.flagOBJHashMap.size() + deprecated.size()) + "  of Worldguard Flags (diff is normal) " + DefaultFlag.getDefaultFlags().size());
         if (FlagUtil.flagOBJHashMap.size() + deprecated.size() != DefaultFlag.getDefaultFlags().size()) {
-            Main.getInstance().getLogger().info("This Flags arent implemented yet.");
+            Console.send("This Flags arent implemented yet.");
         }
         for (Flag flag : DefaultFlag.getDefaultFlags()) {
             if (deprecated.contains(flag)) continue;
             FlagOBJ.getFlagObj(flag);
         }
-        FileDriver.getInstance().loadJson();
+        Main.getInstance().getMainConfig().saveToFile();
+        if (Main.DRIVER.checkIfFileExists(Main.DRIVER.CONFIG)) {
+            Main.DRIVER.deletefile(Main.DRIVER.CONFIG);
+        }
     }
 }
 

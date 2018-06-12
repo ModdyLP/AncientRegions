@@ -2,8 +2,6 @@ package de.moddylp.AncientRegions.region;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.moddylp.AncientRegions.Main;
-import de.moddylp.AncientRegions.region.Navigation;
-import de.moddylp.AncientRegions.region.Region;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

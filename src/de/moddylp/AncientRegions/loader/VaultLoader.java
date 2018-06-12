@@ -1,6 +1,7 @@
 package de.moddylp.AncientRegions.loader;
 
 import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.utils.Console;
 import net.milkbowl.vault.Vault;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -17,13 +18,13 @@ public class VaultLoader {
     public boolean load() {
         Plugin vault = this.plugin.getServer().getPluginManager().getPlugin("Vault");
         if (vault == null || !(vault instanceof Vault) || !this.setupEconomy()) {
-            Main.getInstance().getLogger().warning("Vault was not found or some Economy Plugin is missing! Disabling plugin.");
-            Main.getInstance().getLogger().warning("!!!!!!!!!!!!!!!!!!!! MAKE SURE YOU HAVE INSTALLED A ECONOMY PLUGIN AND VAULT !!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.error("Vault was not found or some Economy Plugin is missing! Disabling plugin.");
+            Console.error("!!!!!!!!!!!!!!!!!!!! MAKE SURE YOU HAVE INSTALLED A ECONOMY PLUGIN AND VAULT !!!!!!!!!!!!!!!!!!!!!!!!");
             return false;
         }
-        Main.getInstance().getLogger().info(String.format("Enabled Version %s", vault.getDescription().getVersion()));
+        Console.send(String.format("Vault loaded Version %s", vault.getDescription().getVersion()));
         if (!this.setupPermissions()) {
-            Main.getInstance().getLogger().warning("Vault permission not loaded");
+            Console.error("Vault permission not loaded");
             return false;
         }
         return true;
@@ -33,7 +34,7 @@ public class VaultLoader {
         RegisteredServiceProvider economyProvider = this.plugin.getServer().getServicesManager().getRegistration(Economy.class);
         Economy economy = null;
         if (economyProvider != null) {
-            economy = (Economy)economyProvider.getProvider();
+            economy = (Economy) economyProvider.getProvider();
         }
         return economy != null;
     }
@@ -42,7 +43,7 @@ public class VaultLoader {
         RegisteredServiceProvider permissionProvider = this.plugin.getServer().getServicesManager().getRegistration(Permission.class);
         Permission permissionHandler = null;
         if (permissionProvider != null) {
-            permissionHandler = (Permission)permissionProvider.getProvider();
+            permissionHandler = (Permission) permissionProvider.getProvider();
         }
         return permissionHandler != null;
     }

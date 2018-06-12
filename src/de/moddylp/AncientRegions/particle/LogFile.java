@@ -1,51 +1,55 @@
 package de.moddylp.AncientRegions.particle;
 
 import de.moddylp.AncientRegions.Main;
-import java.io.File;
-
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import de.moddylp.AncientRegions.utils.Console;
+import de.moddylp.simplecommentconfig.Config;
 
 public class LogFile {
-    private File f = new File(Main.getInstance().getDataFolder(), "data.yml");
-    private FileConfiguration Data;
+    private Config data;
 
-    private FileConfiguration getfile() {
-        this.Data = YamlConfiguration.loadConfiguration(this.f);
-        return this.Data;
+    private void getfile() {
+        this.data = Main.getInstance().getManager().getConfig(Main.getInstance().getDataFolder()+"/"+"data.data");
+        this.data.setHeader(new String[]{
+                "The plugin saves the data of the Particle Shower in this file",
+                "AncientRegions v." + Main.getInstance().getDescription().getVersion()});
     }
 
     public void setup() {
         try {
-            if (!this.f.exists()) {
-                Main.getInstance().getLogger().info("Creating data file");
-                this.f.createNewFile();
-                this.Data = this.getfile();
-                this.Data.createSection("regions");
-                this.Data.save(this.f);
-            } else {
-                this.Data = this.getfile();
+            getfile();
+            if (data != null) {
+                Console.send("Creating data file");
+                this.data.createSection("regions");
+                this.data.saveToFile();
             }
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            Console.error(ex.getMessage());
         }
     }
 
     public void setString(String option, String value) {
         try {
-            this.Data = this.getfile();
-            this.Data.set("regions." + option, value);
-            this.Data.save(this.f);
+            this.data.set("regions." + option, value);
+            this.data.saveToFile();
+        } catch (Exception ex) {
+            Console.error(ex.getMessage());
         }
-        catch (Exception ex) {
-            ex.printStackTrace();
+    }
+    public void remove(String option) {
+        try {
+            this.data.remove("regions." + option);
+            this.data.saveToFile();
+        } catch (Exception ex) {
+            Console.error(ex.getMessage());
         }
     }
 
     public String getString(String option) {
-        this.Data = this.getfile();
-        return this.Data.getString("regions." + option);
+        this.data.reload();
+        if (this.data.get("regions." + option) == null) {
+            return null;
+        }
+        return this.data.get("regions." + option).toString();
     }
 }
 

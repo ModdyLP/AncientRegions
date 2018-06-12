@@ -1,26 +1,15 @@
 package de.moddylp.AncientRegions.loader;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import de.moddylp.AncientRegions.Main;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
+import de.moddylp.AncientRegions.utils.Console;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
+import java.io.*;
+import java.util.*;
 
 public class FileDriver {
     public String CONFIG = "";
@@ -40,6 +29,15 @@ public class FileDriver {
     public boolean checkIfFileExists(String filename) {
         return files.get(filename) != null && files.get(filename).exists();
     }
+    public boolean deletefile(String filename) {
+        if (files.get(filename) != null && files.get(filename).exists()){
+            if (!files.get(filename).delete()) {
+                Console.error("Cant delete old File");
+                return false;
+            }
+        }
+        return true;
+    }
 
     public boolean checkIfFileisEmpty(String filename) {
         return jsons.get(filename).keySet().size() == 0;
@@ -50,14 +48,16 @@ public class FileDriver {
             File file = new File(Main.getInstance().getDataFolder(), "config.json");
             this.CONFIG = Main.getInstance().getDataFolder() + "/config.json";
             files.put(Main.getInstance().getDataFolder() + "/config.json", file);
-            if (!file.exists()) {
+            /*if (!file.exists()) {
                 if (file.createNewFile()) {
                     Main.getInstance().getLogger().info(Main.getInstance().getDataFolder() + "config.json created at " + file.getAbsolutePath());
                 }
             } else {
                 Main.getInstance().getLogger().info(Main.getInstance().getDataFolder() + "config.json loaded at " + file.getAbsolutePath());
+            }*/
+            if (file.exists()) {
+                this.loadJson();
             }
-            this.loadJson();
         }
         catch (Exception ex) {
             Main.getInstance().getLogger().warning("File can not be accessed: " + Main.getInstance().getDataFolder() + "config.json " + ex.getMessage());
@@ -67,20 +67,20 @@ public class FileDriver {
     private JSONObject parseJson(String string) {
         JSONObject json = new JSONObject();
         try {
-            if (!string.equals("")) {
+            if (!string.equalsIgnoreCase("")) {
                 JsonParser jsonParser = new JsonParser();
                 json = new JSONObject(jsonParser.parse(string).getAsJsonObject().toString());
             }
         }
         catch (Exception ex) {
-            Main.getInstance().getLogger().warning("Parsing error");
+            Console.error("Parsing error");
         }
         return json;
     }
 
     public void loadJson() {
         try {
-            Main.getInstance().getLogger().info("===LOADFILES===");
+            Console.send("===LOADFILES===");
             for (String filename : files.keySet()) {
                 String line;
                 BufferedReader reader = new BufferedReader(new FileReader(files.get(filename)));
@@ -89,16 +89,17 @@ public class FileDriver {
                     content.append(line);
                 }
                 jsons.put(filename, this.parseJson(content.toString()));
+                reader.close();
             }
         }
         catch (Exception ex) {
-            Main.getInstance().getLogger().warning("File can not be loaded");
+            Console.error("File can not be loaded");
         }
     }
 
     public void saveJson() {
         try {
-            Main.getInstance().getLogger().info("===SAVEFILES===");
+            Console.send("===SAVEFILES===");
             for (String filename : files.keySet()) {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(files.get(filename)));
                 String json = jsons.get(filename).toString();
@@ -108,7 +109,7 @@ public class FileDriver {
             }
         }
         catch (Exception ex) {
-            Main.getInstance().getLogger().warning("File can not be saved" + ex.getMessage());
+            Console.error("File can not be saved" + ex.getMessage());
         }
     }
 
@@ -136,7 +137,7 @@ public class FileDriver {
             json = new JSONTokener(object.toString()).nextValue();
         }
         catch (JSONException e) {
-            e.printStackTrace();
+            Console.error(e.getMessage());
         }
         if (json instanceof JSONArray) {
             jsonArray = (JSONArray)json;
@@ -151,7 +152,7 @@ public class FileDriver {
             json = new JSONTokener(object.toString()).nextValue();
         }
         catch (JSONException e) {
-            e.printStackTrace();
+            Console.error(e.getMessage());
         }
         if (json instanceof JSONObject) {
             jsonObject = (JSONObject)json;
@@ -173,7 +174,7 @@ public class FileDriver {
             }
         }
         catch (Exception ex) {
-            Main.getInstance().getLogger().warning("Can not set Property: ");
+            Console.error("Can not set Property: ");
         }
     }
 
@@ -188,16 +189,27 @@ public class FileDriver {
         }
         return jsons.get(filename).get(option).toString();
     }
+    public Object getPropertyAsObj(String filename, String option, Object defaultvalue) {
+        try {
+            if (jsons.get(filename) == null || !jsons.get(filename).has(option)) {
+                this.setProperty(filename, option, defaultvalue);
+            }
+        }
+        catch (Exception ex) {
+            this.setProperty(filename, option, defaultvalue);
+        }
+        return jsons.get(filename).get(option);
+    }
 
     public String getPropertyByValue(String filename, String search) {
         HashMap<String, Object> map = this.getAllKeysWithValues(filename);
         Set<String> keys = map.keySet();
         for (String key : keys) {
-            if (map.get(key).toString().toLowerCase().equals(search)) {
+            if (map.get(key).toString().toLowerCase().equalsIgnoreCase(search)) {
                 return key;
             }
         }
-        Main.getInstance().getLogger().info("Nothing found for search: "+search);
+        Console.error("Nothing found for search: "+search);
         return "Nothing";
     }
 
@@ -206,7 +218,7 @@ public class FileDriver {
             return jsons.get(filename).has(option);
         }
         catch (Exception ex) {
-            ex.printStackTrace();
+            Console.error(ex.getMessage());
             return false;
         }
     }
@@ -225,7 +237,7 @@ public class FileDriver {
             }
         }
         catch (Exception ex) {
-            Main.getInstance().getLogger().warning("Can not remove Property: ");
+            Console.error("Can not remove Property: ");
         }
     }
 
@@ -237,7 +249,7 @@ public class FileDriver {
             }
         }
         catch (Exception ex) {
-            Main.getInstance().getLogger().warning("Can not list Property: ");
+            Console.error("Can not list Property: ");
         }
         return objects;
     }

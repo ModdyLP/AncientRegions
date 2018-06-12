@@ -4,27 +4,19 @@ import de.moddylp.AncientRegions.Language;
 import de.moddylp.AncientRegions.Main;
 
 public class Messages {
-    private Main plugin;
 
-    public Messages(Main plugin) {
-        this.plugin = plugin;
-        this.setup();
-    }
-
-    private void setup() {
-        Language lang = this.plugin.lang;
-        lang.setTextOnce("1", "ATTENTION: Please don't touch the placeholder ( [PH] ) tag!!");
-        lang.setTextOnce("2", "------------------------------------------------------------");
+    public static void setup(Main plugin) {
+        Language lang = plugin.lang;
         lang.setTextOnce("Enabled", "AncientRegions has been enabled!");
         lang.setTextOnce("Disabled", "AncientRegions has been disabled!");
         lang.setTextOnce("ConfigReload", "Config and LanguageFile have been reloaded!");
         lang.setTextOnce("Cancel", "Canceled all Particle Activities!");
-        lang.setTextOnce("ValueChat", " Value for FlagOBJ([PH]) was set!");
+        lang.setTextOnce("ValueChat", " Value for Flag([PH]) was set!");
         lang.setTextOnce("PayNote", "You have payed [PH] for changing this flag!");
         lang.setTextOnce("PayNote2", "You have payed [PH] for this region!");
         lang.setTextOnce("PayNote3", "You have payed [PH] for this region change!");
-        lang.setTextOnce("FlagRemoved", "FlagOBJ removed!");
-        lang.setTextOnce("Message", "Please type in the Chat your [PH] Message!");
+        lang.setTextOnce("FlagRemoved", "Flag removed!");
+        lang.setTextOnce("SimpleTypeChatMSG", "Please type in the Chat your [PH] Message!");
         lang.setTextOnce("Message2", "Please type in the Chat your EntityTypes. Seperate it with a comma! e.g. Creeper, Zombie");
         lang.setTextOnce("Message3", "Please type in the Chat only numeric Values.");
         lang.setTextOnce("Message4", "Please type in the Chat commands without slash. Seperate each command with a Comma!");
@@ -60,7 +52,7 @@ public class Messages {
         lang.setTextOnce("RemoveRegionLore1", "Sell your Region to the Server.");
         lang.setTextOnce("RemoveRegionLore2", "You get [PH] back by selling the Region.");
         lang.setTextOnce("Removed", "Your Region ([PH]) was selled.");
-        lang.setTextOnce("RemovedError","Your Region ([PH]) was selled but cant be restored to nature." );
+        lang.setTextOnce("RemovedError", "Your Region ([PH]) was selled but cant be restored to nature.");
         lang.setTextOnce("Payback", " You get [PH] for selling this region.");
         lang.setTextOnce("Playername", "Please type in the Chat a Playername!");
         lang.setTextOnce("Restore", "Restore in Progress... Please wait");
@@ -73,6 +65,7 @@ public class Messages {
         lang.setTextOnce("Next", "Next");
         lang.setTextOnce("Back", "Back");
         lang.setTextOnce("Mainmenu", "Main Menu");
+        lang.setTextOnce("exitinfo", "Use 'exit' or 'cancel' to leave the input event.");
         lang.setTextOnce("Current", "Current Value");
         lang.setTextOnce("ErrorPasting", "There was an error. The Plugin can't rollback the Region. Please contact the Adminstrator.");
         lang.setTextOnce("ErrorSaving", "There was an error. The Plugin can't save the Region into file. Please contact the Adminstrator.");
@@ -94,7 +87,12 @@ public class Messages {
         lang.setTextOnce("ErrorDelete", "Failed to delete Region");
         lang.setTextOnce("ErrorCreate", "Failed to create Region");
         lang.setTextOnce("build", "Build");
+        lang.setTextOnce("inputcancel", "You canceled the input");
         lang.setTextOnce("Player", "That Player ([PH]) doesn't exist, or is not online. Please choose another one!");
+        lang.setTextOnce("deactivatemode", "Rightclick (Deaktivate)");
+        lang.setTextOnce("activatemode", "LeftClick (Activate)");
+        lang.setTextOnce("removemode", "MiddleClick (Remove)");
+        lang.setTextOnce("changemode", "LeftClick (Change)");
     }
 }
 

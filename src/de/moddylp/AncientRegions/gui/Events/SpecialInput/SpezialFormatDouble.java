@@ -1,4 +1,4 @@
-package de.moddylp.AncientRegions.gui.Events;
+package de.moddylp.AncientRegions.gui.Events.SpecialInput;
 
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.LocalPlayer;
@@ -10,7 +10,7 @@ import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagOBJ;
 import de.moddylp.AncientRegions.flags.FlagUtil;
 import de.moddylp.AncientRegions.gui.EditflagsPage2;
-import java.util.List;
+import de.moddylp.AncientRegions.gui.Events.ActivateMode;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,20 +18,29 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.List;
+
 public class SpezialFormatDouble
-implements Listener {
+        implements Listener {
     private final FlagOBJ flagObj;
+    private final ActivateMode mode;
     private Player p;
 
-    public SpezialFormatDouble(Player p, FlagOBJ flagOBJ) {
+    public SpezialFormatDouble(Player p, FlagOBJ flagOBJ, ActivateMode mode) {
         this.p = p;
         this.flagObj = flagOBJ;
+        this.mode = mode;
+        this.p.sendMessage(ChatColor.GOLD+"[AR][INFO] "+Main.getInstance().lang.getText("exitinfo"));
     }
 
     @EventHandler
     public String getChat(AsyncPlayerChatEvent e) {
         if (e.getPlayer().equals(this.p)) {
             String msg = e.getMessage();
+            if (FlagUtil.cancelEvent(msg, this.p, e, this)) {
+                e.setCancelled(true);
+                return null;
+            }
             RegionContainer container = Main.worldguard.getRegionContainer();
             RegionManager regions = container.get(this.p.getWorld());
             Vector pt = new Vector(this.p.getLocation().getX(), this.p.getLocation().getY(), this.p.getLocation().getZ());
@@ -41,11 +50,11 @@ implements Listener {
                 if (region.isEmpty()) {
                     this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("GobalError"));
                 } else {
-                    ProtectedRegion rg = regions.getRegion((String)region.get(0));
-                    if (rg != null && rg.isOwner(ply) || rg != null && this.p.hasPermission("ancient.regions.admin.bypass")) {
-                        if (FlagUtil.payment(this.p, e, this.flagObj.getName())) {
+                    ProtectedRegion rg = regions.getRegion((String) region.get(0));
+                    if (rg != null && (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass"))) {
+                        if (FlagUtil.payment(this.p, e, this.flagObj.getConfigname(), mode)) {
                             rg.setFlag((DoubleFlag) this.flagObj.getFlag(), Double.valueOf(msg));
-                            this.p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flagObj.getName()));
+                            this.p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + Main.getInstance().lang.getText("ValueChat").replace("[PH]", this.flagObj.getName()));
                             EditflagsPage2 gui = new EditflagsPage2(this.p, Main.getInstance());
                             gui.open();
                             HandlerList.unregisterAll(this);

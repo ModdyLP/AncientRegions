@@ -8,6 +8,8 @@ import com.sk89q.worldguard.protection.flags.LocationFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.gui.Events.ActivateMode;
+import de.moddylp.AncientRegions.utils.Console;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -42,7 +44,7 @@ public class LocationFlagimpl {
         flag.loadgui(menu, p);
     }
 
-    public static void createandtoggle(FlagOBJ flagOBJ, Player p, Inventory menu, InventoryClickEvent event) {
+    public static void createandtoggle(FlagOBJ flagOBJ, Player p, Inventory menu, InventoryClickEvent event, ActivateMode mode) {
         if (flagOBJ.getMenuposition() == 999) {
             return;
         }
@@ -54,10 +56,10 @@ public class LocationFlagimpl {
             flag = new LocationFlagimpl(flagOBJ);
             FlagUtil.locationFlagHashMap.put(flagOBJ.getName(), flag);
         }
-        flag.toggle(event, menu, p);
+        flag.toggle(event, menu, p, mode);
     }
 
-    public boolean toggle(InventoryClickEvent e, Inventory menu, Player p) {
+    public boolean toggle(InventoryClickEvent e, Inventory menu, Player p, ActivateMode mode) {
         if (p.hasPermission(this.flagobj.getPermission())) {
             RegionContainer container = Main.worldguard.getRegionContainer();
             RegionManager regions = container.get(p.getWorld());
@@ -69,12 +71,14 @@ public class LocationFlagimpl {
                 if (region.isEmpty()) {
                     p.sendMessage(ChatColor.RED + "[AR][ERROR] " + Main.getInstance().lang.getText("GobalError"));
                 } else {
-                    ProtectedRegion rg = regions.getRegion((String)region.get(0));
-                    if (rg != null && rg.isOwner(ply) || rg != null && p.hasPermission("ancient.regions.admin.bypass")) {
-                        if (rg.getFlag(this.flagobj.getFlag()) != null) {
-                            rg.setFlag(this.flagobj.getFlag(), null);
-                            p.sendMessage(ChatColor.GREEN + "[AR][INFO]" + ChatColor.GOLD + " " + this.flagobj.getName() + Main.getInstance().lang.getText("FlagRemoved"));
-                        } else if (FlagUtil.payment(p, e, this.flagobj.getName())) {
+                    ProtectedRegion rg = regions.getRegion((String) region.get(0));
+                    if (rg != null && (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass"))) {
+                        if (!FlagUtil.isSet(p, flagobj.getFlag()).equalsIgnoreCase("null") && mode.equals(ActivateMode.REMOVE)) {
+                            if (FlagUtil.payment(p, e, this.flagobj.getConfigname(), mode)) {
+                                rg.setFlag(this.flagobj.getFlag(), null);
+                                p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + ChatColor.GOLD + " " + this.flagobj.getName() + " "+Main.getInstance().lang.getText("FlagRemoved"));
+                            }
+                        } else if (mode.equals(ActivateMode.ACTIVATE) && FlagUtil.payment(p, e, flagobj.getName(), mode)) {
                             rg.setFlag((LocationFlag) flagobj.getFlag(), BukkitUtil.toLocation(p.getLocation()));
                             p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.flagobj.getName() + Main.getInstance().lang.getText("fEnabled"));
                         }
@@ -93,15 +97,18 @@ public class LocationFlagimpl {
         return false;
     }
 
-    public boolean loadgui(Inventory menu, Player p) {
+    private void loadgui(Inventory menu, Player p) {
         if (p.hasPermission(this.flagobj.getPermission())) {
             ItemStack ITEM = new ItemStack(this.flagobj.getItem());
             ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Set").replace("[PH]", this.flagobj.getName()));
-            lore.add(ChatColor.YELLOW + Objects.requireNonNull(FlagUtil.loadPricefromConfig(this.flagobj.getName())).toString() + " " + FlagUtil.loadCurrencyfromConfig());
-            if (!FlagUtil.isSet(p, this.flagobj.getFlag()).equals("null")) {
+            lore.add(ChatColor.GREEN +
+                    Objects.requireNonNull(FlagUtil.loadPricefromConfig(this.flagobj.getName(), ActivateMode.ACTIVATE)).toString() + " " + FlagUtil.loadCurrencyfromConfig() + "    " +
+                    ChatColor.LIGHT_PURPLE +
+                    Objects.requireNonNull(FlagUtil.loadPricefromConfig(this.flagobj.getName(), ActivateMode.REMOVE)).toString() + " " + FlagUtil.loadCurrencyfromConfig()
+            );
+            if (!FlagUtil.isSet(p, this.flagobj.getFlag()).equalsIgnoreCase("null")) {
                 lore.add(ChatColor.GOLD + Main.getInstance().lang.getText("Current") + ":");
-                Main.getInstance().getLogger().info(FlagUtil.isSet(p, this.flagobj.getFlag()));
                 String[] location = FlagUtil.isSet(p, this.flagobj.getFlag()).split(",");
                 location[1] = location[1].replace(" :", "X: ");
                 location[2] = "Y: " + location[2];
@@ -111,10 +118,12 @@ public class LocationFlagimpl {
                 }
             }
             ItemMeta imeta = ITEM.getItemMeta();
-            if (!FlagUtil.isSet(p, this.flagobj.getFlag()).equals("null")) {
+            if (!FlagUtil.isSet(p, this.flagobj.getFlag()).equalsIgnoreCase("null")) {
                 imeta.setDisplayName(ChatColor.GREEN + "[ON] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + this.flagobj.getName());
+                lore.add(ChatColor.LIGHT_PURPLE + Main.getInstance().lang.getText("removemode"));
             } else {
                 imeta.setDisplayName(ChatColor.BLUE + "[/] " + ChatColor.GOLD + Main.getInstance().lang.getText("s") + this.flagobj.getName());
+                lore.add(ChatColor.GREEN + Main.getInstance().lang.getText("activatemode"));
             }
             imeta.setLore(lore);
             imeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -122,18 +131,9 @@ public class LocationFlagimpl {
             menu.setItem(this.flagobj.getMenuposition(), ITEM);
         } else {
             ItemStack ITEM = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
-            if (ITEM.getItemMeta().getLore() == null) {
-                ArrayList<String> lore = new ArrayList<>();
-                lore.add(ChatColor.RED + Main.getInstance().lang.getText("Permission"));
-                ItemMeta imeta = ITEM.getItemMeta();
-                imeta.setDisplayName(ChatColor.RED + "[OFF] " + Main.getInstance().lang.getText("Toggle") + this.flagobj.getName());
-                imeta.setLore(lore);
-                imeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                ITEM.setItemMeta(imeta);
-            }
+            FlagUtil.checkPerm(ITEM, this.flagobj.getName());
             menu.setItem(this.flagobj.getMenuposition(), ITEM);
         }
-        return true;
     }
 }
 

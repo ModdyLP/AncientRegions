@@ -7,6 +7,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
+import de.moddylp.AncientRegions.utils.Console;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -21,20 +22,18 @@ import java.util.List;
 import java.util.Objects;
 
 public class ParticleShower {
+    private static List<Player> players;
     private Main plugin;
     private Inventory menu;
     private int particle;
     private BukkitTask particles;
     private int timernum;
-    private LogFile data;
-    private static List<Player> players;
     private BukkitTask timertask;
     private List<Vector> vectoren = new ArrayList<>();
 
     public ParticleShower(Main plugin, Inventory menu) {
         this.plugin = plugin;
         this.menu = menu;
-        this.data = new LogFile();
     }
 
     public void toggle(Player p, WorldGuardPlugin worldguard) {
@@ -48,21 +47,24 @@ public class ParticleShower {
             } else {
                 for (String regionid : region) {
                     ProtectedRegion rg = regions.getRegion(regionid);
-                    if (data.getString(regionid) == null || data.getString(regionid).equals("false")) {
+                    if (Main.getInstance().getData().getString(regionid) == null
+                            || (Main.getInstance().getData().getString(regionid) != null
+                            && Main.getInstance().getData().getString(regionid).equalsIgnoreCase("false"))) {
                         World world = p.getWorld();
                         players = new ArrayList<>();
                         players.addAll(this.plugin.getServer().getOnlinePlayers());
                         timer(rg, p);
                         show(world, p, rg);
-                        data.setString(regionid, "true");
-                        p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("Particles").replace("[PH]", Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "showtimeofparticle", 20)));
+                        Main.getInstance().getData().setString(regionid, "true");
+                        p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("Particles")
+                                .replace("[PH]", Main.getInstance().getMainConfig().get("particle.showtimeofparticle").toString()));
                         continue;
                     }
-                    this.data.setString(regionid, null);
+                    Main.getInstance().getData().remove(regionid);
                 }
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Console.error(ex.getMessage());
         }
     }
 
@@ -71,20 +73,20 @@ public class ParticleShower {
         this.timertask = new BukkitRunnable() {
 
             public void run() {
-                if (data.getString(rg.getId()) == null) {
+                if (Main.getInstance().getData().getString(rg.getId()) == null) {
                     p.sendMessage(ChatColor.RED + "[AR][INFO] " + plugin.lang.getText("ParticlesOff"));
                     particles.cancel();
                     timertask.cancel();
                 }
-                if (Integer.valueOf(Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showtimeofparticle", 20)) != -1) {
+                if (Double.valueOf(Main.getInstance().getMainConfig().get("particle.showtimeofparticle").toString()) != -1) {
                     timernum++;
-                    if (timernum >= Integer.valueOf(Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showtimeofparticle", 20)) * 2) {
-                        data.setString(rg.getId(), null);
+                    if (timernum >= Double.valueOf(Main.getInstance().getMainConfig().get("particle.showtimeofparticle").toString()) * 2) {
+                        Main.getInstance().getData().remove(rg.getId());
                     }
                 }
                 if (p == null || !p.isOnline()) {
-                    data.setString(rg.getId(), null);
-                    Main.getInstance().getLogger().info("Partciles cancled by Console");
+                    Main.getInstance().getData().remove(rg.getId());
+                    Console.send("Partciles cancled by Console");
                     particles.cancel();
                     timertask.cancel();
                 }
@@ -109,9 +111,9 @@ public class ParticleShower {
             while (copyMinXYZpt.getBlockZ() <= maxYZpt.getBlockZ()) {
                 while (copyMinXYZpt.getBlockY() <= maxYZpt.getBlockY()) {
                     vectoren.add(new Vector(copyMinXYZpt.getBlockX(), copyMinXYZpt.getBlockY(), copyMinXYZpt.getBlockZ()));
-                    copyMinXYZpt = new Vector(copyMinXYZpt.getBlockX(), copyMinXYZpt.getBlockY()+2, copyMinXYZpt.getBlockZ());
+                    copyMinXYZpt = new Vector(copyMinXYZpt.getBlockX(), copyMinXYZpt.getBlockY() + 2, copyMinXYZpt.getBlockZ());
                 }
-                copyMinXYZpt = new Vector(copyMinXYZpt.getBlockX(), minXYZpt.getBlockY(), copyMinXYZpt.getBlockZ()+2);
+                copyMinXYZpt = new Vector(copyMinXYZpt.getBlockX(), minXYZpt.getBlockY(), copyMinXYZpt.getBlockZ() + 2);
             }
 
             copyMinXYZpt = new Vector(minXYZpt.getBlockX(), minXYZpt.getBlockY(), minXYZpt.getBlockZ());
@@ -120,9 +122,9 @@ public class ParticleShower {
             while (copyMinXYZpt.getBlockX() <= maxXYpt.getBlockX()) {
                 while (copyMinXYZpt.getBlockY() <= maxXYpt.getBlockY()) {
                     vectoren.add(new Vector(copyMinXYZpt.getBlockX(), copyMinXYZpt.getBlockY(), copyMinXYZpt.getBlockZ()));
-                    copyMinXYZpt = new Vector(copyMinXYZpt.getBlockX(), copyMinXYZpt.getBlockY()+2, copyMinXYZpt.getBlockZ());
+                    copyMinXYZpt = new Vector(copyMinXYZpt.getBlockX(), copyMinXYZpt.getBlockY() + 2, copyMinXYZpt.getBlockZ());
                 }
-                copyMinXYZpt = new Vector(copyMinXYZpt.getBlockX()+2, minXYZpt.getBlockY(), copyMinXYZpt.getBlockZ());
+                copyMinXYZpt = new Vector(copyMinXYZpt.getBlockX() + 2, minXYZpt.getBlockY(), copyMinXYZpt.getBlockZ());
             }
 
             Vector copymaxXpt = new Vector(maxXpt.getBlockX(), maxXpt.getBlockY(), maxXpt.getBlockZ());
@@ -131,9 +133,9 @@ public class ParticleShower {
             while (copymaxXpt.getBlockZ() <= maxXYZpt.getBlockZ()) {
                 while (copymaxXpt.getBlockY() <= maxXYZpt.getBlockY()) {
                     vectoren.add(new Vector(copymaxXpt.getBlockX(), copymaxXpt.getBlockY(), copymaxXpt.getBlockZ()));
-                    copymaxXpt = new Vector(copymaxXpt.getBlockX(), copymaxXpt.getBlockY()+2, copymaxXpt.getBlockZ());
+                    copymaxXpt = new Vector(copymaxXpt.getBlockX(), copymaxXpt.getBlockY() + 2, copymaxXpt.getBlockZ());
                 }
-                copymaxXpt = new Vector(copymaxXpt.getBlockX(), maxXpt.getBlockY(), copymaxXpt.getBlockZ()+2);
+                copymaxXpt = new Vector(copymaxXpt.getBlockX(), maxXpt.getBlockY(), copymaxXpt.getBlockZ() + 2);
             }
 
             Vector copymaxZpt = new Vector(maxZpt.getBlockX(), maxZpt.getBlockY(), maxZpt.getBlockZ());
@@ -142,20 +144,20 @@ public class ParticleShower {
             while (copymaxZpt.getBlockX() <= maxXYZpt.getBlockX()) {
                 while (copymaxZpt.getBlockY() <= maxXYZpt.getBlockY()) {
                     vectoren.add(new Vector(copymaxZpt.getBlockX(), copymaxZpt.getBlockY(), copymaxZpt.getBlockZ()));
-                    copymaxZpt = new Vector(copymaxZpt.getBlockX(), copymaxZpt.getBlockY()+2, copymaxZpt.getBlockZ());
+                    copymaxZpt = new Vector(copymaxZpt.getBlockX(), copymaxZpt.getBlockY() + 2, copymaxZpt.getBlockZ());
                 }
-                copymaxZpt = new Vector(copymaxZpt.getBlockX()+2, maxZpt.getBlockY(), copymaxZpt.getBlockZ());
+                copymaxZpt = new Vector(copymaxZpt.getBlockX() + 2, maxZpt.getBlockY(), copymaxZpt.getBlockZ());
             }
 
             copyMinXYZpt = new Vector(minXYZpt.getBlockX(), minXYZpt.getBlockY(), minXYZpt.getBlockZ());
 
 
             while (copyMinXYZpt.getBlockZ() <= maxXZpt.getBlockZ()) {
-                while (copyMinXYZpt.getBlockX() <= maxXZpt.getBlockX())  {
+                while (copyMinXYZpt.getBlockX() <= maxXZpt.getBlockX()) {
                     vectoren.add(new Vector(copyMinXYZpt.getBlockX(), copyMinXYZpt.getBlockY(), copyMinXYZpt.getBlockZ()));
-                    copyMinXYZpt = new Vector(copyMinXYZpt.getBlockX()+2, copyMinXYZpt.getBlockY(), copyMinXYZpt.getBlockZ());
+                    copyMinXYZpt = new Vector(copyMinXYZpt.getBlockX() + 2, copyMinXYZpt.getBlockY(), copyMinXYZpt.getBlockZ());
                 }
-                copyMinXYZpt = new Vector(minXYZpt.getBlockX(), copyMinXYZpt.getBlockY(), copyMinXYZpt.getBlockZ()+2);
+                copyMinXYZpt = new Vector(minXYZpt.getBlockX(), copyMinXYZpt.getBlockY(), copyMinXYZpt.getBlockZ() + 2);
             }
 
             Vector copymaxYpt = new Vector(maxYpt.getBlockX(), maxYpt.getBlockY(), maxYpt.getBlockZ());
@@ -164,13 +166,12 @@ public class ParticleShower {
             while (copymaxYpt.getBlockZ() <= maxXYZpt.getBlockZ()) {
                 while (copymaxYpt.getBlockX() <= maxXYZpt.getBlockX()) {
                     vectoren.add(new Vector(copymaxYpt.getBlockX(), copymaxYpt.getBlockY(), copymaxYpt.getBlockZ()));
-                    copymaxYpt = new Vector(copymaxYpt.getBlockX()+2, copymaxYpt.getBlockY(), copymaxYpt.getBlockZ());
+                    copymaxYpt = new Vector(copymaxYpt.getBlockX() + 2, copymaxYpt.getBlockY(), copymaxYpt.getBlockZ());
                 }
-                copymaxYpt = new Vector(maxYpt.getBlockX(), copymaxYpt.getBlockY(), copymaxYpt.getBlockZ()+2);
+                copymaxYpt = new Vector(maxYpt.getBlockX(), copymaxYpt.getBlockY(), copymaxYpt.getBlockZ() + 2);
             }
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            Console.error(ex.getMessage());
         }
         return vectoren;
     }
@@ -178,7 +179,7 @@ public class ParticleShower {
     private List<Vector> calcVisibleVectors(List<Vector> vectoren, Player p) {
         Vector playerlocation = new Vector(p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ());
         ArrayList<Vector> visbleVectors = new ArrayList<>();
-        double range = Double.valueOf(Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_particleshowrange", 16));
+        double range = ((Double)Main.getInstance().getMainConfig().get("particle.particleshowrange"));
         for (Vector pt : vectoren) {
             double distance = pt.distance(playerlocation);
             if (distance < range) {
@@ -200,20 +201,20 @@ public class ParticleShower {
                         try {
                             for (Vector vector : calcVisibleVectors(vectoren, p)) {
                                 Location loc = new Location(world, (double) vector.getBlockX(), (double) vector.getBlockY(), (double) vector.getBlockZ());
-                                if (Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showfor", "player").equals("player")) {
-                                    p.spawnParticle(Particle.FIREWORKS_SPARK, loc, 1,0,0,0, 0);
+                                if (Main.getInstance().getMainConfig().get("particle.showfor").toString().equalsIgnoreCase("player")) {
+                                    p.spawnParticle(Particle.FIREWORKS_SPARK, loc, 1, 0, 0, 0, 0);
                                 }
-                                if (Main.DRIVER.getProperty(Main.DRIVER.CONFIG, "_showfor", "player").equals("all")) {
+                                if (Main.getInstance().getMainConfig().get("particle.showfor").toString().equalsIgnoreCase("all")) {
                                     if (players.size() <= 0) {
-                                        loc.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc, 1,0,0,0, 0);
+                                        loc.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc, 1, 0, 0, 0, 0);
                                     }
                                 }
                             }
                         } catch (Exception ex) {
-                            ex.printStackTrace();
+                            Console.error(ex.getMessage());
                         }
                     }
-                }.runTaskTimerAsynchronously(plugin, 0, 5);
+                }.runTaskTimerAsynchronously(plugin, 0, 10);
             }
 
         }.runTaskAsynchronously(this.plugin);

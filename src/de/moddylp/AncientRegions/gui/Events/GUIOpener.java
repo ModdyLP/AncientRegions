@@ -1,7 +1,6 @@
 package de.moddylp.AncientRegions.gui.Events;
 
 import de.moddylp.AncientRegions.gui.Editflags;
-import de.moddylp.AncientRegions.gui.Events.GUIEvents;
 import de.moddylp.AncientRegions.gui.Startgui;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

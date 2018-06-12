@@ -1,50 +1,38 @@
 package de.moddylp.AncientRegions;
 
-import java.io.File;
-import java.io.IOException;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import de.moddylp.simplecommentconfig.Config;
 
 public class Language {
-    private final File langFile;
-    private final FileConfiguration lang;
+    private static Config messages;
 
-    public Language(File config) {
-        this.langFile = config;
-        this.lang = YamlConfiguration.loadConfiguration(this.langFile);
+    private static String langcode = "en";
+
+    public void setLangCode(String langCode) {
+        Language.langcode = langCode;
+        Language.messages = Main.getInstance().getManager().getConfig(Main.getInstance().getDataFolder()+"/"+langcode + "_messages.lang");
+        Language.messages.setHeader(new String[]{"DO NOT MODIFY [PH] TAGS AND ALL TAGS in {}", "THEY ARE REQUIRED"});
     }
 
     public void reload() {
-        try {
-            this.lang.load(this.langFile);
-        }
-        catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+        Language.messages.reload();
     }
 
     private void save() {
-        try {
-            this.lang.save(this.langFile);
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        Language.messages.saveToFile();
     }
 
     public void setTextOnce(String path, String text) {
-        if (this.lang.getString(path) == null) {
-            this.lang.set(path, text);
+        if (!Language.messages.containsKey(path)) {
+            Language.messages.set(path, text);
             this.save();
         }
     }
 
     public String getText(String path) {
-        if (this.lang.getString(path) != null) {
-            return this.lang.getString(path).replaceAll("&", "\u00a7");
+        if (Language.messages.containsKey(path)) {
+            return Language.messages.get(path).toString().replaceAll("&", "\u00a7");
         }
-        return "&cThis sentence does not exist. Please check lang-file message ".replaceAll("&", "\u00a7") + path;
+        return "This sentence does not exist. Please check lang-file message: " + path;
     }
 }
 

@@ -1,23 +1,6 @@
 package de.moddylp.AncientRegions.bukkit;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.logging.Level;
-import java.util.zip.GZIPOutputStream;
-import javax.net.ssl.HttpsURLConnection;
+import de.moddylp.AncientRegions.utils.Console;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -27,11 +10,35 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import javax.net.ssl.HttpsURLConnection;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.logging.Level;
+import java.util.zip.GZIPOutputStream;
+
 public class Metrics {
     public static final int B_STATS_VERSION = 1;
     private static final String URL = "https://bStats.org/submitData/bukkit";
     private static boolean logFailedRequests;
     private static String serverUUID;
+
+    static {
+        if (System.getProperty("bstats.relocatecheck") == null || !System.getProperty("bstats.relocatecheck").equalsIgnoreCase("false")) {
+            String defaultPackage = new String(new byte[]{111, 114, 103, 46, 98, 115, 116, 97, 116, 115, 46, 98, 117, 107, 107, 105, 116});
+            String examplePackage = new String(new byte[]{121, 111, 117, 114, 46, 112, 97, 99, 107, 97, 103, 101});
+            if (Metrics.class.getPackage().getName().equalsIgnoreCase(defaultPackage) || Metrics.class.getPackage().getName().equalsIgnoreCase(examplePackage)) {
+                throw new IllegalStateException("bStats Metrics class has not been relocated correctly!");
+            }
+        }
+    }
+
     private final JavaPlugin plugin;
     private final List<CustomChart> charts = new ArrayList<>();
 
@@ -50,8 +57,7 @@ public class Metrics {
             config.options().header("bStats collects some data for plugin authors like how many servers are using their plugins.\nTo honor their work, you should not disable it.\nThis has nearly no effect on the server performance!\nCheck out https://bStats.org/ to learn more :)").copyDefaults(true);
             try {
                 config.save(configFile);
-            }
-            catch (IOException iOException) {
+            } catch (IOException iOException) {
                 // empty catch block
             }
         }
@@ -64,8 +70,7 @@ public class Metrics {
                     service.getField("B_STATS_VERSION");
                     found = true;
                     break;
-                }
-                catch (NoSuchFieldException ignored) {
+                } catch (NoSuchFieldException ignored) {
                 }
             }
             Bukkit.getServicesManager().register(Metrics.class, this, plugin, ServicePriority.Normal);
@@ -73,6 +78,41 @@ public class Metrics {
                 this.startSubmitting();
             }
         }
+    }
+
+    private static void sendData(JSONObject data) throws Exception {
+        if (data == null) {
+            throw new IllegalArgumentException("Data cannot be null!");
+        }
+        if (Bukkit.isPrimaryThread()) {
+            throw new IllegalAccessException("This method must not be called from the main thread!");
+        }
+        HttpsURLConnection connection = (HttpsURLConnection) new URL("https://bStats.org/submitData/bukkit").openConnection();
+        byte[] compressedData = Metrics.compress(data.toString());
+        connection.setRequestMethod("POST");
+        connection.addRequestProperty("Accept", "application/json");
+        connection.addRequestProperty("Connection", "close");
+        connection.addRequestProperty("Content-Encoding", "gzip");
+        connection.addRequestProperty("Content-Length", String.valueOf(compressedData.length));
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("User-Agent", "MC-Server/1");
+        connection.setDoOutput(true);
+        DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
+        outputStream.write(compressedData);
+        outputStream.flush();
+        outputStream.close();
+        connection.getInputStream().close();
+    }
+
+    private static byte[] compress(String str) throws IOException {
+        if (str == null) {
+            return null;
+        }
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        GZIPOutputStream gzip = new GZIPOutputStream(outputStream);
+        gzip.write(str.getBytes("UTF-8"));
+        gzip.close();
+        return outputStream.toByteArray();
     }
 
     public void addCustomChart(CustomChart chart) {
@@ -84,7 +124,7 @@ public class Metrics {
 
     private void startSubmitting() {
         final Timer timer = new Timer(true);
-        timer.scheduleAtFixedRate(new TimerTask(){
+        timer.scheduleAtFixedRate(new TimerTask() {
 
             @Override
             public void run() {
@@ -118,9 +158,8 @@ public class Metrics {
         int playerAmount;
         try {
             Method onlinePlayersMethod = Class.forName("org.bukkit.Server").getMethod("getOnlinePlayers");
-            playerAmount = onlinePlayersMethod.getReturnType().equals(Collection.class) ? ((Collection)onlinePlayersMethod.invoke(Bukkit.getServer(), new Object[0])).size() : ((Player[])onlinePlayersMethod.invoke(Bukkit.getServer(), new Object[0])).length;
-        }
-        catch (Exception e) {
+            playerAmount = onlinePlayersMethod.getReturnType().equals(Collection.class) ? ((Collection) onlinePlayersMethod.invoke(Bukkit.getServer(), new Object[0])).size() : ((Player[]) onlinePlayersMethod.invoke(Bukkit.getServer(), new Object[0])).length;
+        } catch (Exception e) {
             playerAmount = Bukkit.getOnlinePlayers().size();
         }
         int onlineMode = Bukkit.getOnlineMode() ? 1 : 0;
@@ -153,74 +192,28 @@ public class Metrics {
                 for (RegisteredServiceProvider<?> provider : Bukkit.getServicesManager().getRegistrations(service)) {
                     try {
                         pluginData.add(provider.getService().getMethod("getPluginData", new Class[0]).invoke(provider.getProvider()));
+                    } catch (IllegalAccessException | NoSuchMethodException | NullPointerException | InvocationTargetException ignored) {
                     }
-                    catch (IllegalAccessException | NoSuchMethodException | NullPointerException | InvocationTargetException ignored) {}
                 }
-            }
-            catch (NoSuchFieldException ignored) {
+            } catch (NoSuchFieldException ignored) {
             }
         }
         data.put("plugins", pluginData);
         new Thread(() -> {
-            block2 : {
+            block2:
+            {
                 try {
                     Metrics.sendData(data);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     if (!logFailedRequests) break block2;
-                    Metrics.this.plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + Metrics.this.plugin.getName(), e);
+                    Console.error("Could not submit plugin stats of " + Metrics.this.plugin.getName());
                 }
             }
         }).start();
     }
 
-    private static void sendData(JSONObject data) throws Exception {
-        if (data == null) {
-            throw new IllegalArgumentException("Data cannot be null!");
-        }
-        if (Bukkit.isPrimaryThread()) {
-            throw new IllegalAccessException("This method must not be called from the main thread!");
-        }
-        HttpsURLConnection connection = (HttpsURLConnection)new URL("https://bStats.org/submitData/bukkit").openConnection();
-        byte[] compressedData = Metrics.compress(data.toString());
-        connection.setRequestMethod("POST");
-        connection.addRequestProperty("Accept", "application/json");
-        connection.addRequestProperty("Connection", "close");
-        connection.addRequestProperty("Content-Encoding", "gzip");
-        connection.addRequestProperty("Content-Length", String.valueOf(compressedData.length));
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("User-Agent", "MC-Server/1");
-        connection.setDoOutput(true);
-        DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
-        outputStream.write(compressedData);
-        outputStream.flush();
-        outputStream.close();
-        connection.getInputStream().close();
-    }
-
-    private static byte[] compress(String str) throws IOException {
-        if (str == null) {
-            return null;
-        }
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        GZIPOutputStream gzip = new GZIPOutputStream(outputStream);
-        gzip.write(str.getBytes("UTF-8"));
-        gzip.close();
-        return outputStream.toByteArray();
-    }
-
-    static {
-        if (System.getProperty("bstats.relocatecheck") == null || !System.getProperty("bstats.relocatecheck").equals("false")) {
-            String defaultPackage = new String(new byte[]{111, 114, 103, 46, 98, 115, 116, 97, 116, 115, 46, 98, 117, 107, 107, 105, 116});
-            String examplePackage = new String(new byte[]{121, 111, 117, 114, 46, 112, 97, 99, 107, 97, 103, 101});
-            if (Metrics.class.getPackage().getName().equals(defaultPackage) || Metrics.class.getPackage().getName().equals(examplePackage)) {
-                throw new IllegalStateException("bStats Metrics class has not been relocated correctly!");
-            }
-        }
-    }
-
     public static class AdvancedBarChart
-    extends CustomChart {
+            extends CustomChart {
         private final Callable<Map<String, int[]>> callable;
 
         public AdvancedBarChart(String chartId, Callable<Map<String, int[]>> callable) {
@@ -255,7 +248,7 @@ public class Metrics {
     }
 
     public static class SimpleBarChart
-    extends CustomChart {
+            extends CustomChart {
         private final Callable<Map<String, Integer>> callable;
 
         public SimpleBarChart(String chartId, Callable<Map<String, Integer>> callable) {
@@ -282,7 +275,7 @@ public class Metrics {
     }
 
     public static class MultiLineChart
-    extends CustomChart {
+            extends CustomChart {
         private final Callable<Map<String, Integer>> callable;
 
         public MultiLineChart(String chartId, Callable<Map<String, Integer>> callable) {
@@ -313,7 +306,7 @@ public class Metrics {
     }
 
     public static class SingleLineChart
-    extends CustomChart {
+            extends CustomChart {
         private final Callable<Integer> callable;
 
         public SingleLineChart(String chartId, Callable<Integer> callable) {
@@ -334,7 +327,7 @@ public class Metrics {
     }
 
     public static class DrilldownPie
-    extends CustomChart {
+            extends CustomChart {
         private final Callable<Map<String, Map<String, Integer>>> callable;
 
         public DrilldownPie(String chartId, Callable<Map<String, Map<String, Integer>>> callable) {
@@ -371,7 +364,7 @@ public class Metrics {
     }
 
     public static class AdvancedPie
-    extends CustomChart {
+            extends CustomChart {
         private final Callable<Map<String, Integer>> callable;
 
         public AdvancedPie(String chartId, Callable<Map<String, Integer>> callable) {
@@ -402,7 +395,7 @@ public class Metrics {
     }
 
     public static class SimplePie
-    extends CustomChart {
+            extends CustomChart {
         private final Callable<String> callable;
 
         public SimplePie(String chartId, Callable<String> callable) {
@@ -441,10 +434,9 @@ public class Metrics {
                     return null;
                 }
                 chart.put("data", data);
-            }
-            catch (Throwable t) {
+            } catch (Throwable t) {
                 if (logFailedRequests) {
-                    Bukkit.getLogger().log(Level.WARNING, "Failed to get data for custom chart with id " + this.chartId, t);
+                    Console.error("Failed to get data for custom chart with id " + this.chartId);
                 }
                 return null;
             }

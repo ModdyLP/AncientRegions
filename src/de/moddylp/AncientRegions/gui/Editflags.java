@@ -3,6 +3,7 @@ package de.moddylp.AncientRegions.gui;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.*;
+import de.moddylp.AncientRegions.utils.Console;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -69,10 +70,8 @@ public class Editflags {
             StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.RECEIVE_CHAT), this.p, this.menu);
             StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.POTION_SPLASH), this.p, this.menu);
             StateFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.LEAF_DECAY), this.p, this.menu);
-            de.moddylp.AncientRegions.flags.StringFlag.createandload(FlagOBJ.getFlagObj(DefaultFlag.DENY_MESSAGE), this.p, this.menu);
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            Console.error(ex.getMessage());
         }
     }
 

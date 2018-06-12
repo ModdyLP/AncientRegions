@@ -14,7 +14,7 @@ import org.bukkit.potion.PotionType;
 public class RegionManageNavigation {
     public boolean loadguiitems(Inventory menu, Main plugin) {
         ItemStack Mainmenu = new ItemStack(Material.TIPPED_ARROW);
-        PotionMeta pmeta2 = (PotionMeta)Mainmenu.getItemMeta();
+        PotionMeta pmeta2 = (PotionMeta) Mainmenu.getItemMeta();
         pmeta2.setBasePotionData(new PotionData(PotionType.NIGHT_VISION));
         Mainmenu.setItemMeta(pmeta2);
         ItemMeta imeta2 = Mainmenu.getItemMeta();
