@@ -38,30 +38,33 @@ public class ParticleShower {
 
     public void toggle(Player p, WorldGuardPlugin worldguard) {
         try {
-            RegionContainer container = worldguard.getRegionContainer();
-            RegionManager regions = container.get(p.getWorld());
-            Vector pt = new Vector(p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ());
-            List<String> region = Objects.requireNonNull(regions).getApplicableRegionsIDs(pt);
-            if (region.isEmpty()) {
-                p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("GobalError"));
-            } else {
-                for (String regionid : region) {
-                    ProtectedRegion rg = regions.getRegion(regionid);
-                    if (Main.getInstance().getData().getString(regionid) == null
-                            || (Main.getInstance().getData().getString(regionid) != null
-                            && Main.getInstance().getData().getString(regionid).equalsIgnoreCase("false"))) {
-                        World world = p.getWorld();
-                        players = new ArrayList<>();
-                        players.addAll(this.plugin.getServer().getOnlinePlayers());
-                        timer(rg, p);
-                        show(world, p, rg);
-                        Main.getInstance().getData().setString(regionid, "true");
-                        p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("Particles")
-                                .replace("[PH]", Main.getInstance().getMainConfig().get("particle.showtimeofparticle").toString()));
-                        continue;
+            if (p.hasPermission("ancient.regions.region.particle")) {
+                RegionContainer container = worldguard.getRegionContainer();
+                RegionManager regions = container.get(p.getWorld());
+                Vector pt = new Vector(p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ());
+                List<String> region = Objects.requireNonNull(regions).getApplicableRegionsIDs(pt);
+                if (region.isEmpty()) {
+                    p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("GobalError"));
+                } else {
+                    for (String regionid : region) {
+                        ProtectedRegion rg = regions.getRegion(regionid);
+                        Console.send(Main.getInstance().getData().getString(regionid));
+                        if (Main.getInstance().getData().getString(regionid) == null) {
+                            World world = p.getWorld();
+                            players = new ArrayList<>();
+                            players.addAll(this.plugin.getServer().getOnlinePlayers());
+                            timer(rg, p);
+                            show(world, p, rg);
+                            Main.getInstance().getData().setString(regionid, "true");
+                            p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + this.plugin.lang.getText("Particles")
+                                    .replace("[PH]", Main.getInstance().getMainConfig().get("particle.showtimeofparticle").toString()));
+                            continue;
+                        }
+                        Main.getInstance().getData().remove(regionid);
                     }
-                    Main.getInstance().getData().remove(regionid);
                 }
+            } else {
+                p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("Permission"));
             }
         } catch (Exception ex) {
             Console.error(ex.getMessage());
@@ -245,14 +248,6 @@ public class ParticleShower {
             }
             this.menu.setItem(5, ITEM);
         }
-    }
-
-    public int getParticle() {
-        return this.particle;
-    }
-
-    public void setParticle(int particle) {
-        this.particle = particle;
     }
 
 }
