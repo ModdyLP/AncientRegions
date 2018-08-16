@@ -48,7 +48,7 @@ public class MembersGUI {
                 this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("GobalError"));
             } else {
                 ProtectedRegion rg = regions.getRegion((String) region.get(0));
-                if (Objects.requireNonNull(rg).isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass")) {
+                if (rg != null && (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass"))) {
                     Set<UUID> players = rg.getMembers().getUniqueIds();
                     for (UUID p : players) {
                         ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
@@ -130,8 +130,8 @@ public class MembersGUI {
                     this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("GobalError"));
                 } else {
                     ProtectedRegion rg = regions.getRegion(region.get(0));
-                    if (Objects.requireNonNull(rg).isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass")) {
-                        if (FlagUtil.payment(this.p, e, "manage.removemember", ActivateMode.ACTIVATE) || this.p.hasPermission("ancient.regions.admin.bypass")) {
+                    if (rg != null && (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass"))) {
+                        if (FlagUtil.payment(this.p, e, "manage.removemember", ActivateMode.ACTIVATE)) {
                             DefaultDomain member = rg.getMembers();
                             member.removePlayer(this.worldguard.wrapPlayer(player));
                             rg.setMembers(member);

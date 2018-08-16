@@ -92,7 +92,7 @@ public class Region {
                                     }
                                     DefaultDomain owner = region.getOwners();
                                     owner.addPlayer(p.getUniqueId());
-                                    if (payment(p, e) || p.hasPermission("ancient.regions.admin.bypass")) {
+                                    if (payment(p, e)) {
                                         if (Main.getInstance().getMainConfig().containsKey("region.standartdenyflags") && ((ArrayList)Main.getInstance().getMainConfig().get("region.standartdenyflags")).size() > 0) {
                                             List<?> standartdenyflags = ((ArrayList)Main.getInstance().getMainConfig().get("region.standartdenyflags"));
                                             ArrayList<String> flags = new ArrayList<>();
@@ -228,9 +228,7 @@ public class Region {
                                         gui.open();
                                     }
                                 } else {
-                                    regions.removeRegion(rg.getId());
-                                    p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Removed").replace("[PH]", rg.getId()));
-                                    give(p, e, rg.getId());
+                                    p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Owner").replace("[PH]", rg.getId()));
                                     RegionManageGUI gui = new RegionManageGUI(p, plugin, worldguard);
                                     gui.open();
                                 }
@@ -305,42 +303,54 @@ public class Region {
     }
 
     public boolean payment(Player p, InventoryClickEvent e) {
-        RegisteredServiceProvider economyProvider = this.plugin.getServer().getServicesManager().getRegistration(Economy.class);
-        Economy vaultEcon = (Economy) economyProvider.getProvider();
-        if (p.hasPermission("ancient.regions.admin.bypass")) {
-            e.setCancelled(true);
-            return true;
-        }
-        if (vaultEcon != null) {
-            if (vaultEcon.getBalance(p) != 0.0 && vaultEcon.getBalance(p) >= this.regionprice) {
-                vaultEcon.withdrawPlayer(p, this.regionprice);
-                p.sendMessage(ChatColor.BLUE + "[AR][INFO] " + this.plugin.lang.getText("PayNote2").replace("[PH]", String.valueOf(regionprice) + " " + FlagUtil.loadCurrencyfromConfig()));
+        try {
+            RegisteredServiceProvider economyProvider = this.plugin.getServer().getServicesManager().getRegistration(Economy.class);
+            Economy vaultEcon = (Economy) economyProvider.getProvider();
+            if (p.hasPermission("ancient.regions.admin.bypass")) {
                 e.setCancelled(true);
                 return true;
             }
-            p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("NoMoney"));
+            if (vaultEcon != null) {
+                if (vaultEcon.getBalance(p) != 0.0 && vaultEcon.getBalance(p) >= this.regionprice) {
+                    vaultEcon.withdrawPlayer(p, this.regionprice);
+                    p.sendMessage(ChatColor.BLUE + "[AR][INFO] " + this.plugin.lang.getText("PayNote2").replace("[PH]", String.valueOf(regionprice) + " " + FlagUtil.loadCurrencyfromConfig()));
+                    e.setCancelled(true);
+                    return true;
+                }
+                p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("NoMoney"));
+                e.setCancelled(true);
+                return false;
+            }
+            p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("VaultError"));
             e.setCancelled(true);
-            return false;
+        } catch (Exception ex) {
+            Console.send("Money cant be taken from the player. Pls check if all is right and contact the developer.");
+            p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("VaultError"));
+            e.setCancelled(true);
         }
-        p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("VaultError"));
-        e.setCancelled(true);
         return false;
     }
 
     private void give(Player p, InventoryClickEvent e, String regionname) {
-        RegisteredServiceProvider economyProvider = this.plugin.getServer().getServicesManager().getRegistration(Economy.class);
-        Economy vaultEcon = (Economy) economyProvider.getProvider();
-        if (p.hasPermission("ancient.regions.admin.bypass")) {
+        try {
+            RegisteredServiceProvider economyProvider = this.plugin.getServer().getServicesManager().getRegistration(Economy.class);
+            Economy vaultEcon = (Economy) economyProvider.getProvider();
+            if (p.hasPermission("ancient.regions.admin.bypass")) {
+                e.setCancelled(true);
+            }
+            if (vaultEcon != null) {
+                double price = ((Double) Main.getInstance().getMainConfig().get("region.region" + this.getregionnumber(regionname, p) + "price")) * ((Double) Main.getInstance().getMainConfig().get("eco.paybackpercent") / 100.0);
+                vaultEcon.depositPlayer(p, price);
+                p.sendMessage(ChatColor.BLUE + "[AR][INFO] " + this.plugin.lang.getText("Payback").replace("[PH]", String.valueOf(price) + " " + FlagUtil.loadCurrencyfromConfig()));
+                e.setCancelled(true);
+            } else {
+                p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("VaultError"));
+                e.setCancelled(true);
+            }
+        } catch (Exception ex) {
             e.setCancelled(true);
-        }
-        if (vaultEcon != null) {
-            double price = ((Double)Main.getInstance().getMainConfig().get("region.region" + this.getregionnumber(regionname, p) + "price")) * ((Double)Main.getInstance().getMainConfig().get( "eco.paybackpercent") / 100.0);
-            vaultEcon.depositPlayer(p, price);
-            p.sendMessage(ChatColor.BLUE + "[AR][INFO] " + this.plugin.lang.getText("Payback").replace("[PH]", String.valueOf(price) + " " + FlagUtil.loadCurrencyfromConfig()));
-            e.setCancelled(true);
-        } else {
+            Console.send("Money cant be given to the player. Pls check if all is right and contact the developer.");
             p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("VaultError"));
-            e.setCancelled(true);
         }
     }
 

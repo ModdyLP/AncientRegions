@@ -72,7 +72,7 @@ public class SetValueFromChatEvent
                                 } else {
                                     ProtectedRegion rg = regions.getRegion((String) region.get(0));
                                     if (rg != null && (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass"))) {
-                                        if (FlagUtil.payment(this.p, e, "manage.addmember", null) || this.p.hasPermission("ancient.regions.admin.bypass")) {
+                                        if (FlagUtil.payment(this.p, e, "manage.addmember", null)) {
                                             DefaultDomain member = rg.getMembers();
                                             member.addPlayer(this.worldguard.wrapPlayer(player));
                                             rg.setMembers(member);
@@ -104,8 +104,8 @@ public class SetValueFromChatEvent
                                 this.p.sendMessage(ChatColor.RED + "[AR][ERROR] " + this.plugin.lang.getText("GobalError"));
                             } else {
                                 ProtectedRegion rg = regions.getRegion(region.get(0));
-                                if (Objects.requireNonNull(rg).isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass")) {
-                                    if (FlagUtil.payment(this.p, e, "manage.changeowner", null) || this.p.hasPermission("ancient.regions.admin.bypass")) {
+                                if (rg != null && (rg.isOwner(ply) || this.p.hasPermission("ancient.regions.admin.bypass"))) {
+                                    if (FlagUtil.payment(this.p, e, "manage.changeowner", null)) {
                                         DefaultDomain owner = rg.getOwners();
                                         owner.removePlayer(ply);
                                         owner.addPlayer(this.worldguard.wrapPlayer(player));
