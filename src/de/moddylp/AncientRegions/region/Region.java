@@ -1,6 +1,5 @@
 package de.moddylp.AncientRegions.region;
 
-import com.google.common.base.CaseFormat;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
@@ -9,7 +8,6 @@ import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.flags.BooleanFlag;
-import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
@@ -17,10 +15,8 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.moddylp.AncientRegions.Main;
 import de.moddylp.AncientRegions.flags.FlagOBJ;
 import de.moddylp.AncientRegions.flags.FlagUtil;
-import de.moddylp.AncientRegions.loader.FileDriver;
 import de.moddylp.AncientRegions.loader.WorldEditHandler6;
 import de.moddylp.AncientRegions.utils.Console;
-import javafx.beans.property.BooleanProperty;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -32,7 +28,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.json.JSONArray;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -54,11 +49,11 @@ public class Region {
         String region = "region" + number;
         this.number = number;
         this.permission = "buy" + region.toLowerCase();
-        this.regionname = Main.getInstance().getMainConfig().get("region."+region + "name").toString();
-        this.regionprice = Double.valueOf(Main.getInstance().getMainConfig().get( "region."+region + "price").toString());
-        this.regionsize = Double.valueOf(Main.getInstance().getMainConfig().get( "region."+region + "size").toString());
-        this.intregionheight = Double.valueOf(Main.getInstance().getMainConfig().get( "region.regionheight").toString());
-        this.intregiondepth = Double.valueOf(Main.getInstance().getMainConfig().get( "region.regiondepth").toString());
+        this.regionname = Main.getInstance().getMainConfig().get("region." + region + "name").toString();
+        this.regionprice = Double.parseDouble(Main.getInstance().getMainConfig().get("region." + region + "price").toString());
+        this.regionsize = Double.parseDouble(Main.getInstance().getMainConfig().get("region." + region + "size").toString());
+        this.intregionheight = Double.parseDouble(Main.getInstance().getMainConfig().get("region.regionheight").toString());
+        this.intregiondepth = Double.parseDouble(Main.getInstance().getMainConfig().get("region.regiondepth").toString());
     }
 
     public void buy(final WorldGuardPlugin worldguard, final Player p, final InventoryClickEvent e, Inventory menu, WorldEditPlugin worldedit) {
@@ -93,16 +88,15 @@ public class Region {
                                     DefaultDomain owner = region.getOwners();
                                     owner.addPlayer(p.getUniqueId());
                                     if (payment(p, e)) {
-                                        if (Main.getInstance().getMainConfig().containsKey("region.standartdenyflags") && ((ArrayList)Main.getInstance().getMainConfig().get("region.standartdenyflags")).size() > 0) {
-                                            List<?> standartdenyflags = ((ArrayList)Main.getInstance().getMainConfig().get("region.standartdenyflags"));
+                                        if (Main.getInstance().getMainConfig().containsKey("region.standartdenyflags") && ((ArrayList) Main.getInstance().getMainConfig().get("region.standartdenyflags")).size() > 0) {
+                                            List<?> standartdenyflags = ((ArrayList) Main.getInstance().getMainConfig().get("region.standartdenyflags"));
                                             ArrayList<String> flags = new ArrayList<>();
                                             for (Object object : standartdenyflags) {
                                                 flags.add(object.toString());
                                             }
                                             for (String flag : flags) {
                                                 FlagOBJ flagOBJ = FlagOBJ.getFlagObj(flag);
-                                                if (FlagUtil.isValidName(flag))
-                                                {
+                                                if (FlagUtil.isValidName(flag)) {
                                                     if (flagOBJ.getFlag() instanceof StateFlag) {
                                                         region.setFlag(new StateFlag(flag, false), StateFlag.State.DENY);
                                                     }
@@ -113,16 +107,15 @@ public class Region {
 
                                             }
                                         }
-                                        if (Main.getInstance().getMainConfig().containsKey("region.standartallowflags") && ((ArrayList)Main.getInstance().getMainConfig().get("region.standartallowflags")).size() > 0) {
-                                            List<?> standartallowflags = ((ArrayList)Main.getInstance().getMainConfig().get("region.standartallowflags"));
+                                        if (Main.getInstance().getMainConfig().containsKey("region.standartallowflags") && ((ArrayList) Main.getInstance().getMainConfig().get("region.standartallowflags")).size() > 0) {
+                                            List<?> standartallowflags = ((ArrayList) Main.getInstance().getMainConfig().get("region.standartallowflags"));
                                             ArrayList<String> flags = new ArrayList<>();
                                             for (Object object : standartallowflags) {
                                                 flags.add(object.toString());
                                             }
                                             for (String flag : flags) {
                                                 FlagOBJ flagOBJ = FlagOBJ.getFlagObj(flag);
-                                                if (FlagUtil.isValidName(flag))
-                                                {
+                                                if (FlagUtil.isValidName(flag)) {
                                                     if (flagOBJ.getFlag() instanceof StateFlag) {
                                                         region.setFlag(new StateFlag(flag, true), StateFlag.State.ALLOW);
                                                     }
@@ -133,11 +126,11 @@ public class Region {
 
                                             }
                                         }
-                                        if (((Boolean)Main.getInstance().getMainConfig().get("main.backuprg"))) {
+                                        if (((Boolean) Main.getInstance().getMainConfig().get("main.backuprg"))) {
                                             File schematic = new File(plugin.getDataFolder(), "/schematics/" + region.getId() + ".schematic");
                                             File dir = new File(plugin.getDataFolder(), "/schematics/");
                                             if (!dir.exists() && !dir.mkdirs()) {
-                                                System.err.println("Cant access file: "+dir.getAbsolutePath());
+                                                System.err.println("Cant access file: " + dir.getAbsolutePath());
                                             }
                                             if (new WorldEditHandler6(plugin).saveRegionBlocks(schematic, p.getName() + seperator + regionname + seperator + id, p, region)) {
                                                 Console.send("BACKUP SUCCESS");
@@ -198,7 +191,7 @@ public class Region {
                             ProtectedRegion rg = regions.getRegion(region.get(0));
                             if (rg != null) {
                                 if (rg.isOwner(ply) || p.hasPermission("ancient.regions.admin.bypass")) {
-                                    if ((Boolean)Main.getInstance().getMainConfig().get("main.backuprg")) {
+                                    if ((Boolean) Main.getInstance().getMainConfig().get("main.backuprg")) {
                                         p.sendMessage(ChatColor.GREEN + "[AR][INFO] " + plugin.lang.getText("Restore"));
                                         File file = new File(plugin.getDataFolder(), "/schematics/" + rg.getId() + ".schematic");
                                         BlockVector max = rg.getMaximumPoint();
@@ -248,7 +241,7 @@ public class Region {
 
     private List<BlockVector> edges(Player p) {
         ArrayList<BlockVector> edges = new ArrayList<>();
-        int halfregionsize = ((int)(this.regionsize % 2) == 1) ? (int)((this.regionsize + 1) / 2) : (int)(this.regionsize / 2);
+        int halfregionsize = ((int) (this.regionsize % 2) == 1) ? (int) ((this.regionsize + 1) / 2) : (int) (this.regionsize / 2);
         if (this.intregionheight == 9999) {
             edges.add(new BlockVector(p.getLocation().getBlockX() - halfregionsize, p.getWorld().getMaxHeight(), p.getLocation().getBlockZ() - halfregionsize));
             edges.add(new BlockVector(p.getLocation().getBlockX() + halfregionsize, p.getWorld().getMaxHeight(), p.getLocation().getBlockZ() - halfregionsize));
@@ -371,7 +364,7 @@ public class Region {
                     ITEM = new ItemStack(Material.EMERALD_BLOCK);
                     break;
             }
-            int realregionsize = ((int)this.regionsize % 2) == 1 ? ((int)this.regionsize + 2) : ((int)this.regionsize + 1);
+            int realregionsize = ((int) this.regionsize % 2) == 1 ? ((int) this.regionsize + 2) : ((int) this.regionsize + 1);
             ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.GOLD + this.plugin.lang.getText("RegionName") + ": " + ChatColor.YELLOW + this.regionname);
             lore.add(ChatColor.GOLD + this.plugin.lang.getText("RegionSize") + ": " + ChatColor.YELLOW + realregionsize + " x " + realregionsize + " x H:" + this.intregionheight + " x D:" + this.intregiondepth);

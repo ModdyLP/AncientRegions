@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.moddylp</groupId>
     <artifactId>AncientRegions</artifactId>
-    <version>20180816</version>
+    <version>20200819</version>
     <name>AncientRegions</name>
     <description>Plugin for Minecraft Spigot to control Worldguard</description>
     <build>
@@ -22,7 +22,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
+                <version>3.7.0</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -66,9 +66,13 @@
         <WorldguardVersion>6.2.1</WorldguardVersion>
         <WorldeditVersion>6.1.7.3</WorldeditVersion>
         <VaultVersion>1.6.6</VaultVersion>
-        <CONFIG>20180403</CONFIG>
+        <CONFIG>20180430</CONFIG>
     </properties>
     <repositories>
+        <repository>
+            <id>my-local-repo</id>
+            <url>file://${project.basedir}/lib</url>
+        </repository>
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
@@ -93,10 +97,7 @@
             <id>Plugin Metrics</id>
             <url>http://repo.mcstats.org/content/repositories/public</url>
         </repository>
-        <repository>
-            <id>M4taiori Repo</id>
-            <url>http://repos.m4taiori.io/repository/SimpleCommentConfig/</url>
-        </repository>
+
     </repositories>
 
     <dependencies>
@@ -118,8 +119,7 @@
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-legacy</artifactId>
             <version>${WorldguardVersion}</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/worldguard-6.2.1.jar</systemPath>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>de.moddylp</groupId>
@@ -130,8 +130,7 @@
             <groupId>com.sk89q.worldedit</groupId>
             <artifactId>worldedit-bukkit</artifactId>
             <version>${WorldeditVersion}</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/worldedit-bukkit-6.1.7.3.jar</systemPath>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
@@ -149,16 +148,11 @@
             <artifactId>json</artifactId>
             <version>20170516</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
-            <version>1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mcstats.bukkit</groupId>
-            <artifactId>metrics</artifactId>
-            <version>R8-SNAPSHOT</version>
-            <scope>compile</scope>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.21</version>
         </dependency>
     </dependencies>
 

@@ -4,7 +4,6 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.BooleanFlag;
-import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.moddylp.AncientRegions.flags.FlagOBJ;
 import de.moddylp.AncientRegions.flags.FlagUtil;
@@ -26,7 +25,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Level;
 
 public class Main
         extends JavaPlugin {
@@ -44,6 +42,7 @@ public class Main
 
     public Language lang;
     protected GUIEvents loader;
+    private MySQLConfigDriver mysql;
 
 
     public static Main getInstance() {
@@ -52,6 +51,10 @@ public class Main
 
     public ConfigManager getManager() {
         return manager;
+    }
+
+    public MySQLConfigDriver getMysql() {
+        return mysql;
     }
 
     public Config getMainConfig() {
@@ -78,22 +81,17 @@ public class Main
             return;
         }
         ConfigLoader.saveDefaultconfig();
+        if (getMainConfig().get("main.config").equals("mysql")) {
+            this.mysql = new MySQLConfigDriver();
+            ConfigLoader.loadMySQLParamsandSet();
+        }
         this.lang = new Language();
-        this.lang.setLangCode(Main.getInstance().getMainConfig().get("main.language", "en").toString());
+        this.lang.setLangCode(Main.getInstance().getMainConfig().get("main.language").toString());
         this.loadMessages();
         datafile = new LogFile();
         datafile.setup();
         this.loader = new GUIEvents(this, worldguard, worldedit);
         FlagLoader.load();
-        if (Boolean.valueOf(Main.getInstance().getMainConfig().get("main.metrics", true).toString())) {
-            try {
-                de.moddylp.AncientRegions.bukkit.Metrics metrics = new de.moddylp.AncientRegions.bukkit.Metrics(this);
-                Metrics metrics1 = new Metrics(this);
-                metrics1.start();
-            } catch (Exception ex) {
-                Console.error("Metrics cant be enabled because there was an error: " + ex.getLocalizedMessage());
-            }
-        }
         checkConfiguration();
         Console.send(this.lang.getText("Enabled"));
     }
@@ -110,7 +108,7 @@ public class Main
                         if (sender instanceof Player) {
                             Player p = ((Player) sender).getPlayer();
                             if (Main.getInstance().getMainConfig().containsKey("main.worlds")) {
-                                List<?> worldconfig = (ArrayList) Main.getInstance().getMainConfig().get("main.worlds");
+                                List<?> worldconfig = (ArrayList<?>) Main.getInstance().getMainConfig().get("main.worlds");
                                 ArrayList<String> worlds = new ArrayList<>();
                                 for (Object object : worldconfig) {
                                     worlds.add(object.toString());
@@ -136,6 +134,9 @@ public class Main
                     }
                     case "reload": {
                         if (sender.hasPermission("ancient.regions.admin.reload")) {
+                            if (getMainConfig().get("main.config").equals("mysql")) {
+                                ConfigLoader.loadMySQLParamsandSet();
+                            }
                             Main.getInstance().getMainConfig().reload();
                             this.lang.reload();
                             checkConfiguration();
@@ -196,15 +197,16 @@ public class Main
 
     private WorldGuardPlugin getWorldGuard() {
         Plugin plugin = this.getServer().getPluginManager().getPlugin("WorldGuard");
-        if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
+        if (!(plugin instanceof WorldGuardPlugin)) {
             Console.error(this.lang.getText("Worldguard"));
         }
+        assert plugin instanceof WorldGuardPlugin;
         return (WorldGuardPlugin) plugin;
     }
 
     public WorldEditPlugin setupWorldEdit() {
         Plugin plugin = this.getServer().getPluginManager().getPlugin("WorldEdit");
-        if (plugin == null || !(plugin instanceof WorldEditPlugin)) {
+        if (!(plugin instanceof WorldEditPlugin)) {
             return null;
         }
         return (WorldEditPlugin) plugin;
@@ -216,8 +218,8 @@ public class Main
 
     private void checkConfiguration() {
         if (Main.getInstance().getMainConfig().get("region.standartdenyflags") instanceof ArrayList
-                && ((ArrayList) Main.getInstance().getMainConfig().get("region.standartdenyflags")).size() > 0) {
-            List<?> standartdenyflags = (ArrayList) Main.getInstance().getMainConfig().get("region.standartdenyflags");
+                && ((ArrayList<?>) Main.getInstance().getMainConfig().get("region.standartdenyflags")).size() > 0) {
+            List<?> standartdenyflags = (ArrayList<?>) Main.getInstance().getMainConfig().get("region.standartdenyflags");
             ArrayList<String> flags = new ArrayList<>();
             for (Object object : standartdenyflags) {
                 flags.add(object.toString());
@@ -232,8 +234,8 @@ public class Main
             }
         }
         if (Main.getInstance().getMainConfig().get("region.standartdenyflags") instanceof ArrayList
-                && ((ArrayList) Main.getInstance().getMainConfig().get("region.standartallowflags")).size() > 0) {
-            List<?> standartallowflags = (ArrayList) Main.getInstance().getMainConfig().get("region.standartallowflags");
+                && ((ArrayList<?>) Main.getInstance().getMainConfig().get("region.standartallowflags")).size() > 0) {
+            List<?> standartallowflags = (ArrayList<?>) Main.getInstance().getMainConfig().get("region.standartallowflags");
             ArrayList<String> flags = new ArrayList<>();
             for (Object object : standartallowflags) {
                 flags.add(object.toString());
